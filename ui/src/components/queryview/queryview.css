@@ -1,0 +1,11 @@
+.detailoverlay{
+    background-color: rgba(223, 219, 219, 0.582);
+    /* padding: 20px; */
+    position: absolute;
+    display: block;
+    z-index: 1000;
+}
+
+/* .tablecontent{
+    min-height: 600px;
+} */

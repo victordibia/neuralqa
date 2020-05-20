@@ -1,0 +1,499 @@
+
+
+
+/* Text Highlights */
+.textalignright{
+    text-align: right;
+}
+.textaligncenter{
+    text-align: center;
+}
+.textvalignmiddle{
+    vertical-align: middle;
+}
+.bluehightlight {
+    padding: 10px;
+    background: rgb(190, 213, 250);
+    margin: 0px 0px 0px 0px;
+}
+.greyhighlight {
+    background: rgba(209, 209, 209, 0.9);
+}
+.borderleftdash{
+    border-left: 1px dashed grey;
+}
+.lightgreyhighlight {
+    background: rgba(231, 231, 231, 0.9);
+}
+.justifycenter{
+    justify-content: center;
+}
+.mynotif{
+    border-left: 4px rgb(109, 109, 109) solid;
+}
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.mediumdesc{
+    font-size: 0.9em;
+}
+.greymoreinfo{
+    background: rgba(209, 209, 209, 0.9);
+}
+.greymoreinfo:hover{
+    background: rgb(187, 187, 187);
+}
+.greymoreinfo:active{
+    background: rgb(155, 155, 155);
+}
+.modelconfigdiv{
+    background:  rgba(209, 209, 209, 0.3);
+   
+}
+.lightbluehightlight {
+    padding: 10px;
+    background: #EDF4FF;
+    margin: 0px 0px 0px 0px;
+}
+
+.orangehighlight {
+    padding: 10px;
+    background: rgb(240, 134, 3);
+    margin: 0px 0px 0px 0px;
+    color: white;
+}
+
+.topblueborder {
+    border-top: 3px solid #0062FF;
+}
+
+.bottomblueborder {
+    border-bottom: 3px solid #0062FF;
+}
+
+.lh10 {
+    line-height: 1.25rem;
+}
+
+.lhmedium {
+    line-height: 1.0rem;
+}
+
+.smalldesc{
+    font-size: 0.72em;
+}
+
+.sectiontitle{
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.horrule {
+    height: 1px;
+    border-bottom: 1px solid rgba(145, 142, 142, 0.4);
+}
+
+.boldtext{
+    font-weight: bold;
+}
+.whitetext{
+    color: white;
+}
+.whitefill{
+    fill: white;
+}
+.greentext{
+    color: green;
+}
+/*  Layout Spacing margin, etc */
+.iblock {
+    display: inline-block;
+}
+.redcolor {
+    color: red;
+}
+.border {
+    border: 1px solid green ;
+}
+.greyborder {
+    border: 1px solid rgba(105, 105, 105,0.8);
+}
+
+.floatleft {
+    float: left;
+}
+
+.floatright {
+    float: right;
+}
+
+.p10 {
+    padding: 10px;
+}
+.m10 {
+    margin: 10px;
+}
+
+.p20 {
+    padding: 20px;
+}
+.m20 {
+    margin: 20px;
+}
+
+.pb10 {
+    padding-bottom: 10px;
+}
+
+.pb20 {
+    padding-bottom: 20px;
+}
+
+.pb3 {
+    padding-bottom: 3px;
+}
+
+.p5{
+    padding: 5px;
+}
+.p4{
+    padding: 4px;
+}
+.p3{
+    padding: 3px;
+}
+.pt10 {
+    padding-top: 10px;
+}
+.pt2 {
+    padding-top: 2px;
+}
+
+.pt3{
+    padding-top: 3px;
+}
+.pt4 {
+    padding-top: 4px;
+}
+.pt5 {
+    padding-top: 5px;
+}
+
+.pb5 {
+    padding-bottom: 5px;
+}
+.pb7{
+    padding-bottom: 7px;
+}
+
+.pb2 {
+    padding-bottom: 2px;
+}
+
+.pt20 {
+    padding-top: 20px;
+}
+
+.pr5 {
+    padding-right: 5px;
+}
+.pr10 {
+    padding-right: 10px;
+}
+.pr20 {
+    padding-right: 20px;
+}
+
+.pl4 {
+    padding-left: 4px;
+}
+
+.pl5 {
+    padding-left: 5px;
+}
+
+.pl10 {
+    padding-left: 10px;
+}
+.pl20 {
+    padding-left: 20px;
+}
+
+
+
+.mt10 {
+    margin-top: 10px;
+}
+.mt5 {
+    margin-top: 5px;
+}
+
+.mt20 {
+    margin-top: 20px;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+.mb3 {
+    margin-bottom: 3px;
+}
+
+.mb5 {
+    margin-bottom: 5px;
+}
+
+.mb7 {
+    margin-bottom: 7px;
+}
+
+.mr10 {
+    margin-right: 10px;
+}
+.mr5 {
+    margin-right: 5px;
+}
+
+.ml5 {
+    margin-left: 5px;
+}
+
+.mr20 {
+    margin-right: 20px;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.rad5 {
+    border-radius: 5px;
+}
+
+.rad4 {
+    border-radius: 4px;
+}
+
+.rad3 {
+    border-radius: 3px;
+}
+
+
+.rad2 {
+    border-radius: 2px;
+}
+
+.opacity100{
+    opacity: 1;
+}
+.opacity50{
+    opacity: 0.5;
+}
+.opacity0{
+    opacity: 0;
+}
+.transition3s{
+    transition: opacity .3s ease-in-out;
+   -moz-transition: opacity .3s ease-in-out;
+   -webkit-transition: opacity .3s ease-in-out;
+}
+
+.glowbar { 
+    height: 0.24em;
+    background: rgb(106, 107, 107) ;
+}
+
+.transitionw6s{
+    transition: width .4s ease-in-out;
+   -moz-transition: width .4s ease-in-out;
+   -webkit-transition: width .4s ease-in-out;
+}
+.notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+  }
+
+.clickable{
+    cursor: pointer;
+} 
+.decornone > a{
+    text-decoration: none;
+    color: white;
+}
+.w0{
+    width: 0%;
+}
+.w100{
+    width: 100%
+}
+
+.h100{
+    height: 100%
+}
+.h100v{
+    height: 100vh;
+}
+.unclickable{
+    pointer-events: none;
+}
+
+.flexcolumn{
+    flex-direction: column
+}
+
+.flexstretch{
+    align-self: stretch;
+}
+
+.flexjustifycenter{
+    justify-content: center;
+    align-items:center;
+}
+
+.flexjustifyright{
+    justify-content: right;
+    align-items:right;
+}
+
+.flexjustifyleft{
+    justify-content: left;
+    align-items: left;
+}
+
+.flex {
+    display: flex;
+}
+
+.displaynone{
+    display: none;
+}
+.displayblock{
+    display: block
+}
+
+.flexwrap{
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.flexpushout{
+     
+    display: none;
+}
+
+
+@media screen and (max-width:600px) {
+    .flexwrap { flex-wrap: wrap;  }
+    .flexwrapitem:first-child { flex-basis: 100%; margin-bottom: 5px;  }  
+    .flexpushout{ display: block;}
+}
+
+@media screen and (max-width:400px) { 
+    .flexwrapitem:nth-child(n+2) { flex-basis: 100%; margin-bottom: 5px; }  
+}
+
+@media screen and (max-width:500px) { 
+    .apptitle { display: none; }  
+}
+
+
+@media screen and (max-width:800px) {
+    .flexwrap8 { flex-wrap: wrap;  }
+    .flexwrapitem8:first-child { flex-basis: 100%; margin-bottom: 5px; }  
+}
+
+@media screen and (max-width:1070px) {
+    .smallhide { display: none;}
+}
+
+@media screen and (min-width:1000px) {
+    .smallshow { display: none;}
+}
+
+.errordiv{
+    border: 1px solid red;
+    border-left: 4px solid red;
+}
+
+.flexfull {
+    flex: 1;
+}
+
+.flex1 {
+    flex: 0.1;
+}
+
+.flex2 {
+    flex: 0.2;
+}
+
+.flex20 {
+    flex: 2;
+}
+
+.flex30 {
+    flex: 3;
+}
+.flex40 {
+    flex: 4;
+}
+
+.flex3 {
+    flex: 0.3;
+}
+.flex35 {
+    flex: 0.35;
+}
+
+
+.flex4 {
+    flex: 0.4;
+}
+
+.flex5 {
+    flex: 0.5;
+}
+
+.flex6 {
+    flex: 0.6;
+}
+
+.flex7 {
+    flex: 0.7;
+}
+
+.flex8 {
+    flex: 0.8;
+}
+
+.flex9 {
+    flex: 0.9
+}
+
+.positionrelative{
+    position: relative;
+}
+
+.positionabsolute{
+    position: absolute;
+}
+.bottomright{
+    bottom: 0px;
+    right: 0px;
+}
+.container-fluid{
+      max-width: 1220px; 
+      margin: auto;
+  }
