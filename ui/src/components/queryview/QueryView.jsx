@@ -7,7 +7,6 @@ import React, { Component } from "react";
 import { DataTable, InlineLoading } from 'carbon-components-react';
 import { getJSONData, probabilityColor, abbreviateString, postJSONData } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
-import DetailView from "../detailview/DetailView";
 const { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } = DataTable;
 
 

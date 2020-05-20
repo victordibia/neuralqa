@@ -44,5 +44,22 @@ def create_case_index(case_file_path):
                 break
 
 
-case_file_path = "data/mexico.jsonl.xz"
-create_case_index(case_file_path)
+def run_query(search_query):
+    search_query = {
+        "_source": ["name"],
+        "query": {
+            "multi_match": {
+                "query":    "imprisonment",
+                "fields": ["casebody.data.opinions.text", "name"]
+            }
+        },
+        "size": 3
+    }
+    query_result = es.search(index=case_index_name, body=search_query)
+    # print(len(query_result["hits"]["hits"]), " hits ..")
+    print((query_result), " hits ..")
+    return query_result
+
+
+# case_file_path = "data/mexico.jsonl.xz"
+# create_case_index(case_file_path)

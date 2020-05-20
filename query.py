@@ -5,14 +5,15 @@ es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 case_index_name = "cases"
 search_query = {
-
+    "_source": ["name"],
     "query": {
         "multi_match": {
-            "query":    "Appellee",
+            "query":    "imprisonment",
             "fields": ["casebody.data.opinions.text", "name"]
         }
     },
-    "size": 2000
+    "size": 3
 }
 query_result = es.search(index=case_index_name, body=search_query)
-print(len(query_result["hits"]["hits"]), " hits ..")
+# print(len(query_result["hits"]["hits"]), " hits ..")
+print((query_result), " hits ..")
