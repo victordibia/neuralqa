@@ -64,7 +64,7 @@ class Main extends Component {
             <HashRouter>
                 <Header></Header>
 
-                <main className="container-fluid pt10">
+                <main className="container-fluid p10">
                     <Route exact path="/" component={QueryView} />
                     {/* <Route exact path="/train" component={Train} /> */}
 

@@ -29,7 +29,7 @@
     justify-content: center;
 }
 .mynotif{
-    border-left: 4px rgb(109, 109, 109) solid;
+    border-left: 4px #054ADA solid;
 }
 .unselectable {
     -webkit-touch-callout: none;

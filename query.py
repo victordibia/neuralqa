@@ -15,5 +15,7 @@ search_query = {
     "size": 3
 }
 query_result = es.search(index=case_index_name, body=search_query)
+query_result_count = query_result["hits"]["total"]["value"]
+query_content = query_result["hits"]["hits"]
 # print(len(query_result["hits"]["hits"]), " hits ..")
 print((query_result), " hits ..")

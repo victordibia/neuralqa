@@ -2,9 +2,12 @@
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS, cross_origin
 import os
+import logging
+from utils import elastic_utils
 
 
-from utils import elastic_utils as eu
+elastic_utils.setup()
+
 
 # Point Flask to the ui directory
 root_file_path = os.path.dirname(os.path.abspath(__file__))
@@ -26,13 +29,18 @@ def hello():
     return render_template('index.html')
 
 
-@app.route('/search')
-def search():
-    query_results = eu.run_query("")
+@app.route('/test')
+def test():
+    return "render_template('index.html')"
+
+
+@app.route('/passages')
+def passages():
+    query_result = elastic_utils.run_query("")
     query_result_count = query_result["hits"]["total"]["value"]
     query_content = query_result["hits"]["hits"]
     # response = {""}
-    return jsonify(query_result_count)
+    return jsonify(query_result)
 
 
 if __name__ == '__main__':
