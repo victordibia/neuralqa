@@ -33,8 +33,8 @@ class QueryView extends Component {
         let searchText = document.getElementById("questioninput").value
         let passageUrl = this.serverBasePath + this.passageEndpoint
         let postData = {
-            size: 5,
-            searchtext: searchText || "in the service of the government"
+            size: 2,
+            searchtext: searchText || "which cases cite dwayne vs the united states"
         }
 
         let passages = postJSONData(passageUrl, postData)
@@ -62,13 +62,25 @@ class QueryView extends Component {
 
 
         let passagelist = this.state.passages["hits"]["hits"].map((data, index) => {
+            let dataTitle = ""
+            if (data.highlight["name"] !== undefined) {
+                for (let title of data.highlight["name"]) {
+                    dataTitle = dataTitle + " ... " + title
+                }
+            } else {
+                dataTitle = data._source.name
+            }
+
+
             return (
                 <div className="passagerow clickable" key={"passagerow" + index}>
                     <div className="passagetitle">
-                        {data._source.name}
+                        {dataTitle}
                     </div>
-                    <div className="mediumdesc passagexcerpt">
-                        {data.fields.opinion_excerpt} ...
+                    <div className="mediumdesc lhmedium passagexcerpt">
+                        <div className="highlightsection " dangerouslySetInnerHTML={{ __html: "... " + data.highlight["casebody.data.opinions.text"] + " ... " }} />
+                        {/* <div className="pb5"> {data.highlight["casebody.data.opinions.text"]}</div> */}
+                        <div className="pt5"> {data.fields.opinion_excerpt} ... </div>
                     </div>
                 </div>
             )
@@ -78,7 +90,7 @@ class QueryView extends Component {
             <div>
 
                 <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
-                    <div className="boldtext mb5">  Question Answering on Case Law Documents</div>
+                    <div className="boldtext mb5"> Case Oracle:  Question Answering on Case Law Documents</div>
                     {this.state.apptitle} is an interactive tool for exploring
                     the two stage process of candidate retrieval and document reading required for question answering.
                     Search is powered by datasets from <a href="http://case.law" rel="noopener noreferrer" target="_blank"> case.law</a> dataset.
@@ -105,9 +117,9 @@ class QueryView extends Component {
                         size="field"> Get Answer </Button>
                     </div>
                 </div>
-                <div className="smalldesc pt5"> {this.state.passages["hits"]["hits"].length} items | Query time: {this.state.passages["took"]} milliseconds</div>
+                <div className="smalldesc pt5 pb5"> {this.state.passages["hits"]["hits"].length} items | Query time: {this.state.passages["took"]} milliseconds</div>
 
-
+                <div className="boldtext mt10 mb10"> Search Results</div>
                 <div className="passagebox  mt10">
                     {passagelist}
                 </div>

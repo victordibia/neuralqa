@@ -37,7 +37,7 @@ def test():
 @app.route('/passages',  methods=['GET', 'POST'])
 def passages():
     query_result = []
-    result_size, search_text, = 2, "motion in arrest of judgment"
+    result_size, search_text, = 5, "motion in arrest judgment"
     opinion_excerpt_length = 800
 
     if request.method == "POST":
@@ -46,7 +46,9 @@ def passages():
         search_text = data["searchtext"]
 
     included_fields = ["name"]
-    # return only included fields + script_field, limit response to top result_size matches
+
+    # return only included fields + script_field,
+    # limit response to top result_size matches return highlights
     search_query = {
         "_source": included_fields,
         "query": {
@@ -62,7 +64,8 @@ def passages():
         },
         "highlight": {
             "fields": {
-                "casebody.data.opinions.text": {}
+                "casebody.data.opinions.text": {"pre_tags": ["<em>"], "post_tags": ["</em>"]},
+                "name": {}
             }
         },
         "size": result_size

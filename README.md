@@ -24,7 +24,9 @@ Elastic search uses the `BM25` algorithm by default for implementing similarity 
 Follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install and launch elastic search.
 Also install the elastic search python client
 
-`pip install elasticsearch`
+```shell
+pip install elasticsearch
+```
 
 
 ## Document Reader
@@ -33,7 +35,17 @@ Also install the elastic search python client
 ## Web Application
 
 Run web application ui that allows the user to ask questions and review responses from the IR + DR pipeline.
+- Build front end
+```shell
+cd ui
+npm install
+npm run build
 
-`python3 app.py`
+```
+- Launch backend app
+
+```shell
+python3 app.py
+```
 
  

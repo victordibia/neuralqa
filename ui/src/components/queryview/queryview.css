@@ -4,7 +4,17 @@
 }
 .passagexcerpt{}
 .passagerow{
-    background: rgb(190, 213, 250);
+    background: rgb(243, 244, 245);
     padding: 10px;
     margin-bottom: 5px;
+}
+
+.highlightsection > em{
+    background-color: burlywood;
+    padding: 0px 5px 0px 5px;
+}
+
+.highlightsection {
+    padding: 0px 0px 7px 0px;
+    border-bottom: 1px dashed rgb(196, 193, 193);
 }
