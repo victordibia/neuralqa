@@ -25,7 +25,14 @@ Also install the elastic search python client
 
 `pip install elasticsearch`
 
- 
 
 ## Document Reader
+- TBD
 
+## Web Application
+
+Run web application ui that allows the user to ask questions and review responses from the IR + DR pipeline.
+
+`python3 app.py`
+
+ 
