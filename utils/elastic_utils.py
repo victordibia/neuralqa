@@ -33,7 +33,7 @@ def create_case_index(case_file_path, max_docs=1000):
                 break
 
 
-def run_query(search_query, opinion_excerpt_length=800):
+def run_query(search_query):
     """Makes a query to the elastic search server with the given search_query parameters.
     Also returns opinion_excerpt script field, which is a substring of the first opinion in the case
 
@@ -45,21 +45,6 @@ def run_query(search_query, opinion_excerpt_length=800):
         [dictionary] -- [dictionary of results from elastic search.]
     """
 
-    search_query = {
-        "_source": ["name"],
-        "query": {
-            "multi_match": {
-                "query":    "imprisonment",
-                "fields": ["casebody.data.opinions.text", "name"]
-            }
-        },
-        "script_fields": {
-            "opinion_excerpt": {
-                "script": "(params['_source']['casebody']['data']['opinions'][0]['text']).substring(0," + str(opinion_excerpt_length) + ")"
-            }
-        },
-        "size": 8
-    }
     query_result = es.search(index=case_index_name, body=search_query)
     return query_result
 

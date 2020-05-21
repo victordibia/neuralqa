@@ -34,12 +34,41 @@ def test():
     return "render_template('index.html')"
 
 
-@app.route('/passages')
+@app.route('/passages',  methods=['GET', 'POST'])
 def passages():
-    query_result = elastic_utils.run_query("")
-    query_result_count = query_result["hits"]["total"]["value"]
-    query_content = query_result["hits"]["hits"]
-    # response = {""}
+    query_result = []
+    result_size, search_text, = 2, "motion in arrest of judgment"
+    opinion_excerpt_length = 800
+
+    if request.method == "POST":
+        data = request.get_json()
+        result_size = data["size"]
+        search_text = data["searchtext"]
+
+    included_fields = ["name"]
+    # return only included fields + script_field, limit response to top result_size matches
+    search_query = {
+        "_source": included_fields,
+        "query": {
+            "multi_match": {
+                "query":    search_text,
+                "fields": ["casebody.data.opinions.text", "name"]
+            }
+        },
+        "script_fields": {
+            "opinion_excerpt": {
+                "script": "(params['_source']['casebody']['data']['opinions'][0]['text']).substring(0," + str(opinion_excerpt_length) + ")"
+            }
+        },
+        "highlight": {
+            "fields": {
+                "casebody.data.opinions.text": {}
+            }
+        },
+        "size": result_size
+    }
+
+    query_result = elastic_utils.run_query(search_query)
     return jsonify(query_result)
 
 

@@ -5,7 +5,7 @@
 
 import React, { Component } from "react";
 import { Button, TextInput } from 'carbon-components-react';
-import { getJSONData } from "../helperfunctions/HelperFunctions"
+import { getJSONData, postJSONData } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
 // const { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } = DataTable;
 
@@ -30,24 +30,29 @@ class QueryView extends Component {
     }
 
     getPassages() {
+        let searchText = document.getElementById("questioninput").value
         let passageUrl = this.serverBasePath + this.passageEndpoint
-        let passages = getJSONData(passageUrl)
+        let postData = {
+            size: 5,
+            searchtext: searchText || "in the service of the government"
+        }
+
+        let passages = postJSONData(passageUrl, postData)
         passages.then((data) => {
             if (data) {
                 this.setState({ passages: data, queryResponseTime: data["took"] })
-                console.log(Object.keys(data));
+                // console.log(Object.keys(data));
 
             }
         })
     }
 
     askQuestionClick(e) {
-        console.log("ask clicked");
         this.getPassages()
     }
 
     inputKeyPress(e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
             this.getPassages()
         }
     }
@@ -91,7 +96,7 @@ class QueryView extends Component {
                             id="questioninput"
                             labelText=""
                             onKeyDown={this.inputKeyPress.bind(this)}
-                            placeholder="Enter question. e.g. Who was the first governor of new mexico."
+                            placeholder="Enter question. e.g. Which cases cite dwayne vs the united states."
                         >
                         </TextInput>
                     </div>
