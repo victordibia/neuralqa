@@ -33,7 +33,7 @@ def create_case_index(case_file_path, max_docs=1000):
                 break
 
 
-def run_query(search_query, opinion_excerpt_length=500):
+def run_query(search_query, opinion_excerpt_length=800):
     """Makes a query to the elastic search server with the given search_query parameters.
     Also returns opinion_excerpt script field, which is a substring of the first opinion in the case
 

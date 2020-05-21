@@ -58,12 +58,12 @@ class QueryView extends Component {
 
         let passagelist = this.state.passages["hits"]["hits"].map((data, index) => {
             return (
-                <div className="passagerow " key={"passagerow" + index}>
+                <div className="passagerow clickable" key={"passagerow" + index}>
                     <div className="passagetitle">
                         {data._source.name}
                     </div>
                     <div className="mediumdesc passagexcerpt">
-                        {data.fields.opinion_excerpt}
+                        {data.fields.opinion_excerpt} ...
                     </div>
                 </div>
             )

@@ -3,7 +3,7 @@
 
 <img src="ui/public/images/screen.jpg">
 
-This repo explores the end-to-end use case for question answering on a dataset of legal document (court cases from [case.law](http://case.law) ).
+This repo explores the end-to-end use case for question answering on a dataset of legal document (court cases from [case.law](http://case.law)).
 
 
 The question answering workflow can be broken down into two main parts: 
