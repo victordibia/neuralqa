@@ -61,14 +61,10 @@ def run_query(search_query, opinion_excerpt_length=800):
         "size": 8
     }
     query_result = es.search(index=case_index_name, body=search_query)
-    # print(len(query_result["hits"]["hits"]), " hits ..")
-    # for p in query_result["hits"]["hits"]:
-    #     print(len(p['_source']['casebody']['data']['opinions']), "opinions")
-    # print((query_result["hits"]["hits"]) )
     return query_result
 
 
-def setup():
+def es_setup():
     """Called once when the webserver is instantiated
         - Checks if the data directory is exists or is empty. If yes, downloads case law data and builds an index
     """
@@ -81,7 +77,3 @@ def setup():
                 create_case_index("data/" + case_data_file)
     else:
         logging.info(">> Data files already exist")
-
-
-# case_file_path = "data/mexico.jsonl.xz"
-# create_case_index(case_file_path)

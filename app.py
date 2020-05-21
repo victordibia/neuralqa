@@ -6,7 +6,7 @@ import logging
 from utils import elastic_utils
 
 
-elastic_utils.setup()
+elastic_utils.es_setup()
 
 
 # Point Flask to the ui directory
