@@ -1,11 +1,10 @@
-.detailoverlay{
-    background-color: rgba(223, 219, 219, 0.582);
-    /* padding: 20px; */
-    position: absolute;
-    display: block;
-    z-index: 1000;
+.passagetitle{
+    font-weight: bold;
+    padding: 0px 0px 5px 0px;
 }
-
-/* .tablecontent{
-    min-height: 600px;
-} */
+.passagexcerpt{}
+.passagerow{
+    background: rgb(190, 213, 250);
+    padding: 10px;
+    margin-bottom: 5px;
+}

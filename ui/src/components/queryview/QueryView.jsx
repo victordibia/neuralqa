@@ -26,6 +26,7 @@ class QueryView extends Component {
     }
 
     componentDidMount() {
+        this.getPassages()
     }
 
     getPassages() {
@@ -45,8 +46,28 @@ class QueryView extends Component {
         this.getPassages()
     }
 
+    inputKeyPress(e) {
+        if (e.keyCode == 13) {
+            this.getPassages()
+        }
+    }
+
 
     render() {
+
+
+        let passagelist = this.state.passages["hits"]["hits"].map((data, index) => {
+            return (
+                <div className="passagerow " key={"passagerow" + index}>
+                    <div className="passagetitle">
+                        {data._source.name}
+                    </div>
+                    <div className="mediumdesc passagexcerpt">
+                        {data.fields.opinion_excerpt}
+                    </div>
+                </div>
+            )
+        })
 
         return (
             <div>
@@ -69,6 +90,7 @@ class QueryView extends Component {
                         <TextInput
                             id="questioninput"
                             labelText=""
+                            onKeyDown={this.inputKeyPress.bind(this)}
                             placeholder="Enter question. e.g. Who was the first governor of new mexico."
                         >
                         </TextInput>
@@ -80,6 +102,10 @@ class QueryView extends Component {
                 </div>
                 <div className="smalldesc pt5"> {this.state.passages["hits"]["hits"].length} items | Query time: {this.state.passages["took"]} milliseconds</div>
 
+
+                <div className="passagebox  mt10">
+                    {passagelist}
+                </div>
 
 
             </div>

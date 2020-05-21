@@ -58,7 +58,7 @@ def run_query(search_query, opinion_excerpt_length=500):
                 "script": "(params['_source']['casebody']['data']['opinions'][0]['text']).substring(0," + str(opinion_excerpt_length) + ")"
             }
         },
-        "size": 5
+        "size": 8
     }
     query_result = es.search(index=case_index_name, body=search_query)
     # print(len(query_result["hits"]["hits"]), " hits ..")
