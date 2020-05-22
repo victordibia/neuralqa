@@ -34,6 +34,11 @@ def test():
     return "render_template('index.html')"
 
 
+@app.route('/qa',  methods=['GET', 'POST'])
+def qa():
+    return jsonify({})
+
+
 @app.route('/passages',  methods=['GET', 'POST'])
 def passages():
     query_result = []

@@ -33,7 +33,7 @@ class QueryView extends Component {
         let searchText = document.getElementById("questioninput").value
         let passageUrl = this.serverBasePath + this.passageEndpoint
         let postData = {
-            size: 2,
+            size: 5,
             searchtext: searchText || "which cases cite dwayne vs the united states"
         }
 
@@ -74,11 +74,10 @@ class QueryView extends Component {
 
             return (
                 <div className="passagerow clickable" key={"passagerow" + index}>
-                    <div className="passagetitle">
-                        {dataTitle}
-                    </div>
+                    <div className="passagetitle highlightsection " dangerouslySetInnerHTML={{ __html: dataTitle }} />
+
                     <div className="mediumdesc lhmedium passagexcerpt">
-                        <div className="highlightsection " dangerouslySetInnerHTML={{ __html: "... " + data.highlight["casebody.data.opinions.text"] + " ... " }} />
+                        <div className="highlightsection underline " dangerouslySetInnerHTML={{ __html: "... " + data.highlight["casebody.data.opinions.text"] + " ... " }} />
                         {/* <div className="pb5"> {data.highlight["casebody.data.opinions.text"]}</div> */}
                         <div className="pt5"> {data.fields.opinion_excerpt} ... </div>
                     </div>

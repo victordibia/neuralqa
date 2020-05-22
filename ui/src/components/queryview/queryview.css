@@ -10,11 +10,14 @@
 }
 
 .highlightsection > em{
-    background-color: burlywood;
+    background-color: #fdfd75;
     padding: 0px 5px 0px 5px;
+    border: 1px solid grey;
 }
-
+.underline{
+    border-bottom: 1px dashed rgb(196, 193, 193);
+}
 .highlightsection {
     padding: 0px 0px 7px 0px;
-    border-bottom: 1px dashed rgb(196, 193, 193);
+    
 }
