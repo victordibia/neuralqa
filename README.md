@@ -28,6 +28,9 @@ Also install the elastic search python client
 pip install elasticsearch
 ```
 
+- index should ignore stop words. They make matching and retrieval noisy.
+- 
+
 
 ## Document Reader
 - TBD

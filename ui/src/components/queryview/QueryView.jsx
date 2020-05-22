@@ -118,7 +118,7 @@ class QueryView extends Component {
                     <div className="flexfull">
                         <TextInput
                             id="questioninput"
-                            value="go upon the lands of private persons for the purpose of making a preliminary survey, and acquire the right of way  "
+                            defaultValue="is it lawful to go on the land of a private person for preliminary surveys?  "
                             labelText=""
                             onKeyDown={this.inputKeyPress.bind(this)}
                             placeholder="Enter question. e.g. Which cases cite dwayne vs the united states."

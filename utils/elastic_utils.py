@@ -9,10 +9,32 @@ from utils import data_utils
 
 case_index_name = "cases"
 es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
-es.indices.create(index=case_index_name, ignore=400)
+
+# configure analyzer on index to not return stop words in english.
+es_settings = {
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "stop_analyzer": {
+                    "type": "standard",
+                    "stopwords": "_english_"
+                }
+            }
+        }
+    },
+    "mappings": {
+        "properties": {
+            "casebody.data.opinions.text": {
+                "type": "text",
+                "analyzer": "stop_analyzer"
+            }
+        }
+    }
+}
+es.indices.create(index=case_index_name, body=es_settings, ignore=400)
 
 
-def create_case_index(case_file_path, max_docs=1000):
+def create_case_index(case_file_path, max_docs=2000):
     """Create an index from a case file (.jsonl.xz format)
 
     Arguments:
@@ -58,7 +80,7 @@ def es_setup():
         data_utils.get_case_data()
         case_data_files = os.listdir("data")
         for case_data_file in case_data_files:
-            if ("jsonl" in case_data_file):
+            if ("json" in case_data_file):
                 create_case_index("data/" + case_data_file)
     else:
         logging.info(">> Data files already exist")
