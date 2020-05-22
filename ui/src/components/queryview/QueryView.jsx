@@ -4,7 +4,7 @@
 
 
 import React, { Component } from "react";
-import { Button, TextInput } from 'carbon-components-react';
+import { Button, TextInput, Loading } from 'carbon-components-react';
 import { getJSONData, postJSONData } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
 // const { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } = DataTable;
@@ -17,12 +17,12 @@ class QueryView extends Component {
         this.state = {
             apptitle: "Case Oracle",
             passages: { "took": 0, hits: { hits: [] } },
-            queryResponseTime: 0,
+            passagesLoaded: false,
         }
 
         this.serverBasePath = "http://localhost:3008"
         this.passageEndpoint = "/passages"
-
+        this.interfaceTimedDelay = 800
     }
 
     componentDidMount() {
@@ -30,6 +30,7 @@ class QueryView extends Component {
     }
 
     getPassages() {
+        this.setState({ passagesLoaded: false })
         let searchText = document.getElementById("questioninput").value
         let passageUrl = this.serverBasePath + this.passageEndpoint
         let postData = {
@@ -40,8 +41,11 @@ class QueryView extends Component {
         let passages = postJSONData(passageUrl, postData)
         passages.then((data) => {
             if (data) {
-                this.setState({ passages: data, queryResponseTime: data["took"] })
+                this.setState({ passages: data })
                 // console.log(Object.keys(data));
+                setTimeout(() => {
+                    this.setState({ passagesLoaded: true })
+                }, this.interfaceTimedDelay);
 
             }
         })
@@ -102,9 +106,19 @@ class QueryView extends Component {
                 </div>
 
                 <div className="flex searchbar">
+                    <div className="loaderbox" style={{ opacity: (!this.state.passagesLoaded) ? 1 : 0, width: (!this.state.passagesLoaded) ? "34px" : "0px" }} >
+
+                        <Loading
+                            className=" "
+                            active={true}
+                            small={true}
+                            withOverlay={false}
+                        > </Loading>
+                    </div>
                     <div className="flexfull">
                         <TextInput
                             id="questioninput"
+                            value="go upon the lands of private persons for the purpose of making a preliminary survey, and acquire the right of way  "
                             labelText=""
                             onKeyDown={this.inputKeyPress.bind(this)}
                             placeholder="Enter question. e.g. Which cases cite dwayne vs the united states."
