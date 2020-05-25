@@ -3,9 +3,14 @@ from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS, cross_origin
 import os
 import logging
-from utils import elastic_utils
+import time
+from utils import elastic_utils, model_utils
 
 
+# load BERT QA model and tokenizer
+model, tokenizer = model_utils.load_model()
+
+# Check to ensure elastic data is loaded
 elastic_utils.es_setup()
 
 
@@ -39,11 +44,70 @@ def qa():
     return jsonify({})
 
 
+@app.route('/answer',  methods=['GET', 'POST'])
+def answer():
+    """Generate an answer for the given search query. 
+    Perfomed as two stage process
+    1.) Get sample passages from neighbourhood provided by matches by elastic search
+    2.) Used BERT Model to identify exact answer spans
+
+    Returns:
+        [type] -- [description]
+    """
+    query_result = []
+    result_size, search_text, = 6, "what is a fourth amendment right violation? "
+    highlight_size = 450
+
+    if request.method == "POST":
+        data = request.get_json()
+        result_size = data["size"]
+        search_text = data["searchtext"]
+
+    included_fields = ["name"]
+    search_query = {
+        "_source": included_fields,
+        "query": {
+            "multi_match": {
+                "query":    search_text,
+                "fields": ["casebody.data.opinions.text", "name"]
+            }
+        },
+        "highlight": {
+            "fragment_size": highlight_size,
+            "fields": {
+                "casebody.data.opinions.text": {"pre_tags": [""], "post_tags": [""]},
+                "name": {}
+            }
+        },
+        "size": result_size
+    }
+
+    query_result = elastic_utils.run_query(search_query)
+    answer_holder = []
+
+    start_time = time.time()
+    for hit in query_result["hits"]["hits"]:
+        all_highlights = " ".join(
+            hit["highlight"]["casebody.data.opinions.text"])
+        answer = model_utils.answer_question(
+            search_text, all_highlights, model, tokenizer)
+        answer_holder.append(answer)
+    elapsed_time = time.time() - start_time
+    response = {"answers": answer_holder, "took": elapsed_time}
+    return jsonify(response)
+
+
 @app.route('/passages',  methods=['GET', 'POST'])
 def passages():
+    """Get a list of passages and highlights that match the given search query
+
+    Returns:
+        dictionary -- contains details on elastic search results.
+    """
     query_result = []
     result_size, search_text, = 5, "motion in arrest judgment"
-    opinion_excerpt_length = 800
+    opinion_excerpt_length = 500
+    highlight_size = 350
 
     if request.method == "POST":
         data = request.get_json()
@@ -68,8 +132,9 @@ def passages():
             }
         },
         "highlight": {
+            "fragment_size": highlight_size,
             "fields": {
-                "casebody.data.opinions.text": {"pre_tags": ["<em>"], "post_tags": ["</em>"]},
+                "casebody.data.opinions.text": {},
                 "name": {}
             }
         },

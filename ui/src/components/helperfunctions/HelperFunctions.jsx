@@ -36,7 +36,7 @@ export function getJSONData(url) {
             return data
         });
     }).catch(function (err) {
-        console.log('Fetch Error :-S', err);
+        return Promise.reject(err)
     });
 }
 
@@ -57,7 +57,7 @@ export function postJSONData(url, postData) {
             return data
         });
     }).catch(function (err) {
-        console.log('Fetch Error :-S', err);
+        return Promise.reject(err)
     });
 }
 

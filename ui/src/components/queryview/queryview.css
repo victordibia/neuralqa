@@ -19,11 +19,27 @@
 }
 .highlightsection {
     padding: 0px 0px 7px 0px;
-    
+}
+.answerspan{
+    padding: 8px;
+    background-color: rgb(227, 227, 227);
+    margin: 0px 0px 5px 0px ;
 }
 .loaderbox{
     /* border: 1px solid grey; */
     transition: width 0.7s,  opacity 0.7s;
     -webkit-transition: width 0.7s, opacity 0.7s;
     /* width: 34px; */
+}
+
+.errormessage{
+    padding: 5px;
+    color: white;
+    background-color: red;
+}
+
+.excerpttitle{
+    padding: 2px;
+    color: rgb(97, 97, 97); 
+    font-weight: bold;
 }

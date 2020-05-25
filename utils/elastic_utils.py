@@ -27,6 +27,10 @@ es_settings = {
             "casebody.data.opinions.text": {
                 "type": "text",
                 "analyzer": "stop_analyzer"
+            },
+            "name": {
+                "type": "text",
+                "analyzer": "stop_analyzer"
             }
         }
     }
