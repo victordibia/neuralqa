@@ -16,7 +16,7 @@ class QueryView extends Component {
         super(props)
 
         this.state = {
-            apptitle: "Case Oracle",
+            apptitle: "CaseQA",
             passages: { "took": 0, hits: { hits: [] } },
             answers: { "took": 0, answers: [] },
             passageIsLoading: false,
@@ -144,7 +144,7 @@ class QueryView extends Component {
         return (
             <div>
                 <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
-                    <div className="boldtext mb5"> Case Oracle:  Question Answering on Case Law Documents</div>
+                    <div className="boldtext mb5">{this.state.apptitle}:  Question Answering on Case Law Documents</div>
                     {this.state.apptitle} is an interactive tool for exploring
                     the two stage process of candidate retrieval and document reading required for question answering.
                     Search is powered by datasets from <a href="http://case.law" rel="noopener noreferrer" target="_blank"> case.law</a> dataset.

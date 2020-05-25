@@ -1,14 +1,14 @@
  
-## Case Oracle: Question Answering on Large Datasets with BERT
+## CaseQA: Question Answering on Large Datasets with BERT
 
 <img src="ui/public/images/screen.jpg">
 
-This repo explores the end-to-end use case for question answering on a dataset of legal document (court cases from [case.law](http://case.law)).
+This repo explores the end-to-end use case for question answering on a dataset of legal document (court cases from [case.law](http://case.law)). Given a question query of the form `what is violation of the fourth amendment?`, we should return an answer of the form `unlawful search and seizure of property`.
 
 
 The question answering workflow can be broken down into two main parts: 
 
-- Candidate document retrieval : retrieve a list of top `n` documents based on a question/query 
+- Candidate document retrieval : retrieve a list of top `n` documents based on the search question/query. 
 - Document reading: identifying portions of each text that may contain an answer to the query.
 
 ## Dataset
@@ -19,6 +19,10 @@ For this task, we will use elastic search (mostly for its clean python api, ease
 
 Elastic search uses the `BM25` algorithm by default for implementing similarity between text fields. We will also use the elastic search python client for elastic operations (create index, search queries).
 
+## Document Reader
+To identify an answer span, we will use a set of BERT based question answering models pretrained on both the SQUAD1 and SQUAD2 datasets. Ideally, this provides some benchmark on how well a pretrained model works for domain corpus such as legal/court documents.
+
+
 ### Install Elastic Search
 
 Follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install and launch elastic search.
@@ -28,9 +32,6 @@ Also install the elastic search python client
 pip install elasticsearch
 ```
 
-
-## Document Reader
-- TBD
 
 ## Web Application
 
