@@ -4,10 +4,10 @@
 
 
 import React, { Component } from "react";
-import { Button, TextInput, Loading } from 'carbon-components-react';
-import { getJSONData, postJSONData } from "../helperfunctions/HelperFunctions"
+import { Button, TextInput, Loading, Dropdown } from 'carbon-components-react';
+import { postJSONData } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
-import { thresholdFreedmanDiaconis } from "d3";
+
 // const { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } = DataTable;
 
 
@@ -15,20 +15,33 @@ class QueryView extends Component {
     constructor(props) {
         super(props)
 
+        // Advanced options
+        this.sizeOptions = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
+        this.qaModelOptions = [{ id: "opt1", text: "DistilBert", value: "distilbert", type: "model" }, { id: "opt2", text: "Bert", value: "bert", type: "model" }]
+
+        this.selectedSize = 0
+        this.selectedQaModel = 0
+
         this.state = {
             apptitle: "CaseQA",
             passages: { "took": 0, hits: { hits: [] } },
             answers: { "took": 0, answers: [] },
             passageIsLoading: false,
             answerIsLoading: false,
-            errorStatus: ""
+            errorStatus: "",
+            showAdvancedConfig: true,
+            showSearchConfig: false,
+            resultSize: this.sizeOptions[this.selectedSize].value,
+            qaModel: this.qaModelOptions[this.selectedQaModel].value
         }
 
         this.serverBasePath = "http://localhost:3008"
         this.passageEndpoint = "/passages"
         this.answerEndpoint = "/answer"
         this.interfaceTimedDelay = 800
-        this.resultSize = 5
+
+
+
     }
 
     componentDidMount() {
@@ -41,12 +54,13 @@ class QueryView extends Component {
     }
 
     getAnswers() {
+        this.setState({ answers: { "took": 0, answers: [] } })
         let self = this
         this.setState({ answerIsLoading: true })
         let searchText = document.getElementById("questioninput").value
         let answerUrl = this.serverBasePath + this.answerEndpoint
         let postData = {
-            size: this.resultSize,
+            size: this.state.resultSize,
             searchtext: searchText || "what is a fourth amendment right violation? "
         }
         let answers = postJSONData(answerUrl, postData)
@@ -70,7 +84,7 @@ class QueryView extends Component {
         let searchText = document.getElementById("questioninput").value
         let passageUrl = this.serverBasePath + this.passageEndpoint
         let postData = {
-            size: this.resultSize,
+            size: this.state.resultSize,
             searchtext: searchText || "what is a fourth amendment right violation?"
         }
         let passages = postJSONData(passageUrl, postData)
@@ -99,10 +113,36 @@ class QueryView extends Component {
         }
     }
 
+    toggleAdvancedOptions(e) {
+        this.setState({ showAdvancedConfig: !(this.state.showAdvancedConfig) })
+    }
+
+    toggleSearchConfig(e) {
+        this.setState({ showSearchConfig: !(this.state.showSearchConfig) })
+    }
+
+    updateConfigParams(e) {
+
+        switch (e.selectedItem.type) {
+            case "size":
+                this.setState({ resultSize: e.selectedItem.value })
+                break
+            case "model":
+                this.setState({ qaModel: e.selectedItem.value })
+                break
+
+            default:
+                break
+        }
+
+
+    }
+
+
 
     render() {
 
-
+        let loadingStatus = this.state.passageIsLoading || this.state.answerIsLoading;
         let passageList = this.state.passages["hits"]["hits"].map((data, index) => {
             let dataTitle = ""
             if (data.highlight["name"] !== undefined) {
@@ -141,6 +181,45 @@ class QueryView extends Component {
             )
         })
 
+        let configBar = (
+            <div ref="modelconfigbar" style={{ zIndex: 100 }} className={"w100 unselectable greyhighlight   modelconfigbar "}>
+
+                <div className="w100 underline displayblock">
+                    <div className="p10  iblock">
+                        <div className="iblock mr10">
+                            <div className="mediumdesc pb7 pt5"> Result Size <span className="boldtext"> {this.state.resultSize} </span> </div>
+                            <Dropdown
+                                id="sizedropdown"
+                                label="Result Size"
+                                items={this.sizeOptions}
+                                initialSelectedItem={this.sizeOptions[0]}
+                                itemToString={item => (item ? item.text : "")}
+                                onChange={this.updateConfigParams.bind(this)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="p10 iblock">
+                        <div className="iblock mr10">
+                            <div className="mediumdesc pb7 pt5"> QA Model <span className="boldtext"> {this.state.qaModel} </span> </div>
+                            <Dropdown
+                                id="qamodeldropdown"
+                                label="QA Model"
+                                items={this.qaModelOptions}
+                                initialSelectedItem={this.qaModelOptions[0]}
+                                itemToString={item => (item ? item.text : "")}
+                                onChange={this.updateConfigParams.bind(this)}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className=" p10">
+                    {<div className="smallblueball pulse iblock"></div>}
+                    Select QA model configuration.
+                </div>
+            </div>
+        )
+
         return (
             <div>
                 <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
@@ -150,14 +229,34 @@ class QueryView extends Component {
                     Search is powered by datasets from <a href="http://case.law" rel="noopener noreferrer" target="_blank"> case.law</a> dataset.
                     <br></br>
                     To begin, type in a question query below.
-                    {/* <div className=" mediumdesc boldtext">
-                        <span className=""> Disclaimer: </span> This prototype is built for demonstration purposes only
-                        and is not intended for use in any medical setting.
-                    </div> */}
+
+                </div>
+
+                <div className={" mb10" + (this.state.showAdvancedConfig ? "" : " displaynone")}>
+
+                    {/* config panel and content */}
+                    <div onClick={this.toggleSearchConfig.bind(this)} className="unselectable mt10 p10 clickable  flex greymoreinfo">
+                        <div className="iblock flexfull minwidth485">
+                            <strong> {!this.state.showSearchConfig && <span>&#x25BC;  </span>} {this.state.showSearchConfig && <span>&#x25B2;  </span>} </strong>
+                            QA Configuration
+                            </div>
+                        <div className="iblock   ">
+                            <div className="iblock mr5"> <span className="boldtext"> </span></div>
+                            <div className="iblock">
+                                <div className="smalldesc"> {this.state.resultSize} Results | {this.state.qaModel.toUpperCase()} </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {<div className={"flex underline p10 modelconfigdiv w100  " + (this.state.showSearchConfig ? "" : " displaynone")} >
+                        {/* <div> Advanced configuration settings </div> */}
+                        <div className="w100"> {configBar}</div>
+                    </div>}
                 </div>
 
                 <div className="flex searchbar">
-                    <div className="loaderbox" style={{ opacity: (this.state.passageIsLoading) ? 1 : 0, width: (this.state.passageIsLoading) ? "34px" : "0px" }} >
+                    <div className="loaderbox" style={{ opacity: (loadingStatus) ? 1 : 0, width: (loadingStatus) ? "34px" : "0px" }} >
 
                         <Loading
                             className=" "
@@ -182,14 +281,19 @@ class QueryView extends Component {
                     </div>
                 </div>
                 <div className="mediumdesc pt7 pb7">
-                    {!this.state.passageIsLoading && <span>{this.state.passages["hits"]["hits"].length} items | Query time: {this.state.passages["took"]} milliseconds</span>}
-                    {this.state.passageIsLoading && <span> loading passages ... </span>}
+
+                    {this.state.answerIsLoading && <span> Asking BERT for answers ...   </span>}
+
                 </div>
                 {this.state.errorStatus.length > 1 && <div className="errormessage">{this.state.errorStatus}</div>}
 
                 {passageList.length > 0 &&
                     <div>
-                        <div className="boldtext mt10 mb10"> Search Results</div>
+                        <div className="mt10 mb10">
+                            <span className="boldtext">Passage Query Results </span>
+                            {this.state.passageIsLoading && <span className="mediumdesc"> Loading passages ... </span>}
+                            {!this.state.passageIsLoading && <span className="mediumdesc"> {this.state.passages["hits"]["hits"].length} items | {this.state.passages["took"] / 1000} seconds </span>}
+                        </div>
                         <div className="passagebox  mt10">
                             {passageList}
                         </div>
