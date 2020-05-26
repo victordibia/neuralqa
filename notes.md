@@ -19,8 +19,13 @@
         - Con: Court document are long and sometime repetitive! 
     - [The approach we use] Read a curated subset of all passages
         - Use highlights from elastic (`n` snippets that contain search query) as passage candidates
+            - This allows us reduce a passage of 10k tokens to ~1000 tokens!
         - Merge highlights from each passage into a single combined passage that can be read by BERT
-        - Rank extracted answers based on softmax probability of answer start position. 
+            - Depending on the size of the snippets used, the combined passage may exceed the total number of tokens that BERT. Here we use a chunking approach
+                - Encode long question and passage once
+                - Construct question + passage_chunk such that len(question + passage_chunk) < max_model_length
+                - Use a stride to keep some context across chunks (can result in more tokens)
+        - Rank extracted answer spans based on softmax probability of answer start position. 
 
 
 ### Passage Tokenization
