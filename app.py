@@ -8,7 +8,7 @@ from utils import elastic_utils, model_utils
 
 
 # load BERT QA model and tokenizer
-model, tokenizer = model_utils.load_model()
+model, tokenizer = model_utils.load_model(model_name="distilbertcasedsquad2")
 
 # Check to ensure elastic data is loaded
 elastic_utils.es_setup()

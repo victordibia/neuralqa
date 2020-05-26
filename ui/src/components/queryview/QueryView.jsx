@@ -183,6 +183,7 @@ class QueryView extends Component {
                     <div className="passagetitle highlightsection " dangerouslySetInnerHTML={{ __html: dataTitle }} />
 
                     <div className="mediumdesc lhmedium passagexcerpt">
+                        <div className="answerrowtitletag mr10"> P{index} </div>
                         <div className="highlightsection underline " dangerouslySetInnerHTML={{ __html: "... " + data.highlight["casebody.data.opinions.text"] + " ... " }} />
                         {/* <div className="pb5"> {data.highlight["casebody.data.opinions.text"]}</div> */}
                         <div className="pt5"> <span className="excerpttitle"> Case Excerpt: </span> {data.fields.opinion_excerpt} ... </div>
@@ -361,7 +362,7 @@ class QueryView extends Component {
                         <div className=" mt10 mb10">
                             <span className="boldtext">  BERT Answer Results</span>
                             {this.state.answerIsLoading && <span className="mediumdesc"> Loading answers ... </span>}
-                            {!this.state.answerIsLoading && <span className="mediumdesc"> {this.state.answers.answers.length} items | {this.state.answers["took"].toFixed(3)} seconds </span>}
+                            {!this.state.answerIsLoading && <span className="mediumdesc"> {answerList.length} items | {this.state.answers["took"].toFixed(3)} seconds </span>}
                         </div>
                         <div>{answerList}</div>
                     </div>
