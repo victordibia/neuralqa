@@ -26,7 +26,7 @@ def get_pretrained_squad_model(model_name):
     return model, tokenizer
 
 
-def load_model(model_name="distilbertcasedsquad2"):
+def load_model(model_name="bertcasedsquad2"):
     return get_pretrained_squad_model(model_name)
 
 
@@ -74,6 +74,7 @@ def get_chunk_answer_span(inputs, model, tokenizer):
 
 
 def answer_question(question, context, model, tokenizer, max_chunk_size=512, stride=70):
+    print("..strid", stride)
     chunked_tokens = token_chunker(
         question, context, tokenizer, max_chunk_size, stride)
 

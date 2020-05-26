@@ -56,12 +56,17 @@ def answer():
     """
     query_result = []
     result_size, search_text, = 6, "what is a fourth amendment right violation? "
-    highlight_size = 450
+    highlight_span = 450
+    model_name = ""
+    token_stride = 50
 
     if request.method == "POST":
         data = request.get_json()
         result_size = data["size"]
         search_text = data["searchtext"]
+        token_stride = int(data["stride"])
+        highlight_span = data["highlightspan"]
+        model_name = data["model"]
 
     included_fields = ["name"]
     search_query = {
@@ -73,7 +78,7 @@ def answer():
             }
         },
         "highlight": {
-            "fragment_size": highlight_size,
+            "fragment_size": highlight_span,
             "fields": {
                 "casebody.data.opinions.text": {"pre_tags": [""], "post_tags": [""]},
                 "name": {}
@@ -90,8 +95,9 @@ def answer():
         all_highlights = " ".join(
             hit["highlight"]["casebody.data.opinions.text"])
         answer = model_utils.answer_question(
-            search_text, all_highlights, model, tokenizer)
+            search_text, all_highlights, model, tokenizer, stride=token_stride)
         answer_holder.append(answer)
+        print(len(answer))
     elapsed_time = time.time() - start_time
     response = {"answers": answer_holder, "took": elapsed_time}
     return jsonify(response)
@@ -107,12 +113,15 @@ def passages():
     query_result = []
     result_size, search_text, = 5, "motion in arrest judgment"
     opinion_excerpt_length = 500
-    highlight_size = 350
+    highlight_span = 350
 
     if request.method == "POST":
         data = request.get_json()
         result_size = data["size"]
         search_text = data["searchtext"]
+        stride = data["searchtext"]
+        highlight_span = data["highlightspan"]
+        model = data["model"]
 
     included_fields = ["name"]
 
@@ -132,7 +141,7 @@ def passages():
             }
         },
         "highlight": {
-            "fragment_size": highlight_size,
+            "fragment_size": highlight_span,
             "fields": {
                 "casebody.data.opinions.text": {},
                 "name": {}

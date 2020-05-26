@@ -3,7 +3,15 @@
 
 <img src="ui/public/images/screen.jpg">
 
-This repo explores the end-to-end use case for question answering on a dataset of legal document (court cases from [case.law](http://case.law)). Given a question query of the form `what is violation of the fourth amendment?`, we should return an answer of the form `unlawful search and seizure of property`.
+This repo explores the end-to-end use case for question answering on a dataset of legal document (court cases from [case.law](http://case.law)). An example query and response using a BERT model is shown below.
+
+```
+what is the sentence for arson crime?
+```
+
+```
+BERT Answer: [1.01s] 18 years ’ imprisonment, but mitigated the sentence to 12 years because “ Defendant did not have any intent to injure the victim. ” See NMSA 1978, § 31 - 18 - 15. 1 ( 1979, as amended in 1993 ) ( allowing for mitigation of up to one - third of sentence, [0.26s] shooting at or from a motor vehicle
+```
 
 
 The question answering workflow can be broken down into two main parts: 

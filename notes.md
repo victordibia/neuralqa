@@ -34,5 +34,5 @@
 ## Thoughts
 - Leveraging signals from highlights provided by IR methods goes a long way in making BERT practical for use today.
 - On a commercial CPU laptop it takes about 0.3 seconds for BERT to read a relatively short passage (200 words)
-- While IR will frequently return snippets that are relevant, there is still additional human effort required to part each of these snippets and examine the surrounding area for clues towards the answer. This is where a BERT QA  can indeed serve to reduce this effort significantly.
+- While IR will frequently return snippets that are relevant, there is still additional human effort required to parse each of these snippets and examine the surrounding area for clues towards the answer. This is where a BERT QA  can indeed serve to reduce this effort significantly. By surfacing snippets, the BERT model either address the users requirement immediately, or serve as an index into the larger document for further exploration.
 - 
