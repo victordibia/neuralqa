@@ -192,22 +192,30 @@ class QueryView extends Component {
         })
 
         let answerList = this.state.answers.answers.map((data, index) => {
-
-            let answerSubSpan = data.map((sub) => {
+            let answerSubSpan = data.map((sub, subindex) => {
                 return (
-                    <div className="answersubrow underline" key={"answersubrow" + index}>
+                    <div className={"answersubrow " + (data.length > 1 ? " underline " : "")} key={"answersubrow" + subindex}>
                         {sub.answer}
+                        <div className="smalldesc pt5">
+                            Time: {sub.took.toFixed(3)}s | Probability {(sub.start_probability * 1).toFixed(4)}
+                        </div>
                     </div>
                 )
             })
 
+            if (data.length > 0) {
+                return (
+                    <div className="flex  p10 answerrow" key={"answerrow" + index}>
+                        <div className="answerrowtitletag mr10"> A{index} </div>
+                        <div className="flexfull"> {answerSubSpan}</div>
+                    </div>
+                )
+            } else {
+                return (<div key={"answerrow" + index}></div>)
+            }
 
-            return (
-                <div className="flex  p10 answerrow" key={"answerrow" + index}>
-                    <div className="answerrowtitletag mr10"> A{index} </div>
-                    <div className="flexfull"> {answerSubSpan}</div>
-                </div>
-            )
+
+
         })
 
         let configBar = (
@@ -352,8 +360,8 @@ class QueryView extends Component {
                     <div>
                         <div className=" mt10 mb10">
                             <span className="boldtext">  BERT Answer Results</span>
-                            {this.state.passageIsLoading && <span className="mediumdesc"> Loading answers ... </span>}
-                            {!this.state.passageIsLoading && <span className="mediumdesc"> {this.state.answers.answers.length} items | {this.state.answers["took"].toFixed(3)} seconds </span>}
+                            {this.state.answerIsLoading && <span className="mediumdesc"> Loading answers ... </span>}
+                            {!this.state.answerIsLoading && <span className="mediumdesc"> {this.state.answers.answers.length} items | {this.state.answers["took"].toFixed(3)} seconds </span>}
                         </div>
                         <div>{answerList}</div>
                     </div>

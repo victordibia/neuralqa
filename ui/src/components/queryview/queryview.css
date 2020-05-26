@@ -45,7 +45,7 @@
 }
 
 .answersubrow{
-    padding: 0px 0px 5px 0px;
+    padding: 5px 0px 5px 0px;
     line-height: 1.2em;
 }
 
@@ -58,5 +58,5 @@
 
 .answerrowtitletag{
     font-size: 3.4em;
-
+    color: grey;
 }

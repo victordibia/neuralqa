@@ -18,8 +18,9 @@
         - Pro: Exhaustive search on all content 
         - Con: Court document are long and sometime repetitive! 
     - [The approach we use] Read a curated subset of all passages
-        - Use highlights from elastic (snippets that contain search query) as passage candidates
-        - Merge these highlights into a single passage that can be read by BERT
+        - Use highlights from elastic (`n` snippets that contain search query) as passage candidates
+        - Merge highlights from each passage into a single combined passage that can be read by BERT
+        - Rank extracted answers based on softmax probability of answer start position. 
 
 
 ### Passage Tokenization
