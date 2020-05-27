@@ -56,7 +56,15 @@
     
 }
 
+.lh2m{
+    line-height: 2em;
+}
+
 .answerrowtitletag{
     font-size: 3.4em;
     color: grey;
+}
+
+.sectionheading{
+    line-height: 2em;
 }

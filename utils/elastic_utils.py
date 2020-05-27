@@ -7,9 +7,11 @@ import logging
 from utils import data_utils
 
 
+
 case_index_name = "cases"
 es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
+# elastic search settings
 # configure analyzer on index to not return stop words in english.
 es_settings = {
     "settings": {
@@ -77,7 +79,7 @@ def run_query(search_query):
 
 def es_setup():
     """Called once when the webserver is instantiated
-        - Checks if the data directory is exists or is empty. If yes, downloads case law data and builds an index
+        - Checks if the data directory exists or is empty. If yes, downloads case law data and builds an index
     """
     # Check if jsonl data has been downloaded
     if (not os.path.exists("data") or len(os.listdir("data")) == 0):

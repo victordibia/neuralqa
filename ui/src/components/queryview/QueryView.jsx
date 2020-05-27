@@ -68,7 +68,7 @@ class QueryView extends Component {
     }
 
     getAnswers(postData) {
-        this.setState({ answers: { "took": 0, answers: [] } })
+        // this.setState({ answers: { "took": 0, answers: [] } })
         let self = this
         this.setState({ answerIsLoading: true })
         let answerUrl = this.serverBasePath + this.answerEndpoint
@@ -178,15 +178,17 @@ class QueryView extends Component {
             //     answerSpan = " reading retrieved text .."
             // }
             return (
-                <div className="passagerow " key={"passagerow" + index}>
-                    {/* <div className="answerspan"> <span className="boldtext">BERT Answer: </span> {answerSpan} </div> */}
-                    <div className="passagetitle highlightsection " dangerouslySetInnerHTML={{ __html: dataTitle }} />
+                <div className="passagerow flex" key={"passagerow" + index}>
+                    <div className="answerrowtitletag mr10"> P{index} </div>
+                    <div className="flexfull">
+                        <div className="passagetitle highlightsection " dangerouslySetInnerHTML={{ __html: dataTitle }} />
 
-                    <div className="mediumdesc lhmedium passagexcerpt">
-                        <div className="answerrowtitletag mr10"> P{index} </div>
-                        <div className="highlightsection underline " dangerouslySetInnerHTML={{ __html: "... " + data.highlight["casebody.data.opinions.text"] + " ... " }} />
-                        {/* <div className="pb5"> {data.highlight["casebody.data.opinions.text"]}</div> */}
-                        <div className="pt5"> <span className="excerpttitle"> Case Excerpt: </span> {data.fields.opinion_excerpt} ... </div>
+                        <div className="mediumdesc lhmedium passagexcerpt">
+                            {/* <div className="answerrowtitletag mr10"> P{index} </div> */}
+                            <div className="highlightsection underline " dangerouslySetInnerHTML={{ __html: "... " + data.highlight["casebody.data.opinions.text"] + " ... " }} />
+                            {/* <div className="pb5"> {data.highlight["casebody.data.opinions.text"]}</div> */}
+                            <div className="pt5"> <span className="excerpttitle"> Case Excerpt: </span> {data.fields.opinion_excerpt} ... </div>
+                        </div>
                     </div>
                 </div>
             )
@@ -325,15 +327,6 @@ class QueryView extends Component {
                 </div>
 
                 <div className="flex searchbar">
-                    <div className="loaderbox" style={{ opacity: (loadingStatus) ? 1 : 0, width: (loadingStatus) ? "34px" : "0px" }} >
-
-                        <Loading
-                            className=" "
-                            active={true}
-                            small={true}
-                            withOverlay={false}
-                        > </Loading>
-                    </div>
                     <div className="flexfull">
                         <TextInput
                             id="questioninput"
@@ -359,10 +352,28 @@ class QueryView extends Component {
                 {
                     answerList.length > 0 &&
                     <div>
-                        <div className=" mt10 mb10">
-                            <span className="boldtext">  BERT Answer Results</span>
-                            {this.state.answerIsLoading && <span className="mediumdesc"> Loading answers ... </span>}
-                            {!this.state.answerIsLoading && <span className="mediumdesc"> {answerList.length} items | {this.state.answers["took"].toFixed(3)} seconds </span>}
+                        {/* <Loading
+                            active={this.state.answerIsLoading}
+                            description="Active loading indicator" withOverlay={true}
+                        /> */}
+                        <div className="flex mt10 ">
+                            <div className="loaderbox" style={{ opacity: (loadingStatus) ? 1 : 0, width: (loadingStatus) ? "34px" : "0px" }} >
+
+                                <Loading
+                                    className=" "
+                                    active={true}
+                                    small={true}
+                                    withOverlay={false}
+                                > </Loading>
+                            </div>
+
+                            <div className="flexfull  sectionheading">
+                                <span className="boldtext">  BERT Answer Results</span>
+                                {!this.state.answerIsLoading && <span className="mediumdesc"> {answerList.length} items | {this.state.answers["took"].toFixed(3)} seconds </span>}
+                            </div>
+                            <div className="lh2m">
+                                {this.state.answerIsLoading && <span className="mediumdesc"> Loading answers ... </span>}
+                            </div>
                         </div>
                         <div>{answerList}</div>
                     </div>
