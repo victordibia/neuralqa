@@ -1,4 +1,4 @@
- 
+
 ## CaseQA: Question Answering on Large Datasets with BERT
 
 <img src="ui/public/images/screen.jpg">
@@ -31,32 +31,45 @@ Elastic search uses the `BM25` algorithm by default for implementing similarity 
 To identify an answer span, we will use a set of BERT based question answering models pretrained on both the SQUAD1 and SQUAD2 datasets. Ideally, this provides some benchmark on how well a pretrained model works for domain corpus such as legal/court documents.
 
 
-### Install Elastic Search
 
-Follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install and launch elastic search.
-Also install the elastic search python client
+## Getting Started
 
-```shell
-pip install elasticsearch
+#### Install & Launch Elastic Search
+
+Follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch elastic search.
+
+> Note - Be sure to launch an Elasticsearch node by running its binary script found in the /bin directory
+
+#### Create a Virtual Environment
+
+Isolate and reproduce project dependencies by creating a virtual environment using Anaconda.
+
+```bash
+conda create python=3 -n qa-env
+conda activate qa-env
+pip install -r requirements.txt
 ```
 
+> Note - Using Anaconda to manage environment and pip to manage packages to ensure latest versions are available
 
-## Web Application
+#### Build Web Application
 
-Run web application ui that allows the user to ask questions and review responses from the IR + DR pipeline.
-- Build front end. This creates an optimized build for the front end (shown above) and copies it to the build folder. The backend web application serves this UI from the build folder.
- 
+Run the web application UI that allows the user to interactively ask questions and review responses from the IR + DR pipeline.
+
+##### Build Front End
+
+Create an optimized build for the front end (shown above) and copies it to the build folder. The backend web application serves this UI from the build folder.
+
 ```shell
 cd ui
 npm install
 npm run build
-
-
 ```
-- Launch backend app
+##### Launch Back End
+
+Launch a Flask application to serve the UI.
 
 ```shell
-pip3 install -r requirements.txt
 python3 app.py
 ```
 
