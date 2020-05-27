@@ -34,7 +34,7 @@ class QueryView extends Component {
             answerIsLoading: false,
             errorStatus: "",
             showAdvancedConfig: true,
-            showSearchConfig: true,
+            showSearchConfig: false,
             resultSize: this.sizeOptions[this.selectedSize].value,
             qaModel: this.qaModelOptions[this.selectedQaModel].value,
             highlightSpan: this.highlightSpanOptions[this.selectedHighlightSpan].value,
@@ -164,28 +164,17 @@ class QueryView extends Component {
             } else {
                 dataTitle = data._source.name
             }
+            let caseHighlight = data.highlight["casebody.data.opinions.text"] || "No highlight."
 
-            // let answerSpan = ""
-            // if (this.state.answers.answers[index] !== undefined) {
-            //     for (let [i, answer] of this.state.answers.answers[index].entries()) {
-            //         answerSpan = answerSpan + "[" + answer.took.toFixed(2) + "s] " + answer.answer + (i !== this.state.answers.answers[index].length - 1 ? ", " : ""
-            //         )
-            //     }
-            //     if (this.state.answers.answers[index].length === 0) {
-            //         answerSpan = "no answers found in this section."
-            //     }
-            // } else {
-            //     answerSpan = " reading retrieved text .."
-            // }
             return (
                 <div className="passagerow flex" key={"passagerow" + index}>
                     <div className="answerrowtitletag mr10"> P{index} </div>
                     <div className="flexfull">
-                        <div className="passagetitle highlightsection " dangerouslySetInnerHTML={{ __html: dataTitle }} />
+                        <div className="passagetitle highlightsection lhmedium" dangerouslySetInnerHTML={{ __html: dataTitle }} />
 
                         <div className="mediumdesc lhmedium passagexcerpt">
                             {/* <div className="answerrowtitletag mr10"> P{index} </div> */}
-                            <div className="highlightsection underline " dangerouslySetInnerHTML={{ __html: "... " + data.highlight["casebody.data.opinions.text"] + " ... " }} />
+                            <div className="highlightsection underline " dangerouslySetInnerHTML={{ __html: "... " + caseHighlight + " ... " }} />
                             {/* <div className="pb5"> {data.highlight["casebody.data.opinions.text"]}</div> */}
                             <div className="pt5"> <span className="excerpttitle"> Case Excerpt: </span> {data.fields.opinion_excerpt} ... </div>
                         </div>
@@ -200,7 +189,7 @@ class QueryView extends Component {
                     <div className={"answersubrow " + (data.length > 1 ? " underline " : "")} key={"answersubrow" + subindex}>
                         {sub.answer}
                         <div className="smalldesc pt5">
-                            Time: {sub.took.toFixed(3)}s | Probability {(sub.start_probability * 1).toFixed(4)}
+                            Time: {sub.took.toFixed(3)}s | Start Token Probability {(sub.start_probability * 1).toFixed(4)}
                         </div>
                     </div>
                 )
@@ -349,8 +338,7 @@ class QueryView extends Component {
                 </div>
                 {this.state.errorStatus.length > 1 && <div className="errormessage">{this.state.errorStatus}</div>}
 
-                {
-                    answerList.length > 0 &&
+                {answerList.length > 0 &&
                     <div>
                         {/* <Loading
                             active={this.state.answerIsLoading}
@@ -391,6 +379,13 @@ class QueryView extends Component {
                         </div>
                     </div>
                 }
+
+                {(passageList.length === 0 && !(this.state.passageIsLoading)) &&
+                    <div className="p10 lightgreyhighlight">
+                        Your query did not match any passages. Try a different query.
+                    </div>
+                }
+
 
 
             </div>

@@ -3,9 +3,11 @@ import tensorflow as tf
 import numpy as np
 from transformers import AutoTokenizer, TFAutoModelForQuestionAnswering
 import time
+import logging
 
 
 def get_pretrained_squad_model(model_name):
+    logging.info("loading model " + model_name)
     model, tokenizer = None, None
     if model_name == "distilbertcasedsquad1":
         tokenizer = AutoTokenizer.from_pretrained(
@@ -79,7 +81,7 @@ def get_chunk_answer_span(inputs, model, tokenizer):
 
 
 def answer_question(question, context, model, tokenizer, max_chunk_size=512, stride=70):
-    print("..strid", stride)
+
     chunked_tokens = token_chunker(
         question, context, tokenizer, max_chunk_size, stride)
 

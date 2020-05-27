@@ -92,12 +92,13 @@ def answer():
 
     start_time = time.time()
     for hit in query_result["hits"]["hits"]:
-        all_highlights = " ".join(
-            hit["highlight"]["casebody.data.opinions.text"])
-        answer = model_utils.answer_question(
-            search_text, all_highlights, model, tokenizer, stride=token_stride)
-        answer_holder.append(answer)
-        print(len(answer))
+        if ("casebody.data.opinions.text" in hit["highlight"]):
+            all_highlights = " ".join(
+                hit["highlight"]["casebody.data.opinions.text"])
+            answer = model_utils.answer_question(
+                search_text, all_highlights, model, tokenizer, stride=token_stride)
+            answer_holder.append(answer)
+            print(len(answer))
     elapsed_time = time.time() - start_time
     response = {"answers": answer_holder, "took": elapsed_time}
     return jsonify(response)
