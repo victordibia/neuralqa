@@ -44,7 +44,8 @@ pip install elasticsearch
 ## Web Application
 
 Run web application ui that allows the user to ask questions and review responses from the IR + DR pipeline.
-- Build front end
+- Build front end. This creates an optimized build for the front end (shown above) and copies it to the build folder. The backend web application serves this UI from the build folder.
+ 
 ```shell
 cd ui
 npm install
@@ -55,6 +56,7 @@ npm run build
 - Launch backend app
 
 ```shell
+pip3 install -r requirements.txt
 python3 app.py
 ```
 
