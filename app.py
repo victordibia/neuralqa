@@ -18,7 +18,7 @@ elastic_utils.es_setup()
 root_file_path = os.path.dirname(os.path.abspath(__file__))
 # root_file_path = root_file_path.replace("backend", "frontend")
 static_folder_root = os.path.join(root_file_path, "ui/build")
-print(static_folder_root)
+# print(static_folder_root)
 
 app = Flask(__name__, static_url_path='',
             static_folder=static_folder_root,
@@ -98,7 +98,7 @@ def answer():
             answer = model_utils.answer_question(
                 search_text, all_highlights, model, tokenizer, stride=token_stride)
             answer_holder.append(answer)
-            print(len(answer))
+
     elapsed_time = time.time() - start_time
     response = {"answers": answer_holder, "took": elapsed_time}
     return jsonify(response)

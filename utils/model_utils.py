@@ -39,7 +39,6 @@ def get_answer_span(question, context, model, tokenizer):
     answer_start = tf.argmax(answer_start_scores, axis=1).numpy()[0]
     answer_end = (tf.argmax(answer_end_scores, axis=1) + 1).numpy()[0]
     elapsed_time = time.time() - start_time
-    # print(answer_start_scores.numpy().reshape(-1)[68])
     answer = tokenizer.convert_tokens_to_string(
         inputs["input_ids"][0][answer_start:answer_end],).replace("[CLS]", "").replace("[SEP]", "")
     return {"answer": answer, "took": elapsed_time}

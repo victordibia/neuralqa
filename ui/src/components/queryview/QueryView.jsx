@@ -287,7 +287,7 @@ class QueryView extends Component {
                     {this.state.apptitle} is an interactive tool for exploring
                     the two stage process of candidate retrieval and document reading required for question answering.
                     Search is powered by datasets from <a href="http://case.law" rel="noopener noreferrer" target="_blank"> case.law</a> dataset.
-                    <br></br>
+
                     To begin, type in a question query below.
 
                 </div>
