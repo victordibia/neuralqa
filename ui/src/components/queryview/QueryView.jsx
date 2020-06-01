@@ -56,10 +56,13 @@ class QueryView extends Component {
         this.answerEndpoint = "/answer"
         this.interfaceTimedDelay = 400
 
+        this.maxStatusElasped = 4  // Remove error/status msgs after 4 secs
+
     }
 
     componentDidMount() {
         this.askQuestion()
+
     }
 
     resetAnswer() {
@@ -87,6 +90,7 @@ class QueryView extends Component {
         }
 
         this.getAnswers(postData)
+        this.lastAsked = new Date();
     }
 
     getAnswers(postData) {
@@ -233,7 +237,7 @@ class QueryView extends Component {
                 let answerSubSpan = data.map((sub, subindex) => {
                     return (
                         <div className={"answersubrow " + (data.length > 1 ? " underline " : "")} key={"answersubrow" + subindex}>
-                            <span className="answerquote">&#8220;</span> {sub.answer} <span className="answerquote">&#8221;</span>
+                            <span className="answerquote">&#8220;</span> {sub.answer} <span className="pt10 answerquote">&#8221;</span>
                             <div className="smalldesc pt5">
                                 Time: {sub.took.toFixed(3)}s | Start Token Probability {(sub.start_probability * 1).toFixed(4)}
                             </div>
@@ -256,6 +260,8 @@ class QueryView extends Component {
                 </div>
             )
         })
+
+        let askedElapsed = (new Date() - this.lastAsked) / 1000 > this.maxStatusElasped;
 
         // Create configuration bar
         let configBar = (
@@ -479,7 +485,9 @@ class QueryView extends Component {
                     </div>
                 }
 
-
+                {askedElapsed}
+                <br />
+                <br />
 
             </div>
 
