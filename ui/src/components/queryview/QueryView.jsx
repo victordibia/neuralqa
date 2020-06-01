@@ -1,11 +1,16 @@
-// Web interface to visualize example Anomaly Detection Interaction.
-// Data is visualized using the Carbon Desgin System Data Table.
-// Data is
+/**
+ * @license
+ * Copyright 2019 Fast Forward Labs.  
+ * Written by / Contact : https://github.com/victordibia
+ * CaseQA - CaseQA: Question Answering on Large Datasets with BERT.
+ * Licensed under the MIT License (the "License"); 
+ * =============================================================================
+ */
 
 
 import React, { Component } from "react";
-import { Button, TextInput, Loading, Dropdown } from 'carbon-components-react';
-import { postJSONData } from "../helperfunctions/HelperFunctions"
+import { Button, TextInput, TextArea, Loading, Dropdown } from 'carbon-components-react';
+import { postJSONData, SampleQA } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
 
 // const { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } = DataTable;
@@ -20,11 +25,13 @@ class QueryView extends Component {
         this.qaModelOptions = [{ id: "opt1", text: "DistilBert", value: "distilbert", type: "model" }, { id: "opt2", text: "Bert", value: "bert", type: "model" }]
         this.highlightSpanOptions = [{ id: "opt1", text: "450", value: 450, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
         this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
+        this.datasetOptions = [{ id: "opt1", text: "Case Law", value: "caselaw", type: "dataset" }, { id: "opt2", text: "Manual", value: "manual", type: "dataset" }]
 
         this.selectedSize = 0
         this.selectedQaModel = 0
         this.selectedHighlightSpan = 0
         this.selectedChunkStride = 0
+        this.selectedDataset = 1
 
         this.state = {
             apptitle: "CaseQA",
@@ -39,6 +46,9 @@ class QueryView extends Component {
             qaModel: this.qaModelOptions[this.selectedQaModel].value,
             highlightSpan: this.highlightSpanOptions[this.selectedHighlightSpan].value,
             chunkStride: this.chunkStrideOptions[this.selectedChunkStride].value,
+            dataset: this.datasetOptions[this.selectedDataset].value,
+            sampleQA: SampleQA(),
+            selectedSampleIndex: 0
         }
 
         this.serverBasePath = "http://localhost:3008"
@@ -46,24 +56,27 @@ class QueryView extends Component {
         this.answerEndpoint = "/answer"
         this.interfaceTimedDelay = 400
 
-
-
     }
 
     componentDidMount() {
-        this.askQuestion()
+        // this.askQuestion()
     }
 
     askQuestion() {
         let searchText = document.getElementById("questioninput").value
+        let contextText = document.getElementById("contextinput").value
         let postData = {
             size: this.state.resultSize,
-            searchtext: searchText || "what is a fourth amendment right violation?",
+            contexttext: contextText || this.state.sampleQA[0].context,
+            searchtext: searchText || this.state.sampleQA[0].context,
             highlightspan: this.state.highlightSpan,
             model: this.state.qaModel,
             stride: this.state.chunkStride
         }
-        this.getPassages(postData)
+        if (this.state.dataset !== "manual") {
+            this.getPassages(postData)
+        }
+
         this.getAnswers(postData)
     }
 
@@ -127,8 +140,12 @@ class QueryView extends Component {
         this.setState({ showSearchConfig: !(this.state.showSearchConfig) })
     }
 
-    updateConfigParams(e) {
+    clickSampleQuestion(e) {
 
+        this.setState({ selectedSampleIndex: e.target.getAttribute("qindex") })
+    }
+
+    updateConfigParams(e) {
         switch (e.selectedItem.type) {
             case "size":
                 this.setState({ resultSize: e.selectedItem.value })
@@ -142,12 +159,13 @@ class QueryView extends Component {
             case "highlight":
                 this.setState({ highlightSpan: e.selectedItem.value })
                 break
+            case "dataset":
+                this.setState({ dataset: e.selectedItem.value })
+                break
 
             default:
                 break
         }
-
-
     }
 
 
@@ -155,6 +173,7 @@ class QueryView extends Component {
     render() {
 
         let loadingStatus = this.state.passageIsLoading || this.state.answerIsLoading;
+        // Create a list view for passages
         let passageList = this.state.passages["hits"]["hits"].map((data, index) => {
             let dataTitle = ""
             if (data.highlight["name"] !== undefined) {
@@ -183,6 +202,7 @@ class QueryView extends Component {
             )
         })
 
+        // Create list view for answers
         let answerList = this.state.answers.answers.map((data, index) => {
             let answerSubSpan = data.map((sub, subindex) => {
                 return (
@@ -194,7 +214,6 @@ class QueryView extends Component {
                     </div>
                 )
             })
-
             if (data.length > 0) {
                 return (
                     <div className="flex  p10 answerrow" key={"answerrow" + index}>
@@ -205,11 +224,18 @@ class QueryView extends Component {
             } else {
                 return (<div key={"answerrow" + index}></div>)
             }
-
-
-
         })
 
+        // Create sample qa passages for manual QA
+        let qaSamples = this.state.sampleQA.map((data, index) => {
+            return (
+                <div qindex={index} onClick={this.clickSampleQuestion.bind(this)} key={"qasample" + index} className={"samplequestionrow mediumdesc clickable iblock " + (this.state.selectedSampleIndex + "" === index + "" ? " selected " : " ")}>
+                    {data.question}
+                </div>
+            )
+        })
+
+        // Create configuration bar
         let configBar = (
             <div ref="modelconfigbar" style={{ zIndex: 100 }} className={"w100 unselectable greyhighlight   modelconfigbar "}>
 
@@ -234,7 +260,7 @@ class QueryView extends Component {
                     <div className="iblock mr10 ">
                         <div className="mediumdesc pb7 pt5"> Highligh Span <span className="boldtext"> {this.state.highlightSpan} </span> </div>
                         <Dropdown
-                            id="qamodeldropdown"
+                            id="highlighdropdown"
                             label="Highlight Span"
                             items={this.highlightSpanOptions}
                             initialSelectedItem={this.highlightSpanOptions[0]}
@@ -262,7 +288,7 @@ class QueryView extends Component {
                     <div className="iblock mr10">
                         <div className="mediumdesc pb7 pt5"> Token Stride <span className="boldtext"> {this.state.chunkStride} </span> </div>
                         <Dropdown
-                            id="qamodeldropdown"
+                            id="stridedropdown"
                             label="Token Stride"
                             items={this.chunkStrideOptions}
                             initialSelectedItem={this.chunkStrideOptions[0]}
@@ -271,10 +297,17 @@ class QueryView extends Component {
                         />
                     </div>
 
-
-
-
-
+                    <div className="pl10 borderleftdash iblock mr10">
+                        <div className="mediumdesc pb7 pt5"> Dataset <span className="boldtext"> {this.state.dataset} </span> </div>
+                        <Dropdown
+                            id="datasetdropdown"
+                            label="Dataset"
+                            items={this.datasetOptions}
+                            initialSelectedItem={this.datasetOptions[this.selectedDataset]}
+                            itemToString={item => (item ? item.text : "")}
+                            onChange={this.updateConfigParams.bind(this)}
+                        />
+                    </div>
                 </div>
 
             </div>
@@ -315,22 +348,48 @@ class QueryView extends Component {
                     </div>}
                 </div>
 
+                {this.state.dataset === "manual" &&
+                    <div className=" mb10">
+                        <div className="smalldesc p5"> Select any sample question below </div>
+                        {qaSamples}
+                    </div>
+                }
                 <div className="flex searchbar">
                     <div className="flexfull">
                         <TextInput
                             id="questioninput"
-                            defaultValue="what is a fourth amendment right violation? "
-                            labelText=""
+                            value={this.state.sampleQA[this.state.selectedSampleIndex].question}
+                            hideLabel={true}
+                            labelText="Hi there"
                             onKeyDown={this.inputKeyPress.bind(this)}
                             placeholder="Enter question. e.g. Which cases cite dwayne vs the united states."
                         >
                         </TextInput>
                     </div>
+
                     <div> <Button
                         onClick={this.askQuestionButtonClick.bind(this)}
                         size="field"> Get Answer </Button>
                     </div>
                 </div>
+
+
+
+                {/* {this.state.sampleQA[this.state.selectedSampleIndex].context} */}
+
+                {this.state.dataset === "manual" &&
+                    <div className="mt10">
+                        <TextArea
+                            id="contextinput"
+                            className="contextinput"
+                            value={this.state.sampleQA[this.state.selectedSampleIndex].context}
+                            labelText="Enter a passage"
+                        >
+
+                        </TextArea>
+                    </div>
+                }
+
                 <div className="mediumdesc pt7 pb7">
 
                     {this.state.answerIsLoading && <span> Asking BERT for answers ...   </span>}
@@ -380,7 +439,7 @@ class QueryView extends Component {
                     </div>
                 }
 
-                {(passageList.length === 0 && !(this.state.passageIsLoading)) &&
+                {(passageList.length === 0 && this.state.dataset !== "manual" && !(this.state.passageIsLoading)) &&
                     <div className="p10 lightgreyhighlight">
                         Your query did not match any passages. Try a different query.
                     </div>

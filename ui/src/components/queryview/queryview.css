@@ -39,7 +39,7 @@
 }
 
 .excerpttitle{
-    padding: 2px;
+    padding: 2px 2px 2px 0px;
     color: rgb(97, 97, 97); 
     font-weight: bold;
 }
@@ -55,6 +55,20 @@
     background-color: rgb(244, 244, 244);
     
 }
+.contextinput{
+    min-height: 180px;
+}
+.samplequestionrow{
+    background: rgb(210, 210, 210);
+    padding: 5px;
+    margin: 5px 5px 0px 0px; 
+    border-left: 1.5px solid white;
+}
+.samplequestionrow.selected{
+    background-color: rgb(190, 213, 250);
+    border-left: 1.5px solid rgb(157, 157, 157);
+}
+
 
 .lh2m{
     line-height: 2em;
