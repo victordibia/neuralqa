@@ -59,11 +59,14 @@ def answer():
     highlight_span = 450
     model_name = ""
     token_stride = 50
+    context_dataset = "manual"
 
     if request.method == "POST":
         data = request.get_json()
         result_size = data["size"]
         search_text = data["searchtext"]
+        context_text = data["contexttext"]
+        context_dataset = data["dataset"]
         token_stride = int(data["stride"])
         highlight_span = data["highlightspan"]
         model_name = data["model"]
@@ -87,17 +90,25 @@ def answer():
         "size": result_size
     }
 
-    query_result = elastic_utils.run_query(search_query)
     answer_holder = []
-
+    response = {}
     start_time = time.time()
-    for hit in query_result["hits"]["hits"]:
-        if ("casebody.data.opinions.text" in hit["highlight"]):
-            all_highlights = " ".join(
-                hit["highlight"]["casebody.data.opinions.text"])
-            answer = model_utils.answer_question(
-                search_text, all_highlights, model, tokenizer, stride=token_stride)
-            answer_holder.append(answer)
+
+    # answer question based on provided context
+    if (context_dataset == "manual"):
+        answer = model_utils.answer_question(
+            search_text, context_text, model, tokenizer, stride=token_stride)
+        answer_holder.append(answer)
+    # answer question based on retrieved passages from elastic search
+    else:
+        query_result = elastic_utils.run_query(search_query)
+        for hit in query_result["hits"]["hits"]:
+            if ("casebody.data.opinions.text" in hit["highlight"]):
+                all_highlights = " ".join(
+                    hit["highlight"]["casebody.data.opinions.text"])
+                answer = model_utils.answer_question(
+                    search_text, all_highlights, model, tokenizer, stride=token_stride)
+                answer_holder.append(answer)
 
     elapsed_time = time.time() - start_time
     response = {"answers": answer_holder, "took": elapsed_time}
