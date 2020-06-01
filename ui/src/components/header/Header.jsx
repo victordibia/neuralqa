@@ -43,9 +43,9 @@ class Header extends Component {
                             <div className="h100   flex flexjustifycenter  navbarlinks ">
                                 <NavLink exact to="/"> QA </NavLink>
                             </div>
-                            <div className="h100   flex flexjustifycenter  navbarlinks mr10">
+                            {/* <div className="h100   flex flexjustifycenter  navbarlinks mr10">
                                 <NavLink exact to="/train"> Experiments</NavLink>
-                            </div>
+                            </div> */}
                             <div className="h100   flex flexjustifycenter   navbarlinks mr10">
                                 <a className=" dispalyblock h100  " href="https://github.com/victordibia/qa/" target="_blank" rel="noopener noreferrer">
                                     <LogoGithub16 className=" whitefill gitlogo  "></LogoGithub16>

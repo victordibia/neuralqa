@@ -2,10 +2,9 @@
 import lzma
 import os
 import json
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, ConnectionError
 import logging
 from utils import data_utils
-
 
 
 case_index_name = "cases"
@@ -37,7 +36,6 @@ es_settings = {
         }
     }
 }
-es.indices.create(index=case_index_name, body=es_settings, ignore=400)
 
 
 def create_case_index(case_file_path, max_docs=2000):
@@ -49,6 +47,8 @@ def create_case_index(case_file_path, max_docs=2000):
     Keyword Arguments:
         max_docs {int} -- maximum size of records to use in creating index.  Small default is to enable quick testing (default: {1000})
     """
+
+    es.indices.create(index=case_index_name, body=es_settings, ignore=400)
 
     i = 0
     logging.info(">> Creating index using file " + case_file_path)
@@ -75,6 +75,15 @@ def run_query(search_query):
 
     query_result = es.search(index=case_index_name, body=search_query)
     return query_result
+
+
+def test_connection():
+    try:
+
+        es.cluster.health(wait_for_status='yellow')
+        return True
+    except ConnectionError:
+        return False
 
 
 def es_setup():

@@ -65,7 +65,8 @@ class QueryView extends Component {
     resetAnswer() {
         this.setState({
             passages: { "took": 0, hits: { hits: [] } },
-            answers: { "took": 0, answers: [] }
+            answers: { "took": 0, answers: [] },
+            errorStatus: ""
         })
     }
 
