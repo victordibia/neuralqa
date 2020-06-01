@@ -38,7 +38,7 @@ To identify an answer span, we will use a set of BERT based question answering m
 
 Follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch elastic search.
 
-> Note - Be sure to launch an Elasticsearch node by running its binary script found in the /bin directory
+> Note - Be sure to launch an Elasticsearch node by running its binary script found in the /bin directory. 
 
 #### Create a Virtual Environment
 

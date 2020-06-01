@@ -62,15 +62,23 @@ class QueryView extends Component {
         // this.askQuestion()
     }
 
+    resetAnswer() {
+        this.setState({
+            passages: { "took": 0, hits: { hits: [] } },
+            answers: { "took": 0, answers: [] }
+        })
+    }
+
     askQuestion() {
         let searchText = document.getElementById("questioninput").value
-        let contextText = document.getElementById("contextinput").value
+        let contextText = document.getElementById("contextinput") ? document.getElementById("contextinput").value : null
         let postData = {
             size: this.state.resultSize,
             contexttext: contextText || this.state.sampleQA[0].context,
             searchtext: searchText || this.state.sampleQA[0].context,
             highlightspan: this.state.highlightSpan,
             model: this.state.qaModel,
+            dataset: this.state.dataset,
             stride: this.state.chunkStride
         }
         if (this.state.dataset !== "manual") {
@@ -138,11 +146,19 @@ class QueryView extends Component {
 
     toggleSearchConfig(e) {
         this.setState({ showSearchConfig: !(this.state.showSearchConfig) })
+
     }
 
     clickSampleQuestion(e) {
+        this.setState({
+            passages: { "took": 0, hits: { hits: [] } },
+            answers: { "took": 0, answers: [] },
+            selectedSampleIndex: e.target.getAttribute("qindex")
+        }, () => {
+            this.askQuestion()
+        })
 
-        this.setState({ selectedSampleIndex: e.target.getAttribute("qindex") })
+
     }
 
     updateConfigParams(e) {
@@ -166,6 +182,7 @@ class QueryView extends Component {
             default:
                 break
         }
+        this.resetAnswer()
     }
 
 
@@ -203,28 +220,32 @@ class QueryView extends Component {
         })
 
         // Create list view for answers
-        let answerList = this.state.answers.answers.map((data, index) => {
-            let answerSubSpan = data.map((sub, subindex) => {
-                return (
-                    <div className={"answersubrow " + (data.length > 1 ? " underline " : "")} key={"answersubrow" + subindex}>
-                        {sub.answer}
-                        <div className="smalldesc pt5">
-                            Time: {sub.took.toFixed(3)}s | Start Token Probability {(sub.start_probability * 1).toFixed(4)}
-                        </div>
-                    </div>
-                )
+        let answerList = this.state.answers.answers
+            .filter((data) => {
+                if (data.length > 0) {
+                    return true
+                } else {
+                    return false
+                }
             })
-            if (data.length > 0) {
+            .map((data, index) => {
+                let answerSubSpan = data.map((sub, subindex) => {
+                    return (
+                        <div className={"answersubrow " + (data.length > 1 ? " underline " : "")} key={"answersubrow" + subindex}>
+                            {sub.answer}
+                            <div className="smalldesc pt5">
+                                Time: {sub.took.toFixed(3)}s | Start Token Probability {(sub.start_probability * 1).toFixed(4)}
+                            </div>
+                        </div>
+                    )
+                })
                 return (
                     <div className="flex  p10 answerrow" key={"answerrow" + index}>
                         <div className="answerrowtitletag mr10"> A{index} </div>
                         <div className="flexfull"> {answerSubSpan}</div>
                     </div>
                 )
-            } else {
-                return (<div key={"answerrow" + index}></div>)
-            }
-        })
+            })
 
         // Create sample qa passages for manual QA
         let qaSamples = this.state.sampleQA.map((data, index) => {
@@ -319,7 +340,8 @@ class QueryView extends Component {
                     <div className="boldtext mb5">{this.state.apptitle}:  Question Answering on Case Law Documents</div>
                     {this.state.apptitle} is an interactive tool for exploring
                     the two stage process of candidate retrieval and document reading required for question answering.
-                    Search is powered by datasets from <a href="http://case.law" rel="noopener noreferrer" target="_blank"> case.law</a> dataset.
+                    You can manually provide a passage or select
+                    the <a href="http://case.law" rel="noopener noreferrer" target="_blank">case.law</a> dataset under QA configuration settings below.
 
                     To begin, type in a question query below.
 
@@ -355,10 +377,10 @@ class QueryView extends Component {
                     </div>
                 }
                 <div className="flex searchbar">
-                    <div className="flexfull">
+                    <div key={"questioninput" + this.state.selectedSampleIndex} className="flexfull">
                         <TextInput
                             id="questioninput"
-                            value={this.state.sampleQA[this.state.selectedSampleIndex].question}
+                            defaultValue={this.state.sampleQA[this.state.selectedSampleIndex].question}
                             hideLabel={true}
                             labelText="Hi there"
                             onKeyDown={this.inputKeyPress.bind(this)}
@@ -378,11 +400,11 @@ class QueryView extends Component {
                 {/* {this.state.sampleQA[this.state.selectedSampleIndex].context} */}
 
                 {this.state.dataset === "manual" &&
-                    <div className="mt10">
+                    <div key={"contexttextarea" + this.state.selectedSampleIndex} className="mt10">
                         <TextArea
                             id="contextinput"
                             className="contextinput"
-                            value={this.state.sampleQA[this.state.selectedSampleIndex].context}
+                            defaultValue={this.state.sampleQA[this.state.selectedSampleIndex].context}
                             labelText="Enter a passage"
                         >
 
@@ -423,6 +445,12 @@ class QueryView extends Component {
                             </div>
                         </div>
                         <div>{answerList}</div>
+                    </div>
+                }
+
+                {(answerList.length === 0 && !(this.state.answerIsLoading)) &&
+                    <div className="p10 lightgreyhighlight">
+                        No answers found.
                     </div>
                 }
 

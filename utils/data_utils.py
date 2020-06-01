@@ -7,6 +7,12 @@ import logging
 
 
 def download_data(data_url, source_name):
+    """Download Zip datafile from case.law
+
+    Arguments:
+        data_url {str} -- url path dataset
+        source_name {str} -- name for dataset
+    """
     # create data directory
     os.makedirs("data", exist_ok=True)
     # download data from caselaw
