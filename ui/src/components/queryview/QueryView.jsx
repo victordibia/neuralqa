@@ -59,7 +59,7 @@ class QueryView extends Component {
     }
 
     componentDidMount() {
-        // this.askQuestion()
+        this.askQuestion()
     }
 
     resetAnswer() {
@@ -233,7 +233,7 @@ class QueryView extends Component {
                 let answerSubSpan = data.map((sub, subindex) => {
                     return (
                         <div className={"answersubrow " + (data.length > 1 ? " underline " : "")} key={"answersubrow" + subindex}>
-                            {sub.answer}
+                            <span className="answerquote">&#8220;</span> {sub.answer} <span className="answerquote">&#8221;</span>
                             <div className="smalldesc pt5">
                                 Time: {sub.took.toFixed(3)}s | Start Token Probability {(sub.start_probability * 1).toFixed(4)}
                             </div>
@@ -341,8 +341,8 @@ class QueryView extends Component {
                     <div className="boldtext mb5">{this.state.apptitle}:  Question Answering on Case Law Documents</div>
                     {this.state.apptitle} is an interactive tool for exploring
                     the two stage process of candidate retrieval and document reading required for question answering.
-                    You can manually provide a passage or select
-                    the <a href="http://case.law" rel="noopener noreferrer" target="_blank">case.law</a> dataset under QA configuration settings below.
+                    You can manually provide a passage or select a dataset to search from
+                    (e.g. <a href="http://case.law" rel="noopener noreferrer" target="_blank">case.law</a> ) dataset under the QA configuration settings below.
 
                     To begin, type in a question query below.
 
@@ -373,11 +373,13 @@ class QueryView extends Component {
 
                 {this.state.dataset === "manual" &&
                     <div className=" mb10">
-                        <div className="smalldesc p5"> Select any sample question below </div>
+                        <div className="smalldesc p5"> Select any sample question/passage pair below </div>
                         {qaSamples}
                     </div>
                 }
+                <div className="mt5 mb10 mediumdesc"> Enter question </div>
                 <div className="flex searchbar">
+
                     <div key={"questioninput" + this.state.selectedSampleIndex} className="flexfull">
                         <TextInput
                             id="questioninput"
@@ -391,6 +393,7 @@ class QueryView extends Component {
                     </div>
 
                     <div> <Button
+
                         onClick={this.askQuestionButtonClick.bind(this)}
                         size="field"> Get Answer </Button>
                     </div>
@@ -402,11 +405,13 @@ class QueryView extends Component {
 
                 {this.state.dataset === "manual" &&
                     <div key={"contexttextarea" + this.state.selectedSampleIndex} className="mt10">
+                        <div className="mt5 mb10 mediumdesc"> Enter passage </div>
                         <TextArea
                             id="contextinput"
                             className="contextinput"
                             defaultValue={this.state.sampleQA[this.state.selectedSampleIndex].context}
                             labelText="Enter a passage"
+                            hideLabel={true}
                         >
 
                         </TextArea>
@@ -439,7 +444,7 @@ class QueryView extends Component {
 
                             <div className="flexfull  sectionheading">
                                 <span className="boldtext">  BERT Answer Results</span>
-                                {!this.state.answerIsLoading && <span className="mediumdesc"> {answerList.length} items | {this.state.answers["took"].toFixed(3)} seconds </span>}
+                                {!this.state.answerIsLoading && <span className="mediumdesc"> {answerList.length} item{answerList.length > 1 ? "s" : ""} | {this.state.answers["took"].toFixed(3)} seconds </span>}
                             </div>
                             <div className="lh2m">
                                 {this.state.answerIsLoading && <span className="mediumdesc"> Loading answers ... </span>}

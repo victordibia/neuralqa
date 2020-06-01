@@ -1,7 +1,7 @@
 /**
  * @license
  * Copyright 2019 Fast Forward Labs.  
- * Written by / Contact : https://github.com/victordibia
+ * Written by Victor Dibia / Contact : https://github.com/victordibia
  * CaseQA - CaseQA: Question Answering on Large Datasets with BERT.
  * Licensed under the MIT License (the "License"); 
  * =============================================================================
@@ -20,6 +20,7 @@ import {
 
 import QueryView from "./queryview/QueryView";
 import Header from "./header/Header";
+import Footer from "./footer/Footer"
 import { createBrowserHistory } from 'history';
 
 
@@ -79,7 +80,7 @@ class Main extends Component {
                     {/* <Route exact path="/train" component={Train} /> */}
 
                 </main>
-                {/* <div id="footer"> <Footer /> </div> */}
+                <div id="footer"> <Footer /> </div>
             </HashRouter>
 
         );

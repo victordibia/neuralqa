@@ -79,6 +79,11 @@
     color: grey;
 }
 
+.answerquote{
+    font-size: 2.1em;
+    color: rgb(14, 14, 68);
+}
+
 .sectionheading{
     line-height: 2em;
 }
