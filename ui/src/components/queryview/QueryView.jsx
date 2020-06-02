@@ -429,7 +429,7 @@ class QueryView extends Component {
                     {this.state.answerIsLoading && <span> Asking BERT for answers ...   </span>}
 
                 </div>
-                {this.state.errorStatus.length > 1 && <div className="errormessage">{this.state.errorStatus}</div>}
+                {(this.state.errorStatus.length > 1) && <div className="errormessage">{this.state.errorStatus}</div>}
 
                 {answerList.length > 0 &&
                     <div>
@@ -460,7 +460,7 @@ class QueryView extends Component {
                     </div>
                 }
 
-                {(answerList.length === 0 && !(this.state.answerIsLoading)) &&
+                {(!askedElapsed && answerList.length === 0 && !(this.state.answerIsLoading)) &&
                     <div className="p10 lightgreyhighlight">
                         No answers found.
                     </div>
@@ -479,13 +479,13 @@ class QueryView extends Component {
                     </div>
                 }
 
-                {(passageList.length === 0 && this.state.dataset !== "manual" && !(this.state.passageIsLoading)) &&
+                {(!askedElapsed && passageList.length === 0 && this.state.dataset !== "manual" && !(this.state.passageIsLoading)) &&
                     <div className="p10 lightgreyhighlight">
                         Your query did not match any passages. Try a different query.
                     </div>
                 }
 
-                {askedElapsed}
+                {/* {askedElapsed + ""} bingo */}
                 <br />
                 <br />
 
