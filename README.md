@@ -19,7 +19,7 @@ The question answering workflow can be broken down into two main parts:
 - Candidate document retrieval : retrieve a list of top `n` documents based on the search question/query. 
 - Document reading: identifying portions of each text that may contain an answer to the query.
 
-## Dataset
+### Dataset
 The case law bulk dataset api is in jsonl contains properties for each case; we will be focusing on `casebody` field which has subfields such as `attorneys`, `corrections` etc. Main content is the `opinions` section which we will use for QA. Each case may have multiple `opinions` with multiple `opinion authors`.
 
 ## Candidate Document Retrieval

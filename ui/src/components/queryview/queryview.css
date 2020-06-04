@@ -55,8 +55,8 @@
     background-color: rgb(244, 244, 244);
     
 }
-.contextinput{
-    min-height: 180px;
+.contextinputarea{
+    min-height: 120px;
 }
 .samplequestionrow{
     background: rgb(210, 210, 210);

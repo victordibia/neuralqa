@@ -23,7 +23,7 @@ class QueryView extends Component {
         // Advanced options
         this.sizeOptions = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
         this.qaModelOptions = [{ id: "opt1", text: "DistilBert", value: "distilbert", type: "model" }, { id: "opt2", text: "Bert", value: "bert", type: "model" }]
-        this.highlightSpanOptions = [{ id: "opt1", text: "450", value: 450, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
+        this.highlightSpanOptions = [{ id: "opt4", text: "150", value: 150, type: "highlight" }, { id: "opt1", text: "450", value: 450, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
         this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
         this.datasetOptions = [{ id: "opt1", text: "Case Law", value: "caselaw", type: "dataset" }, { id: "opt2", text: "Manual", value: "manual", type: "dataset" }]
 
@@ -414,7 +414,7 @@ class QueryView extends Component {
                         <div className="mt5 mb10 mediumdesc"> Enter passage </div>
                         <TextArea
                             id="contextinput"
-                            className="contextinput"
+                            className="contextinputarea"
                             defaultValue={this.state.sampleQA[this.state.selectedSampleIndex].context}
                             labelText="Enter a passage"
                             hideLabel={true}
