@@ -1,6 +1,6 @@
-## General Notes on Design
+## General Notes on Designing CaseQA
 
-In this note, we will discuss some implementation decisions made while desigining CaseQA. 
+In this note, we will discuss some implementation decisions made while designing CaseQA. 
 
 ### Information Retrieval with Elastic Search 
 - User experience
