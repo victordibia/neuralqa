@@ -20,10 +20,17 @@ In this note, we will discuss some implementation decisions made while designing
 - BERT models process input with a max sequence length of 512 tokens. This introduces latency challenges when attempting to read a typical court document (> 10,000 tokens). In general, we have a few options
     - Read all passages
         - Look at all  opinions within each case
-        - Pro: Exhaustive search on all content 
-        - Con: Court document are long and sometime repetitive! 
+        - Pro 
+            - Exhaustive search on all content 
+        - Con 
+            - Court document are long and sometimes repetitive.
     - Passage Fragmentation
         - At index creation time, we can break up large passages into smaller paragraphs and store them as individual documents in the index.
+        - Feed each of these passages to BERT to find answers
+        - Pro
+            - Some research suggests this approach yields good results
+        - Con
+            - Can be challenging to identify the right segmentation strategy (e.g size of each paragraph, etc). This has be done at index creation time.
     - [The approach we use] Curated Passages based on highlights
         - Use highlights from elastic (`n` snippets that contain search query) as passage candidates
             - This allows us reduce a passage of 10k tokens to ~1000 tokens!
