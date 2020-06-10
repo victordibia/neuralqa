@@ -67,8 +67,12 @@ def token_chunker(question, context, tokenizer, max_chunk_size=512, stride=2):
 def get_chunk_answer_span(inputs, model, tokenizer):
     start_time = time.time()
     answer_start_scores, answer_end_scores = model(inputs)
+
+    all_scores = answer_start_scores + answer_end_scores
+
     answer_start = tf.argmax(answer_start_scores, axis=1).numpy()[0]
     answer_end = (tf.argmax(answer_end_scores, axis=1) + 1).numpy()[0]
+
     answer_start_softmax_probability = tf.nn.softmax(
         answer_start_scores, axis=1).numpy()[0][answer_start]
     answer_end_softmax_probability = tf.nn.softmax(
@@ -77,7 +81,12 @@ def get_chunk_answer_span(inputs, model, tokenizer):
     answer = tokenizer.convert_tokens_to_string(
         inputs["input_ids"][0][answer_start:answer_end],).replace("[CLS]", "").replace("[SEP]", "")
     elapsed_time = time.time() - start_time
-    return {"answer": answer, "took": elapsed_time, "start_probability": str(answer_start_softmax_probability),  "end_probability": str(answer_end_softmax_probability)}
+    return {"answer": answer, "took": elapsed_time,
+            "start_probability": str(answer_start_softmax_probability),
+            "end_probability": str(answer_end_softmax_probability),
+            "probability": str(answer_end_softmax_probability + answer_start_softmax_probability),
+
+            }
 
 
 def answer_question(question, context, model, tokenizer, max_chunk_size=512, stride=70):

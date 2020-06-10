@@ -239,7 +239,7 @@ class QueryView extends Component {
                         <div className={"answersubrow " + (data.length > 1 ? " underline " : "")} key={"answersubrow" + subindex}>
                             <span className="answerquote">&#8220;</span> {sub.answer} <span className="pt10 answerquote">&#8221;</span>
                             <div className="smalldesc pt5">
-                                Time: {sub.took.toFixed(3)}s | Start Token Probability {(sub.start_probability * 1).toFixed(4)}
+                                Time: {sub.took.toFixed(3)}s | Probability {((sub.start_probability * 1 + sub.end_probability * 1) / 2).toFixed(4)} [  {((sub.start_probability * 1) / 2).toFixed(4)} | {((sub.end_probability * 1) / 2).toFixed(4)} ]
                             </div>
                         </div>
                     )
