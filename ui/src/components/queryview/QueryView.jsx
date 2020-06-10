@@ -22,7 +22,7 @@ class QueryView extends Component {
 
         // Advanced options
         this.sizeOptions = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
-        this.qaModelOptions = [{ id: "opt1", text: "DistilBert", value: "distilbert", type: "model" }, { id: "opt2", text: "Bert", value: "bert", type: "model" }]
+        this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
         this.highlightSpanOptions = [{ id: "opt4", text: "150", value: 150, type: "highlight" }, { id: "opt1", text: "450", value: 450, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
         this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
         this.datasetOptions = [{ id: "opt1", text: "Case Law", value: "caselaw", type: "dataset" }, { id: "opt2", text: "Manual", value: "manual", type: "dataset" }]
@@ -43,7 +43,7 @@ class QueryView extends Component {
             showAdvancedConfig: true,
             showSearchConfig: false,
             resultSize: this.sizeOptions[this.selectedSize].value,
-            qaModel: this.qaModelOptions[this.selectedQaModel].value,
+            qaModelName: this.qaModelOptions[this.selectedQaModel].value,
             highlightSpan: this.highlightSpanOptions[this.selectedHighlightSpan].value,
             chunkStride: this.chunkStrideOptions[this.selectedChunkStride].value,
             dataset: this.datasetOptions[this.selectedDataset].value,
@@ -56,7 +56,7 @@ class QueryView extends Component {
         this.answerEndpoint = "/answer"
         this.interfaceTimedDelay = 400
 
-        this.maxStatusElasped = 4  // Remove error/status msgs after 4 secs
+        this.maxStatusElasped = 6  // Remove error/status msgs after 4 secs
 
     }
 
@@ -81,7 +81,7 @@ class QueryView extends Component {
             contexttext: contextText || this.state.sampleQA[0].context,
             searchtext: searchText || this.state.sampleQA[0].context,
             highlightspan: this.state.highlightSpan,
-            model: this.state.qaModel,
+            modelname: this.state.qaModelName,
             dataset: this.state.dataset,
             stride: this.state.chunkStride
         }
@@ -102,7 +102,7 @@ class QueryView extends Component {
         let answers = postJSONData(answerUrl, postData)
         answers.then((data) => {
             if (data) {
-                this.setState({ answers: data })
+                this.setState({ answers: data, errorStatus: "" })
                 setTimeout(() => {
                     this.setState({ answerIsLoading: false })
                 }, this.interfaceTimedDelay);
@@ -172,7 +172,7 @@ class QueryView extends Component {
                 this.setState({ resultSize: e.selectedItem.value })
                 break
             case "model":
-                this.setState({ qaModel: e.selectedItem.value })
+                this.setState({ qaModelName: e.selectedItem.value })
                 break
             case "stride":
                 this.setState({ chunkStride: e.selectedItem.value })
@@ -300,7 +300,7 @@ class QueryView extends Component {
 
 
                     <div className="pl10 borderleftdash iblock mr10">
-                        <div className="mediumdesc pb7 pt5"> QA Model <span className="boldtext"> {this.state.qaModel} </span> </div>
+                        <div className="mediumdesc pb7 pt5"> QA Model <span className="boldtext"> {this.state.qaModelName} </span> </div>
                         <Dropdown
                             id="qamodeldropdown"
                             label="QA Model"
@@ -365,7 +365,7 @@ class QueryView extends Component {
                         <div className="iblock   ">
                             <div className="iblock mr5"> <span className="boldtext"> </span></div>
                             <div className="iblock">
-                                <div className="smalldesc"> {this.state.resultSize} Results | {this.state.qaModel.toUpperCase()} </div>
+                                <div className="smalldesc"> {this.state.resultSize} Results | {this.state.qaModelName.toUpperCase()} </div>
                             </div>
                         </div>
 
@@ -429,7 +429,7 @@ class QueryView extends Component {
                     {this.state.answerIsLoading && <span> Asking BERT for answers ...   </span>}
 
                 </div>
-                {(this.state.errorStatus.length > 1) && <div className="errormessage">{this.state.errorStatus}</div>}
+                {(!askedElapsed && this.state.errorStatus.length > 1) && <div className="errormessage">{this.state.errorStatus}</div>}
 
                 {answerList.length > 0 &&
                     <div>

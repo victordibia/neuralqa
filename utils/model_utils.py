@@ -25,10 +25,11 @@ def get_pretrained_squad_model(model_name):
         model = TFAutoModelForQuestionAnswering.from_pretrained(
             "deepset/bert-base-cased-squad2", from_pt=True)
 
-    return model, tokenizer
+    return model_name, model, tokenizer
 
 
 def load_model(model_name="bertcasedsquad2"):
+    print(">> loading model ", model_name)
     return get_pretrained_squad_model(model_name)
 
 

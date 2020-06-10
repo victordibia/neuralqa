@@ -8,7 +8,8 @@ from utils import elastic_utils, model_utils
 
 
 # load BERT QA model and tokenizer
-model, tokenizer = model_utils.load_model(model_name="distilbertcasedsquad2")
+loaded_model_name, model, tokenizer = model_utils.load_model(
+    model_name="distilbertcasedsquad2")
 
 # Check to ensure elastic data is loaded
 elastic_utils.es_setup()
@@ -48,6 +49,7 @@ def qa():
 
 @app.route('/answer',  methods=['GET', 'POST'])
 def answer():
+    global loaded_model_name, model, tokenizer
     """Generate an answer for the given search query. 
     Perfomed as two stage process
     1.) Get sample passages from neighbourhood provided by matches by elastic search
@@ -71,7 +73,12 @@ def answer():
         context_dataset = data["dataset"]
         token_stride = int(data["stride"])
         highlight_span = data["highlightspan"]
-        model_name = data["model"]
+        model_name = data["modelname"]
+
+    # load a different model if the selected model is different
+    if(loaded_model_name != model_name):
+        loaded_model_name, model, tokenizer = model_utils.load_model(
+            model_name=model_name)
 
     included_fields = ["name"]
     search_query = {
