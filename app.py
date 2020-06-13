@@ -8,6 +8,7 @@ from utils import elastic_utils, model_utils
 
 
 # load BERT QA model and tokenizer
+default_model_name = "distilbertcasedsquad2"
 loaded_model_name, model, tokenizer = model_utils.load_model(
     model_name="distilbertcasedsquad2")
 
@@ -49,7 +50,7 @@ def qa():
 
 @app.route('/answer',  methods=['GET', 'POST'])
 def answer():
-    global loaded_model_name, model, tokenizer
+    global loaded_model_name, model, tokenizer, default_model_name
     """Generate an answer for the given search query. 
     Perfomed as two stage process
     1.) Get sample passages from neighbourhood provided by matches by elastic search
@@ -59,11 +60,13 @@ def answer():
         [type] -- [description]
     """
     query_result = []
-    result_size, search_text, = 6, "what is a fourth amendment right violation? "
+    result_size = 6
+    search_text = "what is a fourth amendment right violation? "
     highlight_span = 450
-    model_name = ""
+    model_name = default_model_name
     token_stride = 50
     context_dataset = "manual"
+    context_text = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
 
     if request.method == "POST":
         data = request.get_json()
@@ -75,6 +78,7 @@ def answer():
         highlight_span = data["highlightspan"]
         model_name = data["modelname"]
 
+    print("*****>>>>>>>>", tokenizer)
     # load a different model if the selected model is different
     if(loaded_model_name != model_name):
         loaded_model_name, model, tokenizer = model_utils.load_model(
@@ -111,7 +115,7 @@ def answer():
     # answer question based on retrieved passages from elastic search
     else:
         query_result = elastic_utils.run_query(search_query)
-        for hit in query_result["hits"]["hits"]:
+        for i, hit in enumerate(query_result["hits"]["hits"]):
             if ("casebody.data.opinions.text" in hit["highlight"]):
                 all_highlights = " ".join(
                     hit["highlight"]["casebody.data.opinions.text"])
@@ -124,7 +128,7 @@ def answer():
     return jsonify(response)
 
 
-@app.route('/passages',  methods=['GET', 'POST'])
+@app.route('/passages', methods=['GET', 'POST'])
 def passages():
     """Get a list of passages and highlights that match the given search query
 

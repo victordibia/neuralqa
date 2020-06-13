@@ -12,6 +12,7 @@ import React, { Component } from "react";
 import { Button, TextInput, TextArea, Loading, Dropdown } from 'carbon-components-react';
 import { postJSONData, SampleQA } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
+import * as _ from "lodash"
 
 // const { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } = DataTable;
 
@@ -20,7 +21,7 @@ class QueryView extends Component {
     constructor(props) {
         super(props)
 
-        // Advanced options
+        // Advanced options 
         this.sizeOptions = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
         this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
         this.highlightSpanOptions = [{ id: "opt4", text: "150", value: 150, type: "highlight" }, { id: "opt1", text: "450", value: 450, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
@@ -31,7 +32,7 @@ class QueryView extends Component {
         this.selectedQaModel = 0
         this.selectedHighlightSpan = 0
         this.selectedChunkStride = 0
-        this.selectedDataset = 1
+        this.selectedDataset = 0
 
         this.state = {
             apptitle: "NeuralQA",
@@ -55,8 +56,7 @@ class QueryView extends Component {
         this.passageEndpoint = "/passages"
         this.answerEndpoint = "/answer"
         this.interfaceTimedDelay = 400
-
-        this.maxStatusElasped = 6  // Remove error/status msgs after 4 secs
+        this.maxStatusElasped = 6  // Remove error/status msgs after maxStatusElasped secs
 
     }
 
@@ -102,6 +102,12 @@ class QueryView extends Component {
         let answers = postJSONData(answerUrl, postData)
         answers.then((data) => {
             if (data) {
+
+                // sort data by the probability score 
+                // data.answers = _.sortBy(data.answers, [function (o) { return o.probability; }]).reverse()
+                // console.log(data.answers);
+
+                // data = _.sortBy(data, [function (o) { return o.probability; }])
                 this.setState({ answers: data, errorStatus: "" })
                 setTimeout(() => {
                     this.setState({ answerIsLoading: false })
@@ -239,7 +245,7 @@ class QueryView extends Component {
                         <div className={"answersubrow " + (data.length > 1 ? " underline " : "")} key={"answersubrow" + subindex}>
                             <span className="answerquote">&#8220;</span> {sub.answer} <span className="pt10 answerquote">&#8221;</span>
                             <div className="smalldesc pt5">
-                                Time: {sub.took.toFixed(3)}s | Probability {((sub.start_probability * 1 + sub.end_probability * 1) / 2).toFixed(4)} [  {((sub.start_probability * 1) / 2).toFixed(4)} | {((sub.end_probability * 1) / 2).toFixed(4)} ]
+                                Time: {sub.took.toFixed(3)}s | Probability {(sub.probability * 1).toFixed(4)} [  {((sub.start_probability * 1) / 2).toFixed(4)} | {((sub.end_probability * 1) / 2).toFixed(4)} ]
                             </div>
                         </div>
                     )

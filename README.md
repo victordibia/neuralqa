@@ -1,9 +1,11 @@
 
 ## NeuralQA: Question Answering on Large Datasets with BERT
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 <img src="ui/public/images/screen.jpg">
 
-NeuralQA is an end-to-end application (passage retrieval, document reading, flexible UI) for question answering on large datasets. Passage retrieval is implemented using ElasticSearch, Document Reading is implemented using pretrained BERT models via the Huggingface transformer API; UI allows users to configure QA parameters and perform queries. An example query and response using a BERT model is shown below.
+NeuralQA is an end-to-end application (passage retrieval, document reading, [flexible UI](https://victordibia.github.io/neuralqa/)) for question answering on large datasets. Passage retrieval is implemented using ElasticSearch, Document Reading is implemented using pretrained BERT models via the Huggingface [transformers API](https://github.com/huggingface/transformers); UI allows users to configure QA parameters and perform queries. An example query and response using a BERT model is shown below.
 
 ```
 what is the sentence for arson crime?
@@ -13,14 +15,20 @@ what is the sentence for arson crime?
 BERT Answer: [1.01s] 18 years ’ imprisonment, but mitigated the sentence to 12 years because “ Defendant did not have any intent to injure the victim. ” See NMSA 1978, § 31 - 18 - 15. 1 ( 1979, as amended in 1993 ) ( allowing for mitigation of up to one - third of sentence, [0.26s] shooting at or from a motor vehicle
 ```
 
-
 The question answering workflow can be broken down into two main parts: 
 
 - Candidate document retrieval : retrieve a list of top `n` documents based on the search question/query. 
 - Document reading: identifying portions of each text that may contain an answer to the query.
 
-### Dataset
-The case law bulk dataset api is in jsonl contains properties for each case; we will be focusing on `casebody` field which has subfields such as `attorneys`, `corrections` etc. Main content is the `opinions` section which we will use for QA. Each case may have multiple `opinions` with multiple `opinion authors`.
+### What does NeuralQA Do?
+Do you have large dataset of documents for which you would like to extract answers? NeuralQA leverages state of the art deep learning models (BERT) to help you achieve this. It does the following
+
+- Import your documents into a search index (ElasticSearch)
+- Automatically segment large documents into smaller segments
+- For each search query, scan index, retrieve matched passages 
+- Launch a user interface that allows you perform search queries
+- 
+
 
 ## Candidate Document Retrieval
 For this task, we will use elastic search (mostly for its clean python api, ease of use). Elasticsearch is a search engine based on the Lucene library. It provides a distributed, multitenant-capable full-text search engine with an HTTP web interface and schema-free JSON documents. Other alternatives include Solr (also based on Lucene).
