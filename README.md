@@ -1,6 +1,8 @@
 
 ## NeuralQA: Question Answering on Large Datasets with BERT
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/github/license/victordibia/neuralqa?style=flat-square)](https://opensource.org/licenses/MIT)
+
+
 
 
 <img src="ui/public/images/screen.jpg">
