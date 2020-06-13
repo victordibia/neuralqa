@@ -18,7 +18,7 @@ class Header extends Component {
     constructor(props) {
         super(props)
 
-        this.appName = "CaseQA"
+        this.appName = "NeuralQA"
         this.appDescription = "Question Answering."
 
 

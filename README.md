@@ -1,9 +1,9 @@
 
-## CaseQA: Question Answering on Large Datasets with BERT
+## NeuralQA: Question Answering on Large Datasets with BERT
 
 <img src="ui/public/images/screen.jpg">
 
-This repo explores the end-to-end use case for question answering on a dataset of legal document (court cases from [case.law](http://case.law)). An example query and response using a BERT model is shown below.
+NeuralQA is an end-to-end application (passage retrieval, document reading, flexible UI) for question answering on large datasets. Passage retrieval is implemented using ElasticSearch, Document Reading is implemented using pretrained BERT models via the Huggingface transformer API; UI allows users to configure QA parameters and perform queries. An example query and response using a BERT model is shown below.
 
 ```
 what is the sentence for arson crime?

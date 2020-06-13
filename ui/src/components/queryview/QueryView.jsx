@@ -34,7 +34,7 @@ class QueryView extends Component {
         this.selectedDataset = 1
 
         this.state = {
-            apptitle: "CaseQA",
+            apptitle: "NeuralQA",
             passages: { "took": 0, hits: { hits: [] } },
             answers: { "took": 0, answers: [] },
             passageIsLoading: false,
@@ -273,29 +273,18 @@ class QueryView extends Component {
                 </div>
                 <div className="w100  displayblock   p10">
 
-                    <div className="iblock mr10 ">
-                        <div className="mediumdesc pb7 pt5"> Result Size <span className="boldtext"> {this.state.resultSize} </span> </div>
+                    <div className="  iblock mr10">
+                        <div className="mediumdesc pb7 pt5"> Dataset <span className="boldtext"> {this.state.dataset} </span> </div>
                         <Dropdown
-                            id="sizedropdown"
-                            label="Result Size"
-                            items={this.sizeOptions}
-                            initialSelectedItem={this.sizeOptions[0]}
+                            id="datasetdropdown"
+                            label="Dataset"
+                            items={this.datasetOptions}
+                            initialSelectedItem={this.datasetOptions[this.selectedDataset]}
                             itemToString={item => (item ? item.text : "")}
                             onChange={this.updateConfigParams.bind(this)}
                         />
                     </div>
 
-                    <div className="iblock mr10 ">
-                        <div className="mediumdesc pb7 pt5"> Highligh Span <span className="boldtext"> {this.state.highlightSpan} </span> </div>
-                        <Dropdown
-                            id="highlighdropdown"
-                            label="Highlight Span"
-                            items={this.highlightSpanOptions}
-                            initialSelectedItem={this.highlightSpanOptions[0]}
-                            itemToString={item => (item ? item.text : "")}
-                            onChange={this.updateConfigParams.bind(this)}
-                        />
-                    </div>
 
 
 
@@ -325,17 +314,32 @@ class QueryView extends Component {
                         />
                     </div>
 
-                    <div className="pl10 borderleftdash iblock mr10">
-                        <div className="mediumdesc pb7 pt5"> Dataset <span className="boldtext"> {this.state.dataset} </span> </div>
+                    {/* show IR search pipeline config is dataset is not manual  */}
+                    {this.state.dataset !== "manual" && <div className="pl10 borderleftdash iblock mr10 ">
+                        <div className="mediumdesc pb7 pt5">IR Result Size <span className="boldtext"> {this.state.resultSize} </span> </div>
                         <Dropdown
-                            id="datasetdropdown"
-                            label="Dataset"
-                            items={this.datasetOptions}
-                            initialSelectedItem={this.datasetOptions[this.selectedDataset]}
+                            id="sizedropdown"
+                            label="Result Size"
+                            items={this.sizeOptions}
+                            initialSelectedItem={this.sizeOptions[0]}
                             itemToString={item => (item ? item.text : "")}
                             onChange={this.updateConfigParams.bind(this)}
                         />
-                    </div>
+                    </div>}
+
+                    {this.state.dataset !== "manual" && <div className="iblock mr10 ">
+                        <div className="mediumdesc pb7 pt5"> IR Highlight Span <span className="boldtext"> {this.state.highlightSpan} </span> </div>
+                        <Dropdown
+                            id="highlighdropdown"
+                            label="Highlight Span"
+                            items={this.highlightSpanOptions}
+                            initialSelectedItem={this.highlightSpanOptions[0]}
+                            itemToString={item => (item ? item.text : "")}
+                            onChange={this.updateConfigParams.bind(this)}
+                        />
+                    </div>}
+
+
                 </div>
 
             </div>
@@ -344,9 +348,8 @@ class QueryView extends Component {
         return (
             <div>
                 <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
-                    <div className="boldtext mb5">{this.state.apptitle}:  Question Answering on Case Law Documents</div>
-                    {this.state.apptitle} is an interactive tool for exploring
-                    the two stage process of candidate retrieval and document reading required for question answering.
+                    <div className="boldtext mb5">{this.state.apptitle}:  Question Answering on Large Datasets</div>
+                    {this.state.apptitle} is an interactive tool for question answering (passage retrieval + document reading).
                     You can manually provide a passage or select a dataset to search from
                     (e.g. <a href="http://case.law" rel="noopener noreferrer" target="_blank">case.law</a> ) dataset under the QA configuration settings below.
 
