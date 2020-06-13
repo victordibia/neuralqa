@@ -23,11 +23,15 @@ The question answering workflow can be broken down into two main parts:
 ### What does NeuralQA Do?
 Do you have large dataset of documents for which you would like to extract answers? NeuralQA leverages state of the art deep learning models (BERT) to help you achieve this. It does the following
 
-- Import your documents into a search index (ElasticSearch)
-- Automatically segment large documents into smaller segments
-- For each search query, scan index, retrieve matched passages 
-- Launch a user interface that allows you perform search queries
-- 
+- Document Import 
+    - documents into a search index (ElasticSearch)
+    - Automatically segment large documents into smaller segments
+- Passage Retrieval
+    - For each search query, scan index, retrieve matched passages
+    - Optionally construct new passages from retrieved highlights
+    - Optionally apply contextual query enrichment  
+- Launch a user interface that allows you to perform search queries
+
 
 
 ## Candidate Document Retrieval
