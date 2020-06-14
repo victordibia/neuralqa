@@ -29,7 +29,7 @@ app = Flask(__name__, static_url_path='',
             template_folder=static_folder_root)
 
 
-cors = CORS(app)
+cors = CORS(app, headers='Content-Type')
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
@@ -48,7 +48,7 @@ def qa():
     return jsonify({})
 
 
-@app.route('/answer',  methods=['GET', 'POST'])
+@app.route('/answer', methods=['GET', 'POST'])
 def answer():
     global loaded_model_name, model, tokenizer, default_model_name
     """Generate an answer for the given search query. 
@@ -129,6 +129,7 @@ def answer():
 
 
 @app.route('/passages', methods=['GET', 'POST'])
+@cross_origin()
 def passages():
     """Get a list of passages and highlights that match the given search query
 

@@ -4,10 +4,12 @@
 
 
 
+<img width="30px" src="ui/public/images/icon.png"> NeuralQA
 
-<img src="ui/public/images/screen.jpg">
 
-NeuralQA is an end-to-end application (passage retrieval, document reading, [flexible UI](https://victordibia.github.io/neuralqa/)) for question answering on large datasets. Passage retrieval is implemented using ElasticSearch, Document Reading is implemented using pretrained BERT models via the Huggingface [transformers API](https://github.com/huggingface/transformers); UI allows users to configure QA parameters and perform queries. An example query and response using a BERT model is shown below.
+<img src="ui/public/images/architecture.png">
+
+NeuralQA is an end-to-end application (passage retrieval, document reading, [flexible UI](https://victordibia.github.io/neuralqa/)) for question answering on large datasets. Passage retrieval is implemented using ElasticSearch and Document Reading is implemented using pretrained BERT models via the Huggingface [transformers api](https://github.com/huggingface/transformers). An example query and response using a BERT model is shown below.
 
 ```
 what is the sentence for arson crime?

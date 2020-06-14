@@ -12,7 +12,7 @@ import React, { Component } from "react";
 import { Button, TextInput, TextArea, Loading, Dropdown } from 'carbon-components-react';
 import { postJSONData, SampleQA } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
-import * as _ from "lodash"
+// import * as _ from "lodash"
 
 // const { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } = DataTable;
 
@@ -32,7 +32,7 @@ class QueryView extends Component {
         this.selectedQaModel = 0
         this.selectedHighlightSpan = 0
         this.selectedChunkStride = 0
-        this.selectedDataset = 0
+        this.selectedDataset = 1
 
         this.state = {
             apptitle: "NeuralQA",

@@ -20,8 +20,6 @@ class Header extends Component {
 
         this.appName = "NeuralQA"
         this.appDescription = "Question Answering."
-
-
     }
     render() {
         return (
