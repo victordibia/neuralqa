@@ -4,7 +4,7 @@
 
 
 
-<img height="40px" src="ui/public/images/iconlogodark.png">
+<img height="30px" src="ui/public/images/iconlogodark.png">
 
 <img src="ui/public/images/architecture.png">
 
