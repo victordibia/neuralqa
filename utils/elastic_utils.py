@@ -65,7 +65,6 @@ def run_query(search_query, index_name=case_index_name):
     """Makes a query to the elastic search server with the given search_query parameters.
     Also returns opinion_excerpt script field, which is a substring of the first opinion in the case
 
-
     Arguments:
         search_query {[dictionary]} -- [contains a dictionary that corresponds to an elastic search query on the ]
 
@@ -79,7 +78,6 @@ def run_query(search_query, index_name=case_index_name):
 
 def test_connection():
     try:
-
         es.cluster.health(wait_for_status='yellow')
         return True
     except ConnectionError:
