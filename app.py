@@ -129,7 +129,6 @@ def answer():
 
 
 @app.route('/passages', methods=['GET', 'POST'])
-@cross_origin()
 def passages():
     """Get a list of passages and highlights that match the given search query
 
@@ -147,7 +146,7 @@ def passages():
         search_text = data["searchtext"]
         stride = data["searchtext"]
         highlight_span = data["highlightspan"]
-        model = data["model"]
+        model = data["modelname"]
 
     included_fields = ["name"]
 

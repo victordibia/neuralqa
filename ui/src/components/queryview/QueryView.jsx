@@ -62,7 +62,6 @@ class QueryView extends Component {
 
     componentDidMount() {
         this.askQuestion()
-
     }
 
     resetAnswer() {
@@ -189,7 +188,6 @@ class QueryView extends Component {
             case "dataset":
                 this.setState({ dataset: e.selectedItem.value })
                 break
-
             default:
                 break
         }

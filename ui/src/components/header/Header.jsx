@@ -39,7 +39,7 @@ class Header extends Component {
                                 <div className="whitetext boldtext  iblock mr10">  {this.appName} </div>
                             </div>
                             <div className="h100   flex flexjustifycenter  navbarlinks ">
-                                <NavLink exact to="/"> QA </NavLink>
+                                <NavLink exact to="/"> NeuralQA </NavLink>
                             </div>
                             {/* <div className="h100   flex flexjustifycenter  navbarlinks mr10">
                                 <NavLink exact to="/train"> Experiments</NavLink>
