@@ -31,9 +31,9 @@ class Header extends Component {
                     <div className="container-fluid w100 headerrow pl10 ">
 
                         <div className="flex    h100">
-                            <div className="h100   flex flexjustifycenter mr10 ">
+                            <div className="h100   flex flexjustifycenter mr10  ">
                                 <a href={process.env.PUBLIC_URL + "/#"}>
-                                    <img className="headericon" src="images/icon.png" alt="anomagram logo" />
+                                    <img className="headericon" src="images/icon.png" alt="NeuralQA logo" />
 
                                 </a>
                             </div>
@@ -41,7 +41,7 @@ class Header extends Component {
                                 <div className="whitetext boldtext  iblock mr10">  {this.appName} </div>
                             </div>
                             <div className="h100   flex flexjustifycenter  navbarlinks ">
-                                <NavLink exact to="/"> NeuralQA </NavLink>
+                                <NavLink exact to="/"> NeuralQA</NavLink>
                             </div>
                             {/* <div className="h100   flex flexjustifycenter  navbarlinks mr10">
                                 <NavLink exact to="/train"> Experiments</NavLink>

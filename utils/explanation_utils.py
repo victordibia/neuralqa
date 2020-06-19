@@ -25,7 +25,7 @@ def get_correct_span_mask(correct_index, token_size):
     return span_mask
 
 
-def get_connectivity(question, context, model, tokenizer):
+def get_gradient_connectivity(question, context, model, tokenizer):
     """ adapted from the excellent notebook by andreas madsen. 
 
     """

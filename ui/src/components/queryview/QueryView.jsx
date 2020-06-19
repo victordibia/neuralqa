@@ -354,7 +354,7 @@ class QueryView extends Component {
                 <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
                     <div className="boldtext mb5">{this.state.apptitle}:  Question Answering on Large Datasets</div>
                     {this.state.apptitle} is an interactive tool for question answering (passage retrieval + document reading).
-                    You can manually provide a passage or select a dataset to search from
+                    You can manually provide a passage or select a search index from
                     (e.g. <a href="http://case.law" rel="noopener noreferrer" target="_blank">case.law</a> ) dataset under the QA configuration settings below.
 
                     To begin, type in a question query below.
@@ -468,7 +468,7 @@ class QueryView extends Component {
                 }
 
                 {(!askedElapsed && answerList.length === 0 && !(this.state.answerIsLoading)) &&
-                    <div className="p10 lightgreyhighlight">
+                    <div className="p10 orangehighlight">
                         No answers found.
                     </div>
                 }
@@ -487,7 +487,7 @@ class QueryView extends Component {
                 }
 
                 {(!askedElapsed && passageList.length === 0 && this.state.dataset !== "manual" && !(this.state.passageIsLoading)) &&
-                    <div className="p10 lightgreyhighlight">
+                    <div className="p10 mt5 orangehighlight">
                         Your query did not match any passages. Try a different query.
                     </div>
                 }
