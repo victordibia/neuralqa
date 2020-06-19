@@ -1,10 +1,12 @@
 /**
  * @license
- * Copyright 2019 Victor Dibia. https://github.com/victordibia
- * Anomagram - Anomagram: Anomaly Detection with Autoencoders in the Browser.
+ * Copyright 2019 Fast Forward Labs.  
+ * Written by / Contact : https://github.com/victordibia
+ * NeuralQA - NeuralQA: Question Answering on Large Datasets with BERT.
  * Licensed under the MIT License (the "License"); 
  * =============================================================================
  */
+
 
 import React, { Component } from "react";
 import {

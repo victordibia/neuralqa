@@ -1,4 +1,14 @@
 
+#
+# @license
+# Copyright 2020 .
+# Written by / Contact : https://github.com/victordibia
+# NeuralQA - NeuralQA: Question Answering on Large Datasets with BERT.
+# Licensed under the MIT License (the "License");
+# =============================================================================
+# /
+
+
 import tensorflow as tf
 import numpy as np
 from transformers import AutoTokenizer, TFAutoModelForQuestionAnswering
@@ -104,3 +114,4 @@ def answer_question(question, context, model, tokenizer, max_chunk_size=512, str
         if len(answer["answer"]) > 2:
             answer_holder.append(answer)
     return answer_holder
+

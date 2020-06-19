@@ -2,7 +2,7 @@
  * @license
  * Copyright 2019 Fast Forward Labs.  
  * Written by / Contact : https://github.com/victordibia
- * CaseQA - CaseQA: Question Answering on Large Datasets with BERT.
+ * NeuralQA - NeuralQA: Question Answering on Large Datasets with BERT.
  * Licensed under the MIT License (the "License"); 
  * =============================================================================
  */

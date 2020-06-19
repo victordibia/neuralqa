@@ -1,3 +1,12 @@
+#
+# @license
+# Copyright 2020 .
+# Written by / Contact : https://github.com/victordibia
+# NeuralQA - NeuralQA: Question Answering on Large Datasets with BERT.
+# Licensed under the MIT License (the "License");
+# =============================================================================
+# /
+
 
 import lzma
 import os
