@@ -78,7 +78,6 @@ def answer():
         highlight_span = data["highlightspan"]
         model_name = data["modelname"]
 
-    print("*****>>>>>>>>", tokenizer)
     # load a different model if the selected model is different
     if(loaded_model_name != model_name):
         loaded_model_name, model, tokenizer = model_utils.load_model(

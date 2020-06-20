@@ -9,8 +9,8 @@
 
 
 import React, { Component } from "react";
-import { Button, TextInput, TextArea, Loading, Dropdown } from 'carbon-components-react';
-import { postJSONData, SampleQA } from "../helperfunctions/HelperFunctions"
+import { Button, Select, SelectItem, TextInput, TextArea, Loading } from 'carbon-components-react';
+import { postJSONData, SampleQA, abbreviateString } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
 // import * as _ from "lodash"
 
@@ -22,7 +22,7 @@ class QueryView extends Component {
         super(props)
 
         // Advanced options 
-        this.sizeOptions = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
+        this.iRSizeOptions = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
         this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
         this.highlightSpanOptions = [{ id: "opt4", text: "150", value: 150, type: "highlight" }, { id: "opt1", text: "450", value: 450, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
         this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
@@ -31,7 +31,7 @@ class QueryView extends Component {
         this.selectedSize = 0
         this.selectedQaModel = 0
         this.selectedHighlightSpan = 0
-        this.selectedChunkStride = 0
+        this.selectedChunkStride = 2
         this.selectedDataset = 1
 
         this.state = {
@@ -42,8 +42,8 @@ class QueryView extends Component {
             answerIsLoading: false,
             errorStatus: "",
             showAdvancedConfig: true,
-            showSearchConfig: false,
-            resultSize: this.sizeOptions[this.selectedSize].value,
+            showSearchConfig: true,
+            resultSize: this.iRSizeOptions[this.selectedSize].value,
             qaModelName: this.qaModelOptions[this.selectedQaModel].value,
             highlightSpan: this.highlightSpanOptions[this.selectedHighlightSpan].value,
             chunkStride: this.chunkStrideOptions[this.selectedChunkStride].value,
@@ -171,22 +171,25 @@ class QueryView extends Component {
 
     }
 
-    updateConfigParams(e) {
-        switch (e.selectedItem.type) {
+
+    updateConfigSelectParams(e) {
+        let configType = e.target.options[e.target.selectedIndex].getAttribute("type")
+        let selectedValue = e.target.options[e.target.selectedIndex].value
+        switch (configType) {
             case "size":
-                this.setState({ resultSize: e.selectedItem.value })
+                this.setState({ resultSize: selectedValue })
                 break
             case "model":
-                this.setState({ qaModelName: e.selectedItem.value })
+                this.setState({ qaModelName: selectedValue })
                 break
             case "stride":
-                this.setState({ chunkStride: e.selectedItem.value })
+                this.setState({ chunkStride: selectedValue })
                 break
             case "highlight":
-                this.setState({ highlightSpan: e.selectedItem.value })
+                this.setState({ highlightSpan: selectedValue })
                 break
             case "dataset":
-                this.setState({ dataset: e.selectedItem.value })
+                this.setState({ dataset: selectedValue })
                 break
             default:
                 break
@@ -194,6 +197,35 @@ class QueryView extends Component {
         this.resetAnswer()
     }
 
+    getSelectItems(selectData, defaultValue) {
+        let selectItems = selectData.map((data, i) => {
+            return (
+                <SelectItem key={"select" + data.type + i}
+                    value={data.value}
+                    text={data.text}
+                    type={data.type}
+                />
+            )
+        })
+
+        let selectElement = (<Select
+            id={selectData[0].type + "select"}
+            defaultValue={defaultValue}
+            hideLabel={true}
+            style={{ width: "100%" }}
+            onChange={this.updateConfigSelectParams.bind(this)}
+        >
+            {selectItems}
+        </Select>)
+
+        return selectElement
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // console.log("update occcured");
+
+
+    }
 
 
     render() {
@@ -256,6 +288,7 @@ class QueryView extends Component {
                 )
             })
 
+
         // Create sample qa passages for manual QA
         let qaSamples = this.state.sampleQA.map((data, index) => {
             return (
@@ -267,7 +300,7 @@ class QueryView extends Component {
 
         let askedElapsed = (new Date() - this.lastAsked) / 1000 > this.maxStatusElasped;
 
-        // Create configuration bar
+        // Create configuration bar 
         let configBar = (
             <div ref="modelconfigbar" style={{ zIndex: 100 }} className={"w100 unselectable greyhighlight   modelconfigbar "}>
 
@@ -275,79 +308,37 @@ class QueryView extends Component {
                     {<div className="smallblueball pulse iblock"></div>}
                     Select QA model configuration.
                 </div>
-                <div className="w100  displayblock   p10">
 
+                <div className="w100  displayblock   p10">
                     <div className="  iblock mr10">
                         <div className="mediumdesc pb7 pt5"> Dataset <span className="boldtext"> {this.state.dataset} </span> </div>
-                        <Dropdown
-                            id="datasetdropdown"
-                            label="Dataset"
-                            items={this.datasetOptions}
-                            initialSelectedItem={this.datasetOptions[this.selectedDataset]}
-                            itemToString={item => (item ? item.text : "")}
-                            onChange={this.updateConfigParams.bind(this)}
-                        />
+                        {this.getSelectItems(this.datasetOptions, this.datasetOptions[this.selectedDataset].value)}
                     </div>
-
-
-
 
                     <div className="pl10 borderleftdash iblock mr10">
-                        <div className="mediumdesc pb7 pt5"> QA Model <span className="boldtext"> {this.state.qaModelName} </span> </div>
-                        <Dropdown
-                            id="qamodeldropdown"
-                            label="QA Model"
-                            items={this.qaModelOptions}
-                            initialSelectedItem={this.qaModelOptions[0]}
-                            itemToString={item => (item ? item.text : "")}
-                            onChange={this.updateConfigParams.bind(this)}
-                        />
+                        <div className="mediumdesc pb7 pt5"> QA Model <span className="boldtext"> {abbreviateString(this.state.qaModelName, 16)} </span> </div>
+                        {this.getSelectItems(this.qaModelOptions, this.qaModelOptions[0].value)}
                     </div>
-
-
 
                     <div className="iblock mr10">
                         <div className="mediumdesc pb7 pt5"> Token Stride <span className="boldtext"> {this.state.chunkStride} </span> </div>
-                        <Dropdown
-                            id="stridedropdown"
-                            label="Token Stride"
-                            items={this.chunkStrideOptions}
-                            initialSelectedItem={this.chunkStrideOptions[0]}
-                            itemToString={item => (item ? item.text : "")}
-                            onChange={this.updateConfigParams.bind(this)}
-                        />
+                        {this.getSelectItems(this.chunkStrideOptions, this.chunkStrideOptions[0].value)}
                     </div>
 
                     {/* show IR search pipeline config is dataset is not manual  */}
                     {this.state.dataset !== "manual" && <div className="pl10 borderleftdash iblock mr10 ">
                         <div className="mediumdesc pb7 pt5">IR Result Size <span className="boldtext"> {this.state.resultSize} </span> </div>
-                        <Dropdown
-                            id="sizedropdown"
-                            label="Result Size"
-                            items={this.sizeOptions}
-                            initialSelectedItem={this.sizeOptions[0]}
-                            itemToString={item => (item ? item.text : "")}
-                            onChange={this.updateConfigParams.bind(this)}
-                        />
+                        {this.getSelectItems(this.iRSizeOptions, this.iRSizeOptions[0].value)}
                     </div>}
 
                     {this.state.dataset !== "manual" && <div className="iblock mr10 ">
                         <div className="mediumdesc pb7 pt5"> IR Highlight Span <span className="boldtext"> {this.state.highlightSpan} </span> </div>
-                        <Dropdown
-                            id="highlighdropdown"
-                            label="Highlight Span"
-                            items={this.highlightSpanOptions}
-                            initialSelectedItem={this.highlightSpanOptions[0]}
-                            itemToString={item => (item ? item.text : "")}
-                            onChange={this.updateConfigParams.bind(this)}
-                        />
+                        {this.getSelectItems(this.highlightSpanOptions, this.highlightSpanOptions[0].value)}
                     </div>}
-
-
                 </div>
-
             </div>
         )
+
 
         return (
             <div>
