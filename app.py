@@ -4,13 +4,13 @@ from flask_cors import CORS, cross_origin
 import os
 import logging
 import time
-from utils import elastic_utils, model_utils
+from utils import elastic_utils, model_utils, explanation_utils
 
 
 # load BERT QA model and tokenizer
-default_model_name = "distilbertcasedsquad2"
+default_model_name = "bertcasedsquad2"
 loaded_model_name, model, tokenizer = model_utils.load_model(
-    model_name="distilbertcasedsquad2")
+    model_name=default_model_name)
 
 # Check to ensure elastic data is loaded
 elastic_utils.es_setup()
@@ -127,6 +127,33 @@ def answer():
     return jsonify(response)
 
 
+@app.route('/explain', methods=['GET', 'POST'])
+def explain():
+    """Return  an explanation for a given model
+
+    Returns:
+        [dictionary]: [explanation , query, question, ]
+    """
+
+    question = "what is the height of the eiffel tower"
+    context = "the eiffel tower is 800m tall"
+
+    if request.method == "POST":
+        data = request.get_json()
+        question = data["question"]
+        context = data["context"]
+
+    gradients, token_words, token_types, answer_text = explanation_utils.explain_model(
+        question, context, model, tokenizer)
+    print(gradients)
+    explanation_result = {"gradients": gradients,
+                          "token_words": token_words,
+                          "token_types": token_types,
+                          "answer_text": answer_text
+                          }
+    return jsonify(explanation_result)
+
+
 @app.route('/passages', methods=['GET', 'POST'])
 def passages():
     """Get a list of passages and highlights that match the given search query
@@ -143,7 +170,6 @@ def passages():
         data = request.get_json()
         result_size = data["size"]
         search_text = data["searchtext"]
-        stride = data["searchtext"]
         highlight_span = data["highlightspan"]
         model = data["modelname"]
 

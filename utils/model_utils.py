@@ -78,8 +78,6 @@ def get_chunk_answer_span(inputs, model, tokenizer):
     start_time = time.time()
     answer_start_scores, answer_end_scores = model(inputs)
 
-    all_scores = answer_start_scores + answer_end_scores
-
     answer_start = tf.argmax(answer_start_scores, axis=1).numpy()[0]
     answer_end = (tf.argmax(answer_end_scores, axis=1) + 1).numpy()[0]
 
@@ -114,4 +112,3 @@ def answer_question(question, context, model, tokenizer, max_chunk_size=512, str
         if len(answer["answer"]) > 2:
             answer_holder.append(answer)
     return answer_holder
-
