@@ -69,8 +69,16 @@ def get_embedding_matrix(model):
 
 
 def get_gradient(question, context, model, tokenizer):
-    """ get gradients 
+    """Return gradient of input (question) wrt to model output span prediction
 
+    Args:
+        question (str): text of input question
+        context (str): text of question context/passage
+        model (QA model): Hugging Face BERT model for QA transformers.modeling_tf_distilbert.TFDistilBertForQuestionAnswering, transformers.modeling_tf_bert.TFBertForQuestionAnswering
+        tokenizer (tokenizer): transformers.tokenization_bert.BertTokenizerFast 
+
+    Returns:
+         (tuple): (gradients, token_words, token_types, answer_text)
     """
 
     embedding_matrix = get_embedding_matrix(model)
