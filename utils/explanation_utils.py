@@ -76,7 +76,7 @@ def get_gradient(question, context, model, tokenizer):
     embedding_matrix = get_embedding_matrix(model)
 
     encoded_tokens = tokenizer.encode_plus(
-        question, context, add_special_tokens=True, return_tensors="tf")
+        question, context, add_special_tokens=True, return_token_type_ids=True, return_tensors="tf")
     token_ids = list(encoded_tokens["input_ids"].numpy()[0])
     vocab_size = embedding_matrix.get_shape()[0]
 
