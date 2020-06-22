@@ -15,7 +15,7 @@ class Footer extends Component {
     render() {
         return (
             <div style={{ zIndex: 999000 }} className="centerpage pl10">
-                Made with <span className="redcolor">&#9829;</span> at <a href="https://experiments.fastforwardlabs.com/" target="blank">Cloudera Fast Forward Labs</a>.
+                &copy; NeuralQA 2020.
             </div>
         );
     }

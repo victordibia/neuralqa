@@ -22,7 +22,7 @@ class QueryView extends Component {
         super(props)
 
         // Advanced options 
-        this.iRSizeOptions = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
+        this.numPassages = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
         this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
         this.highlightSpanOptions = [{ id: "opt5", text: "50", value: 50, type: "highlight" }, { id: "opt4", text: "150", value: 150, type: "highlight" }, { id: "opt1", text: "450", value: 450, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
         this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
@@ -43,7 +43,7 @@ class QueryView extends Component {
             errorStatus: "",
             showAdvancedConfig: true,
             showSearchConfig: true,
-            resultSize: this.iRSizeOptions[this.selectedSize].value,
+            resultSize: this.numPassages[this.selectedSize].value,
             qaModelName: this.qaModelOptions[this.selectedQaModel].value,
             highlightSpan: this.highlightSpanOptions[this.selectedHighlightSpan].value,
             chunkStride: this.chunkStrideOptions[this.selectedChunkStride].value,
@@ -73,12 +73,12 @@ class QueryView extends Component {
     }
 
     askQuestion() {
-        let searchText = document.getElementById("questioninput").value
-        let contextText = document.getElementById("contextinput") ? document.getElementById("contextinput").value : null
+        let question = document.getElementById("questioninput").value
+        let context = document.getElementById("contextinput") ? document.getElementById("contextinput").value : null
         let postData = {
             size: this.state.resultSize,
-            contexttext: contextText || this.state.sampleQA[0].context,
-            searchtext: searchText || this.state.sampleQA[0].context,
+            context: context || this.state.sampleQA[0].context,
+            question: question || this.state.sampleQA[0].context,
             highlightspan: this.state.highlightSpan,
             modelname: this.state.qaModelName,
             dataset: this.state.dataset,
@@ -330,8 +330,8 @@ class QueryView extends Component {
 
                     {/* show IR search pipeline config is dataset is not manual  */}
                     {this.state.dataset !== "manual" && <div className="pl10 borderleftdash iblock mr10 ">
-                        <div className="mediumdesc pb7 pt5">IR Result Size <span className="boldtext"> {this.state.resultSize} </span> </div>
-                        {this.getSelectItems(this.iRSizeOptions, this.iRSizeOptions[0].value)}
+                        <div className="mediumdesc pb7 pt5"> Passages <span className="boldtext"> {this.state.resultSize} </span> </div>
+                        {this.getSelectItems(this.numPassages, this.numPassages[0].value)}
                     </div>}
 
                     {this.state.dataset !== "manual" && <div className="iblock mr10 ">
