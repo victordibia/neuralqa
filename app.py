@@ -8,7 +8,7 @@ from utils import elastic_utils, model_utils, explanation_utils
 
 
 # load BERT QA model and tokenizer
-default_model_name = "bertcasedsquad2"
+default_model_name = "distilbertcasedsquad2"
 loaded_model_name, model, tokenizer = model_utils.load_model(
     model_name=default_model_name)
 
@@ -61,18 +61,18 @@ def answer():
     """
     query_result = []
     result_size = 6
-    search_text = "what is a fourth amendment right violation? "
+    question = "what is a fourth amendment right violation? "
     highlight_span = 450
     model_name = default_model_name
     token_stride = 50
     context_dataset = "manual"
-    context_text = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
+    context = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
 
     if request.method == "POST":
         data = request.get_json()
         result_size = data["size"]
-        search_text = data["searchtext"]
-        context_text = data["contexttext"]
+        question = data["question"]
+        context = data["context"]
         context_dataset = data["dataset"]
         token_stride = int(data["stride"])
         highlight_span = data["highlightspan"]
@@ -88,7 +88,7 @@ def answer():
         "_source": included_fields,
         "query": {
             "multi_match": {
-                "query":    search_text,
+                "query":    question,
                 "fields": ["casebody.data.opinions.text", "name"]
             }
         },
@@ -109,7 +109,7 @@ def answer():
     # answer question based on provided context
     if (context_dataset == "manual"):
         answer = model_utils.answer_question(
-            search_text, context_text, model, tokenizer, stride=token_stride)
+            question, context, model, tokenizer, stride=token_stride)
         answer_holder.append(answer)
     # answer question based on retrieved passages from elastic search
     else:
@@ -119,7 +119,7 @@ def answer():
                 all_highlights = " ".join(
                     hit["highlight"]["casebody.data.opinions.text"])
                 answer = model_utils.answer_question(
-                    search_text, all_highlights, model, tokenizer, stride=token_stride)
+                    question, all_highlights, model, tokenizer, stride=token_stride)
                 answer_holder.append(answer)
 
     elapsed_time = time.time() - start_time
@@ -145,7 +145,7 @@ def explain():
 
     gradients, token_words, token_types, answer_text = explanation_utils.explain_model(
         question, context, model, tokenizer)
-    print(gradients)
+
     explanation_result = {"gradients": gradients,
                           "token_words": token_words,
                           "token_types": token_types,
@@ -162,14 +162,14 @@ def passages():
         dictionary -- contains details on elastic search results.
     """
     query_result = []
-    result_size, search_text, = 5, "motion in arrest judgment"
+    result_size, question, = 5, "motion in arrest judgment"
     opinion_excerpt_length = 500
     highlight_span = 350
 
     if request.method == "POST":
         data = request.get_json()
         result_size = data["size"]
-        search_text = data["searchtext"]
+        question = data["searchtext"]
         highlight_span = data["highlightspan"]
         model = data["modelname"]
 
@@ -181,7 +181,7 @@ def passages():
         "_source": included_fields,
         "query": {
             "multi_match": {
-                "query":    search_text,
+                "query":    question,
                 "fields": ["casebody.data.opinions.text", "name"]
             }
         },
