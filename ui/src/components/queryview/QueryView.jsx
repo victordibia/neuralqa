@@ -24,7 +24,7 @@ class QueryView extends Component {
         // Advanced options 
         this.numPassages = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
         this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
-        this.highlightSpanOptions = [{ id: "opt5", text: "50", value: 50, type: "highlight" }, { id: "opt4", text: "150", value: 150, type: "highlight" }, { id: "opt1", text: "450", value: 450, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
+        this.highlightSpanOptions = [{ id: "opt5", text: "150", value: 150, type: "highlight" }, { id: "opt4", text: "250", value: 250, type: "highlight" }, { id: "opt1", text: "350", value: 350, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
         this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
         this.datasetOptions = [{ id: "opt1", text: "Case Law", value: "caselaw", type: "dataset" }, { id: "opt2", text: "Manual", value: "manual", type: "dataset" }]
 
@@ -49,7 +49,8 @@ class QueryView extends Component {
             chunkStride: this.chunkStrideOptions[this.selectedChunkStride].value,
             dataset: this.datasetOptions[this.selectedDataset].value,
             sampleQA: SampleQA(),
-            selectedSampleIndex: 0
+            selectedSampleIndex: 0,
+            showAllAnswers: true,
         }
 
         this.serverBasePath = "http://localhost:3008"
@@ -104,12 +105,7 @@ class QueryView extends Component {
         let answers = postJSONData(answerUrl, postData)
         answers.then((data) => {
             if (data) {
-
-                // sort data by the probability score 
-                // data.answers = _.sortBy(data.answers, [function (o) { return o.probability; }]).reverse()
-                // console.log(data.answers);
-
-                // data = _.sortBy(data, [function (o) { return o.probability; }])
+                // console.log(data)
                 this.setState({ answers: data, errorStatus: "" })
                 setTimeout(() => {
                     this.setState({ answerIsLoading: false })
@@ -264,29 +260,19 @@ class QueryView extends Component {
         })
 
         // Create list view for answers
-        let answerList = this.state.answers.answers
-            .filter((data) => {
-                if (data.length > 0) {
-                    return true
-                } else {
-                    return false
-                }
-            })
+        let answerList = this.state.answers.answers.slice(0, this.state.showAllAnswers ? this.state.answers.answers.length : 1)
             .map((data, index) => {
-                let answerSubSpan = data.map((sub, subindex) => {
-                    return (
-                        <div className={"answersubrow " + (data.length > 1 ? " underline " : "")} key={"answersubrow" + subindex}>
-                            <span className="answerquote">&#8220;</span> {sub.answer} <span className="pt10 answerquote">&#8221;</span>
-                            <div className="smalldesc pt5">
-                                Time: {sub.took.toFixed(3)}s | Probability {(sub.probability * 1).toFixed(4)} [  {((sub.start_probability * 1) / 2).toFixed(4)} | {((sub.end_probability * 1) / 2).toFixed(4)} ]
-                            </div>
-                        </div>
-                    )
-                })
                 return (
-                    <div className="flex  p10 answerrow" key={"answerrow" + index}>
-                        <div className="answerrowtitletag mr10"> A{index} </div>
-                        <div className="flexfull"> {answerSubSpan}</div>
+                    <div className={"flex  p10 answerrow " + (index === 0 ? "topanswer" : "")} key={"answerrow" + index}>
+                        <div className="answerrowtitletag mr10"> A{data.index} </div>
+                        <div className="flexfull">
+                            <div className="smalldesc pt5">
+                                Time: {data.took.toFixed(3)}s | {(data.probability * 1).toFixed(4)}
+                                {/* | Total Probability {(data.probability * 1).toFixed(4)} [  {((data.start_probability * 1) / 2).toFixed(4)} | {((data.end_probability * 1) / 2).toFixed(4)} ] */}
+                            </div>
+                            <span className="answerquote">&#8220;</span> {data.answer} <span className="pt10 answerquote">&#8221;</span>
+
+                        </div>
                     </div>
                 )
             })
@@ -489,6 +475,8 @@ class QueryView extends Component {
                 {/* {askedElapsed + ""} bingo */}
                 <br />
                 <br />
+                <br />
+
 
             </div>
 

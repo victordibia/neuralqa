@@ -27,9 +27,7 @@ class Header extends Component {
         return (
             <div>
                 <div className="headermain" aria-label={this.appDescription}>
-
                     <div className="container-fluid w100 headerrow pl10 ">
-
                         <div className="flex    h100">
                             <div className="h100   flex flexjustifycenter mr10  ">
                                 <a href={process.env.PUBLIC_URL + "/#"}>

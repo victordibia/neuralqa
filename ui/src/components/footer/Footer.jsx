@@ -15,7 +15,7 @@ class Footer extends Component {
     render() {
         return (
             <div style={{ zIndex: 999000 }} className="centerpage pl10">
-                &copy; NeuralQA 2020.
+                &copy; <a href="https://github.com/victordibia/neuralqa" target="blank">NeuralQA</a> 2020.
             </div>
         );
     }
