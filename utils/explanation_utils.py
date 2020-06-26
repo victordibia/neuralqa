@@ -78,7 +78,7 @@ def get_gradient(question, context, model, tokenizer):
         tokenizer (tokenizer): transformers.tokenization_bert.BertTokenizerFast 
 
     Returns:
-         (tuple): (gradients, token_words, token_types, answer_text)
+        (tuple): (gradients, token_words, token_types, answer_text)
     """
 
     embedding_matrix = get_embedding_matrix(model)
