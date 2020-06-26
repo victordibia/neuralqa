@@ -9,7 +9,7 @@
     margin-bottom: 5px;
 }
 
-.highlightsection > em{
+.highlightsection > em, .contextrow > em {
     background-color: #fcfcaa;
     padding: 0px 5px 0px 5px;
     border: 1px solid rgb(197, 197, 197);
@@ -51,12 +51,11 @@
 .topanswer{
     border: 2px solid rgb(253, 162, 42);
 }
-.answerrow{
-   
+.answerrow{ 
     margin: 0px 0px 3px 0px;
-    background-color: rgb(244, 244, 244);
-    
+    background-color: rgb(244, 244, 244);  
 }
+ 
 .contextinputarea{
     min-height: 120px;
 }

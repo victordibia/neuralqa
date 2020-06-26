@@ -30,7 +30,7 @@ class QueryView extends Component {
 
         this.selectedSize = 0
         this.selectedQaModel = 0
-        this.selectedHighlightSpan = 0
+        this.selectedHighlightSpan = 1
         this.selectedChunkStride = 2
         this.selectedDataset = 1
 
@@ -265,13 +265,14 @@ class QueryView extends Component {
                 return (
                     <div className={"flex  p10 answerrow " + (index === 0 ? "topanswer" : "")} key={"answerrow" + index}>
                         <div className="answerrowtitletag mr10"> A{data.index} </div>
-                        <div className="flexfull">
+                        <div className="flexfull mediumdesc lhmedium">
                             <div className="smalldesc pt5">
                                 Time: {data.took.toFixed(3)}s | {(data.probability * 1).toFixed(4)}
                                 {/* | Total Probability {(data.probability * 1).toFixed(4)} [  {((data.start_probability * 1) / 2).toFixed(4)} | {((data.end_probability * 1) / 2).toFixed(4)} ] */}
                             </div>
-                            <span className="answerquote">&#8220;</span> {data.answer} <span className="pt10 answerquote">&#8221;</span>
+                            <div className="boldtext">  <span className="answerquote">&#8220;</span> {data.answer} <span className="pt10 answerquote">&#8221;</span> </div>
 
+                            <div className="p10 mt10 contextrow lightgreyhighlight" dangerouslySetInnerHTML={{ __html: data.context }} />
                         </div>
                     </div>
                 )
