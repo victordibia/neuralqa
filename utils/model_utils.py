@@ -81,8 +81,7 @@ def get_chunk_answer_span(inputs, model, tokenizer):
     # if model predict first token 0 which is in the question as part of the answer, return nothing
     if answer_start == 0:
         answer = ""
-    print(">>>",  answer_start, answer_end,
-          len(inputs["input_ids"][0]), answer)
+
     elapsed_time = time.time() - start_time
     return {"answer": answer, "took": elapsed_time,
             "start_probability": str(answer_start_softmax_probability),
@@ -145,6 +144,7 @@ def answer_question(question, context, model, tokenizer, max_chunk_size=512, str
         answer = get_chunk_answer_span(model_input, model, tokenizer)
         if len(answer["answer"]) > 2:
             answer["question"] = question
-            answer["context"] = chunk["context"].replace("##", "")
+            answer["context"] = chunk["context"].replace("##", "").replace(
+                answer["answer"], " <em>" + answer["answer"] + "</em> ")
             answer_holder.append(answer)
     return answer_holder
