@@ -51,11 +51,13 @@ class QueryView extends Component {
             sampleQA: SampleQA(),
             selectedSampleIndex: 0,
             showAllAnswers: true,
+            explanations: {}
         }
 
         this.serverBasePath = "http://localhost:3008"
         this.passageEndpoint = "/passages"
         this.answerEndpoint = "/answer"
+        this.explainEndpoint = "/explain"
         this.interfaceTimedDelay = 400
         this.maxStatusElasped = 6  // Remove error/status msgs after maxStatusElasped secs
 
@@ -69,7 +71,8 @@ class QueryView extends Component {
         this.setState({
             passages: { "took": 0, hits: { hits: [] } },
             answers: { "took": 0, answers: [] },
-            errorStatus: ""
+            errorStatus: "",
+            explanations: {}
         })
     }
 
@@ -155,7 +158,6 @@ class QueryView extends Component {
 
     toggleSearchConfig(e) {
         this.setState({ showSearchConfig: !(this.state.showSearchConfig) })
-
     }
 
     clickSampleQuestion(e) {
@@ -166,8 +168,41 @@ class QueryView extends Component {
         }, () => {
             this.askQuestion()
         })
+    }
 
+    getExplanation(selectedAnswerId) {
+        let self = this
+        let answerData = this.state.answers.answers[selectedAnswerId]
+        let postData = {
+            question: answerData.question,
+            context: answerData.context
+        }
+        // console.log(postData);
 
+        this.setState({ answerIsLoading: true })
+        let explainUrl = this.serverBasePath + this.explainEndpoint
+
+        let explanation = postJSONData(explainUrl, postData)
+        explanation.then((data) => {
+            if (data) {
+                let explanationHolder = this.state.explanations
+                explanationHolder[selectedAnswerId] = data
+                this.setState({ explanations: explanationHolder })
+                // console.log(data);
+                setTimeout(() => {
+                    this.setState({ answerIsLoading: false })
+                }, this.interfaceTimedDelay);
+            }
+        })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+                self.setState({ answerIsLoading: false, errorStatus: "Failed to fetch explainations. Explaination server may need to be restarted." })
+            });
+    }
+    clickExplainButton(e) {
+        console.log(e.target.getAttribute("id"));
+        let selectedAnswerId = e.target.getAttribute("id")
+        this.getExplanation(selectedAnswerId)
     }
 
 
@@ -206,7 +241,6 @@ class QueryView extends Component {
                 />
             )
         })
-
         let selectElement = (<Select
             id={selectData[0].type + "select"}
             defaultValue={defaultValue}
@@ -221,10 +255,9 @@ class QueryView extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // console.log("update occcured");
-
-
     }
+
+
 
 
     render() {
@@ -262,17 +295,39 @@ class QueryView extends Component {
         // Create list view for answers
         let answerList = this.state.answers.answers.slice(0, this.state.showAllAnswers ? this.state.answers.answers.length : 1)
             .map((data, index) => {
+                let explanationsList = []
+                if (this.state.explanations[index]) {
+                    explanationsList = this.state.explanations[index].token_words.map((xdata, xindex) => {
+                        return (
+                            <span style={{ backgroundColor: "rgba(0, 98, 255, " + this.state.explanations[index].gradients[xindex] + ")" }} className="explanationspan" key={"expspan" + index + "" + xindex}>
+                                {xdata} &nbsp;
+                            </span>
+                        )
+                    })
+                }
                 return (
                     <div className={"flex  p10 answerrow " + (index === 0 ? "topanswer" : "")} key={"answerrow" + index}>
                         <div className="answerrowtitletag mr10"> A{data.index} </div>
                         <div className="flexfull mediumdesc lhmedium">
-                            <div className="smalldesc pt5">
-                                Time: {data.took.toFixed(3)}s | {(data.probability * 1).toFixed(4)}
-                                {/* | Total Probability {(data.probability * 1).toFixed(4)} [  {((data.start_probability * 1) / 2).toFixed(4)} | {((data.end_probability * 1) / 2).toFixed(4)} ] */}
-                            </div>
-                            <div className="boldtext">  <span className="answerquote">&#8220;</span> {data.answer} <span className="pt10 answerquote">&#8221;</span> </div>
+                            <div>
+                                <div className="smalldesc pt5">
+                                    Time: {data.took.toFixed(3)}s | {(data.probability * 1).toFixed(4)}
+                                    {/* | Total Probability {(data.probability * 1).toFixed(4)} [  {((data.start_probability * 1) / 2).toFixed(4)} | {((data.end_probability * 1) / 2).toFixed(4)} ] */}
+                                </div>
+                                <div className="boldtext">  <span className="answerquote">&#8220;</span> {data.answer} <span className="pt10 answerquote">&#8221;</span> </div>
 
-                            <div className="p10 mt10 contextrow lightgreyhighlight" dangerouslySetInnerHTML={{ __html: data.context }} />
+                                <div className="p10 mt10 mb10 contextrow lightgreyhighlight" dangerouslySetInnerHTML={{ __html: data.context }} />
+                                <Button
+                                    id={index}
+                                    onClick={this.clickExplainButton.bind(this)}
+                                    size="small"
+                                > Explain </Button>
+                            </div>
+
+                            {this.state.explanations[index] &&
+                                <div className="mt10 ">
+                                    {explanationsList}
+                                </div>}
                         </div>
                     </div>
                 )
@@ -387,7 +442,6 @@ class QueryView extends Component {
                     </div>
 
                     <div> <Button
-
                         onClick={this.askQuestionButtonClick.bind(this)}
                         size="field"> Get Answer </Button>
                     </div>

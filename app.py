@@ -108,20 +108,28 @@ def answer():
 
     # answer question based on provided context
     if (context_dataset == "manual"):
-        answer = model_utils.answer_question(
+        answers = model_utils.answer_question(
             question, context, model, tokenizer, stride=token_stride)
-        answer_holder.append(answer)
+        for answer in answers:
+            answer["index"] = 0
+            answer_holder.append(answer)
     # answer question based on retrieved passages from elastic search
     else:
         query_result = elastic_utils.run_query(search_query)
         for i, hit in enumerate(query_result["hits"]["hits"]):
             if ("casebody.data.opinions.text" in hit["highlight"]):
-                all_highlights = " ".join(
+                # context passage is a concatenation of highlights
+                context = " .. ".join(
                     hit["highlight"]["casebody.data.opinions.text"])
-                answer = model_utils.answer_question(
-                    question, all_highlights, model, tokenizer, stride=token_stride)
-                answer_holder.append(answer)
+                answers = model_utils.answer_question(
+                    question, context, model, tokenizer, stride=token_stride)
+                for answer in answers:
+                    answer["index"] = i
+                    answer_holder.append(answer)
 
+    # sort answers by probability
+    answer_holder = sorted(
+        answer_holder, key=lambda k: k['probability'], reverse=True)
     elapsed_time = time.time() - start_time
     response = {"answers": answer_holder, "took": elapsed_time}
     return jsonify(response)
@@ -141,15 +149,16 @@ def explain():
     if request.method == "POST":
         data = request.get_json()
         question = data["question"]
-        context = data["context"]
+        context = data["context"].replace("<em>", "").replace("</em>", "")
 
+    print(" ))>>", question)
     gradients, token_words, token_types, answer_text = explanation_utils.explain_model(
         question, context, model, tokenizer)
 
     explanation_result = {"gradients": gradients,
                           "token_words": token_words,
                           "token_types": token_types,
-                          "answer_text": answer_text
+                          "answer": answer_text
                           }
     return jsonify(explanation_result)
 
@@ -169,7 +178,7 @@ def passages():
     if request.method == "POST":
         data = request.get_json()
         result_size = data["size"]
-        question = data["searchtext"]
+        question = data["question"]
         highlight_span = data["highlightspan"]
         model = data["modelname"]
 
