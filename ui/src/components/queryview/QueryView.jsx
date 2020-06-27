@@ -75,8 +75,14 @@ class QueryView extends Component {
             explanations: {}
         })
     }
+    resetExplanations() {
+        this.setState({
+            explanations: {}
+        })
+    }
 
     askQuestion() {
+        this.resetExplanations()
         let question = document.getElementById("questioninput").value
         let context = document.getElementById("contextinput") ? document.getElementById("contextinput").value : null
         let postData = {

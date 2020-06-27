@@ -22,9 +22,9 @@ BERT Answer: [1.01s] 18 years ’ imprisonment, but mitigated the sentence to 12
 The question answering workflow can be broken down into two main parts: 
 
 - Candidate document retrieval : retrieve a list of top `n` documents based on the search question/query. 
-- Document reading: identifying portions of each text that may contain an answer to the query.
+- Document reading: identifying portions of seach text that may contain an answer to the query.
 
-### What does NeuralQA Do?
+### What does NeuralQA Do?s
 <img width="100%" src="ui/public/images/manual.jpg">
 
 Do you have large dataset of documents for which you would like to extract answers? NeuralQA leverages state of the art deep learning models (BERT) to help you achieve this. It does the following
@@ -36,6 +36,8 @@ Do you have large dataset of documents for which you would like to extract answe
     - For each search query, scan index, retrieve matched passages
     - Optionally construct new passages from retrieved highlights
     - Optionally apply contextual query enrichment  
+- Explanation
+    - Provide explanations for answer queries.
 - Launch a user interface that allows you to perform search queries
 
 
