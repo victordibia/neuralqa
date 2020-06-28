@@ -49,7 +49,8 @@
     line-height: 1.2em;
 }
 .topanswer{
-    border: 2px solid rgb(253, 162, 42);
+    /* border: 2px solid rgb(253, 162, 42); */
+    border: 2px solid #0062FF; 
 }
 .answerrow{ 
     margin: 0px 0px 3px 0px;

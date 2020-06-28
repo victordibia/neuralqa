@@ -105,4 +105,4 @@ def es_setup():
             if ("json" in case_data_file):
                 create_case_index("data/" + case_data_file)
     else:
-        logging.info(">> Data files already exist")
+        logging.info(">> Data files and index already exist")

@@ -1,0 +1,39 @@
+appName: neuralqa
+logLevel: WARN
+
+aknots: libra
+
+ui:
+  backend:
+    host: localhost
+    port: 3008
+  frontend:
+    view:
+      advanced: False
+      samples: False
+      passages: True
+      explanations: True
+
+index:
+  - caselaw:
+    name: Case Law
+    index: cases
+    host: localhost
+    port: 9200
+  - supremecourt:
+    name: Supreme Court Docs
+    index: supremecourt
+    host: localhost
+    port: 9200
+
+models:
+  supported:
+    - bertsquad2:
+      name: distillbertsquad2
+      link: distillbertsquad2
+    - distillbertsquad2:
+      name: distillbertsquad2
+      link: distillbertsquad2
+    - distillbertsquad1:
+      name: distillbertsquad1
+      link: distillbertsquad1

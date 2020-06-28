@@ -41,8 +41,9 @@ class QueryView extends Component {
             passageIsLoading: false,
             answerIsLoading: false,
             errorStatus: "",
-            showAdvancedConfig: true,
+            showAdvancedConfig: false,
             showSearchConfig: true,
+            showSamples: false,
             resultSize: this.numPassages[this.selectedSize].value,
             qaModelName: this.qaModelOptions[this.selectedQaModel].value,
             highlightSpan: this.highlightSpanOptions[this.selectedHighlightSpan].value,
@@ -302,10 +303,11 @@ class QueryView extends Component {
         let answerList = this.state.answers.answers.slice(0, this.state.showAllAnswers ? this.state.answers.answers.length : 1)
             .map((data, index) => {
                 let explanationsList = []
-                if (this.state.explanations[index]) {
-                    explanationsList = this.state.explanations[index].token_words.map((xdata, xindex) => {
+                let currentExplanation = this.state.explanations[index]
+                if (currentExplanation) {
+                    explanationsList = currentExplanation.token_words.map((xdata, xindex) => {
                         return (
-                            <span style={{ backgroundColor: "rgba(0, 98, 255, " + this.state.explanations[index].gradients[xindex] + ")" }} className="explanationspan" key={"expspan" + index + "" + xindex}>
+                            <span style={{ backgroundColor: "rgba(0, 98, 255, " + currentExplanation.gradients[xindex] + ")" }} className="explanationspan" key={"expspan" + index + "" + xindex}>
                                 {xdata} &nbsp;
                             </span>
                         )
@@ -321,16 +323,18 @@ class QueryView extends Component {
                                     {/* | Total Probability {(data.probability * 1).toFixed(4)} [  {((data.start_probability * 1) / 2).toFixed(4)} | {((data.end_probability * 1) / 2).toFixed(4)} ] */}
                                 </div>
                                 <div className="boldtext">  <span className="answerquote">&#8220;</span> {data.answer} <span className="pt10 answerquote">&#8221;</span> </div>
+                                {!currentExplanation && <div>
+                                    <div className="p10 mt10 mb10 contextrow lightgreyhighlight" dangerouslySetInnerHTML={{ __html: data.context }} />
+                                    <Button
+                                        id={index}
+                                        onClick={this.clickExplainButton.bind(this)}
+                                        size="small"
+                                    > Explain </Button>
+                                </div>}
 
-                                <div className="p10 mt10 mb10 contextrow lightgreyhighlight" dangerouslySetInnerHTML={{ __html: data.context }} />
-                                <Button
-                                    id={index}
-                                    onClick={this.clickExplainButton.bind(this)}
-                                    size="small"
-                                > Explain </Button>
                             </div>
 
-                            {this.state.explanations[index] &&
+                            {currentExplanation &&
                                 <div className="mt10 ">
                                     {explanationsList}
                                 </div>}
@@ -426,7 +430,7 @@ class QueryView extends Component {
                     </div>}
                 </div>
 
-                {this.state.dataset === "manual" &&
+                {(this.state.dataset === "manual" && this.state.showSamples) &&
                     <div className=" mb10">
                         <div className="smalldesc p5"> Select any sample question/passage pair below </div>
                         {qaSamples}

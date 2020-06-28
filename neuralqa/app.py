@@ -29,23 +29,12 @@ app = Flask(__name__, static_url_path='',
             template_folder=static_folder_root)
 
 
-cors = CORS(app, headers='Content-Type')
-app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app)
 
 
 @app.route('/')
 def hello():
     return render_template('index.html')
-
-
-@app.route('/test')
-def test():
-    return "render_template('index.html')"
-
-
-@app.route('/qa',  methods=['GET', 'POST'])
-def qa():
-    return jsonify({})
 
 
 @app.route('/answer', methods=['GET', 'POST'])
@@ -151,7 +140,6 @@ def explain():
         question = data["question"]
         context = data["context"].replace("<em>", "").replace("</em>", "")
 
-    print(" ))>>", question)
     gradients, token_words, token_types, answer_text = explanation_utils.explain_model(
         question, context, model, tokenizer)
 
