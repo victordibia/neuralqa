@@ -54,3 +54,13 @@ In this note, we will discuss some implementation decisions made while designing
 - Leveraging signals from highlights provided by IR methods goes a long way in making BERT practical for use today.
 - On a commercial CPU laptop it takes about 0.3 seconds for BERT to read a relatively short passage (200 words)
 - While IR will frequently return snippets that are relevant, there is still additional human effort required to parse each of these snippets and examine the surrounding area for clues towards the answer. This is where a BERT QA  can indeed serve to reduce this effort significantly. By surfacing snippets, the BERT model either address the users requirement immediately, or serve as an index into the larger document for further exploration.
+
+
+Other implementation notes
+
+## Serving UI/API
+- Serve both ui and api over same backend api. This simplifies build in that we can think of /ui as just another api end point. Users can still run the backend without the ui as long as they conform to api standards.  
+Caveat .. some want to have varies exposures.
+- expose front end but not api. Only front end should be able to call api
+- expose api to specific internal applications.
+- expose api to any applicaation
