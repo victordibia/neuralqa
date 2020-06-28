@@ -41,7 +41,7 @@ class QueryView extends Component {
             passageIsLoading: false,
             answerIsLoading: false,
             errorStatus: "",
-            showAdvancedConfig: false,
+            showAdvancedConfig: true,
             showSearchConfig: true,
             showSamples: false,
             resultSize: this.numPassages[this.selectedSize].value,
