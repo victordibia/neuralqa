@@ -28,12 +28,15 @@ index:
 
 models:
   supported:
+    - distilbertsquad2:
+      name: distilbertsquad2
+      path: twmkn9/distilbert-base-uncased-squad2
+      type: distilbert
     - bertsquad2:
-      name: distillbertsquad2
-      link: distillbertsquad2
-    - distillbertsquad2:
-      name: distillbertsquad2
-      link: distillbertsquad2
-    - distillbertsquad1:
+      name: bertsquad2
+      path: deepset/bert-base-cased-squad2
+      type: bert
+    - bertlargesquad2:
       name: distillbertsquad1
-      link: distillbertsquad1
+      path: deepset/bert-large-uncased-whole-word-masking-squad2
+      type: bert
