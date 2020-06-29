@@ -19,5 +19,12 @@ def ui(host, port):
     _run_server(host, port)
 
 
+@cli.command()
+@cli_args.HOST
+@cli_args.PORT
+def run(host, port):
+    _run_server(host, port)
+
+
 if __name__ == '__main__':
     cli()

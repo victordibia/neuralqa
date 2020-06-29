@@ -10,7 +10,7 @@ import logging
 class BertModel(Model):
     def __init__(self, model_name, model_path, model_type="bert", **kwargs):
         Model.__init__(self, model_name, model_path, model_type)
-        self.load_model(model_name, model_path, model_type)
+        # self.load_model(model_name, model_path, model_type)
 
     def get_best_start_end_position(self, start_scores, end_scores):
         answer_start = tf.argmax(start_scores, axis=1).numpy()[0]
@@ -32,8 +32,8 @@ class BertModel(Model):
         answer_end_softmax_probability = tf.nn.softmax(
             answer_end_scores, axis=1).numpy()[0][answer_end]
 
-        answer = self.tokenizer.convert_tokens_to_string(
-            inputs["input_ids"][0][answer_start:answer_end]).replace("[CLS]", "").replace("[SEP]", "")
+        answer = self.tokenizer.decode(
+            inputs["input_ids"][0][answer_start:answer_end], skip_special_tokens=True)
 
         # if model predict first token 0 which is in the question as part of the answer, return nothing
         if answer_start == 0:
@@ -82,7 +82,7 @@ class BertModel(Model):
 
             chunk_holder.append(
                 {"token_ids": token_chunk,
-                 "context": self.tokenizer.convert_tokens_to_string(context_tokens[current_pos: end_point]),
+                 "context": self.tokenizer.decode(context_tokens[current_pos: end_point], skip_special_tokens=True),
                  "attention_mask":  attention_mask,
                  "token_type_ids": token_type_ids
                  })
