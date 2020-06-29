@@ -311,6 +311,15 @@
    -webkit-transition: opacity .3s ease-in-out;
 }
 
+.transitionoh4s{
+    border: 1px solid pink;
+    transition: opacity 0.4s ease-in-out;
+    -webkit-transition: opacity 0.4s ease-in-out; 
+
+    /* transition: height .4s ease-in-out;  */
+   -webkit-transition: height 1.4s ease-in-out; 
+}
+
 .glowbar { 
     height: 0.24em;
     background: rgb(106, 107, 107) ;
