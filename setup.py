@@ -20,7 +20,7 @@ ui_files = package_files("neuralqa/server/ui/build")
 setup(
     name='neuralqa',
     packages=find_packages(exclude=['tests', 'tests.*']),
-    # package_data={"neuralqa": ui_files},
+    package_data={"neuralqa": ui_files},
     version=version,
     license='MIT',
     description='NeuralQA: Question Answering on Large Datasets',

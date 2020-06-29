@@ -42,7 +42,7 @@ class QueryView extends Component {
             answerIsLoading: false,
             errorStatus: "",
             showAdvancedConfig: true,
-            showSearchConfig: true,
+            showSearchConfig: false,
             showSamples: true,
             resultSize: this.numPassages[this.selectedSize].value,
             qaModelName: this.qaModelOptions[this.selectedQaModel].value,
