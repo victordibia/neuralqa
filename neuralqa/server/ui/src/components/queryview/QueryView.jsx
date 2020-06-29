@@ -43,7 +43,7 @@ class QueryView extends Component {
             errorStatus: "",
             showAdvancedConfig: true,
             showSearchConfig: true,
-            showSamples: false,
+            showSamples: true,
             resultSize: this.numPassages[this.selectedSize].value,
             qaModelName: this.qaModelOptions[this.selectedQaModel].value,
             highlightSpan: this.highlightSpanOptions[this.selectedHighlightSpan].value,
@@ -55,7 +55,7 @@ class QueryView extends Component {
             explanations: {}
         }
 
-        this.serverBasePath = "http://localhost:3008"
+        this.serverBasePath = "http://" + window.location.host // "http://localhost"
         this.passageEndpoint = "/passages"
         this.answerEndpoint = "/answer"
         this.explainEndpoint = "/explain"
