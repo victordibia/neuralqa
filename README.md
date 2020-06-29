@@ -9,10 +9,7 @@
  
 <img width="100%" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg">
 
-
-
-
-NeuralQA provides a [visual interface](https://victordibia.github.io/neuralqa/)s for end-to-end  question answering (passage retrieval, query expansion, document reading, model explanation),  on large datasets. Passage retrieval is implemented using ElasticSearch and Document Reading is implemented using pretrained BERT models via the Huggingface [transformers api](https://github.com/huggingface/transformers). 
+NeuralQA provides a [visual interface](https://victordibia.github.io/neuralqa/) for end-to-end  question answering (passage retrieval, query expansion, document reading, model explanation),  on large datasets. Passage retrieval is implemented using ElasticSearch and Document Reading is implemented using pretrained BERT models via the Huggingface [transformers api](https://github.com/huggingface/transformers). 
 
 <!-- An example query and response using a BERT model is shown below.
 
@@ -24,7 +21,7 @@ what is the sentence for arson crime?
 BERT Answer: [1.01s] 18 years ’ imprisonment, but mitigated the sentence to 12 years because “ Defendant did not have any intent to injure the victim. ” See NMSA 1978, § 31 - 18 - 15. 1 ( 1979, as amended in 1993 ) ( allowing for mitigation of up to one - third of sentence, [0.26s] shooting at or from a motor vehicle
 ``` -->
  
-### What does NeuralQA Do?
+### How Does it Work?
 
 <img width="100%" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/architecture.png">
 
@@ -60,7 +57,7 @@ pip3 install neuralqa
 neuralqa ui --port 4000
 ```
 
-navigate to `[http://127.0.0.1:4000/#/](http://127.0.0.1:4000/#/)`.
+navigate to [http://127.0.0.1:4000/#/](http://127.0.0.1:4000/#/).
 
 #### (Optional) Install & Launch Elastic Search
 
