@@ -1,7 +1,5 @@
-appName: neuralqa
-logLevel: WARN
-
-aknots: libra
+appname: neuralqa
+loglevel: WARN
 
 ui:
   backend:
@@ -13,18 +11,22 @@ ui:
       samples: False
       passages: True
       explanations: True
+    data:
+      title: "NeuralQA: Question Answering on Large Datasets"
+      subtitle: "NeuralQA is an interactive tool for question answering (passage retrieval + document reading). You can manually provide a passage or select a search index from (e.g. case.law ) dataset under the QA configuration settings below. To begin, type in a question query below."
 
-index:
-  - caselaw:
-    name: Case Law
-    index: cases
-    host: localhost
-    port: 9200
-  - supremecourt:
-    name: Supreme Court Docs
-    index: supremecourt
-    host: localhost
-    port: 9200
+searchindex:
+  supported:
+    - caselaw:
+      name: Case Law
+      index: cases
+      host: localhost
+      port: 9200
+    - supremecourt:
+      name: Supreme Court Docs
+      index: supremecourt
+      host: localhost
+      port: 9200
 
 models:
   supported:
