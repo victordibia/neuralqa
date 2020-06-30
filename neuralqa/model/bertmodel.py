@@ -7,7 +7,7 @@ import time
 import logging
 
 
-class BertModel(Model):
+class BERTModel(Model):
     def __init__(self, model_name, model_path, model_type="bert", **kwargs):
         Model.__init__(self, model_name, model_path, model_type)
         # self.load_model(model_name, model_path, model_type)
