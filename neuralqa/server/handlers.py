@@ -1,12 +1,11 @@
 
 from flask import jsonify, request, render_template
-from neuralqa.model import BertModel
-from neuralqa.searchindex import ElasticSearchIndex
+from neuralqa.utils import ConfigParser
 import time
 
 
 class Handler:
-    def __init__(self):
+    def __init__(self, model, index):
 
         self._handlers = [
             ("/test", self._test_handler, ['GET', 'POST']),
@@ -15,13 +14,13 @@ class Handler:
             ("/passages", self._get_passages, ['GET', 'POST']),
         ]
 
-        model_name = "distilbert"
-        model_path = "twmkn9/distilbert-base-uncased-squad2"
-        self._model = BertModel(model_name, model_path)
-        print(">> model loaded")
+        self._model = model
+        self._index = index
+        self._config = ConfigParser()
 
-        self._index = ElasticSearchIndex()
-        print(">> index connnection status", self._index.test_connection())
+    def _ui_config(self):
+        """[summary]
+        """
 
     def _get_answer(self):
         """Generate an answer for the given search query.
@@ -35,7 +34,7 @@ class Handler:
         query_result = []
         result_size = 6
         question = "what is a fourth amendment right violation? "
-        highlight_span = 450
+        highlight_span = 250
         token_stride = 50
         context_dataset = "manual"
         context = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
