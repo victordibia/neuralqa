@@ -12,6 +12,7 @@ class Handler:
             ("/answer", self._get_answer, ['GET', 'POST']),
             ("/explain", self._get_explanation, ['GET', 'POST']),
             ("/passages", self._get_passages, ['GET', 'POST']),
+            ("/uiconfig", self._ui_config, ['GET']),
         ]
 
         self._model = model
@@ -21,6 +22,20 @@ class Handler:
     def _ui_config(self):
         """[summary]
         """
+
+        config = {
+            "views": {
+                "advanced": True,
+                "samples": True
+            },
+            "page": {
+                "title": "",
+                "subtitle": ""
+            },
+
+        }
+
+        return jsonify(config)
 
     def _get_answer(self):
         """Generate an answer for the given search query.
