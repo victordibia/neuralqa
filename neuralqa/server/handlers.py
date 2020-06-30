@@ -28,6 +28,7 @@ class Handler:
                 "advanced": True,
                 "samples": True
             },
+            "index": "",
             "page": {
                 "title": "",
                 "subtitle": ""
