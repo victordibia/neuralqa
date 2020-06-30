@@ -1,4 +1,5 @@
 from neuralqa.version import VERSION as __version__
-from neuralqa.cli import run
+from neuralqa.model import BERTModel
 
-__all__ = ["run"]
+
+__all__ = ["BERTModel"]

@@ -10,6 +10,7 @@ ui:
   page:
     title: "NeuralQA: Question Answering on Large Datasets"
     subtitle: "NeuralQA is an interactive tool for question answering (passage retrieval + document reading). You can manually provide a passage or select a search index from (e.g. case.law ) dataset under the QA configuration settings below. To begin, type in a question query below."
+  samples:
 
 server:
   host: localhost
@@ -45,3 +46,11 @@ reader:
       name: distillbertsquad1
       path: deepset/bert-large-uncased-whole-word-masking-squad2
       type: bert
+
+expander:
+  - maskedlm:
+    name: maskedlm
+    path: pathtomaskedlm
+  - word2vec:
+    name: word2vec
+    path: pathtoword2vecmodel
