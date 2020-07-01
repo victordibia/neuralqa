@@ -2,7 +2,7 @@
 import click
 from neuralqa.server import _run_server
 from neuralqa.utils import cli_args
-from neuralqa.utils import ConfigParser
+from neuralqa.utils import *
 
 
 @click.group()
@@ -18,8 +18,9 @@ def cli():
 #     _run_server(host, port)
 
 @cli.command()
-def config():
-    config = ConfigParser()
+def test():
+    # config = ConfigParser()
+    down
 
 
 @cli.command()

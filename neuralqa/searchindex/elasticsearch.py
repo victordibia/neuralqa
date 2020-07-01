@@ -8,32 +8,6 @@ class ElasticSearchIndex(SearchIndex):
     def __init__(self, index_type="elasticsearch", host="localhost", port=9200):
         SearchIndex.__init__(self, index_type)
 
-        self.index_name = "cases"
-        self.settings = {
-            "settings": {
-                "analysis": {
-                    "analyzer": {
-                        "stop_analyzer": {
-                            "type": "standard",
-                            "stopwords": "_english_"
-                        }
-                    }
-                }
-            },
-            "mappings": {
-                "properties": {
-                    "casebody.data.opinions.text": {
-                        "type": "text",
-                        "analyzer": "stop_analyzer"
-                    },
-                    "name": {
-                        "type": "text",
-                        "analyzer": "stop_analyzer"
-                    }
-                }
-            }
-        }
-
         self.es = Elasticsearch([{'host': host, 'port': port}])
         self.isAvailable = self.es.ping()
 

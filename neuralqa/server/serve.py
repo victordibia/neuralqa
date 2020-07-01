@@ -1,6 +1,6 @@
 
 
-from neuralqa.model import BERTModel
+from neuralqa.reader import BERTReader
 from neuralqa.server.handlers import Handler
 from neuralqa.searchindex import ElasticSearchIndex
 
@@ -28,7 +28,7 @@ def _run_server(host, port, index_host, index_port):
     # define the model to be used
     model_name = "distilbert"
     model_path = "twmkn9/distilbert-base-uncased-squad2"
-    model = BERTModel(model_name, model_path)
+    model = BERTReader(model_name, model_path)
     print(">> model loaded")
 
     # define the search index to be used if any

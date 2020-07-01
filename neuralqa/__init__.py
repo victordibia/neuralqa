@@ -1,5 +1,5 @@
 from neuralqa.version import VERSION as __version__
-from neuralqa.model import BERTModel
+from neuralqa.reader import BERTReader
 
 
-__all__ = ["BERTModel"]
+__all__ = ["BERTReader"]

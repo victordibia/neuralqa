@@ -5,7 +5,6 @@
 
 
 <img height="30px" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/iconlogodark.png">
-<br />
  
 <img width="100%" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg">
 
@@ -54,8 +53,10 @@ NeuralQA document reader is based on the huggingface library implementation. It 
 
 ```shell
 pip3 install neuralqa
-neuralqa ui --port 4000
+neuralqa ui --host localhost --port 4000
 ```
+
+> Note that 
 
 navigate to [http://127.0.0.1:4000/#/](http://127.0.0.1:4000/#/).
 
