@@ -8,36 +8,10 @@ class ElasticSearchIndex(SearchIndex):
     def __init__(self, index_type="elasticsearch", host="localhost", port=9200):
         SearchIndex.__init__(self, index_type)
 
-        self.index_name = "cases"
-        self.settings = {
-            "settings": {
-                "analysis": {
-                    "analyzer": {
-                        "stop_analyzer": {
-                            "type": "standard",
-                            "stopwords": "_english_"
-                        }
-                    }
-                }
-            },
-            "mappings": {
-                "properties": {
-                    "casebody.data.opinions.text": {
-                        "type": "text",
-                        "analyzer": "stop_analyzer"
-                    },
-                    "name": {
-                        "type": "text",
-                        "analyzer": "stop_analyzer"
-                    }
-                }
-            }
-        }
-
         self.es = Elasticsearch([{'host': host, 'port': port}])
         self.isAvailable = self.es.ping()
 
-    def run_query(self, search_query):
+    def run_query(self, index_name, search_query):
         """Makes a query to the elastic search server with the given search_query parameters.
         Also returns opinion_excerpt script field, which is a substring of the first opinion in the case
 
@@ -49,16 +23,23 @@ class ElasticSearchIndex(SearchIndex):
         """
         query_result = None
 
-        # TODO: return careful error that bubbles up to UI
+        # return error as result on error.
+        # Calling function should check status before parsing result
         try:
-            query_result = self.es.search(
-                index=self.index_name, body=search_query)
-        except ConnectionRefusedError:
-            return False
+            query_result = {
+                "status": True,
+                "result": self.es.search(index=index_name, body=search_query)
+            }
+        except ConnectionRefusedError as e:
+            query_result = {
+                "status": False,
+                "result": str(e)
+            }
         except Exception as e:
-            print('An error occured connecting to ElasticSearch: %s' % e)
-            return False
-
+            query_result = {
+                "status": False,
+                "result": str(e)
+            }
         return query_result
 
     def test_connection(self):

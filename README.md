@@ -5,7 +5,6 @@
 
 
 <img height="30px" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/iconlogodark.png">
-<br />
  
 <img width="100%" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg">
 
@@ -50,12 +49,14 @@ NeuralQA document reader is based on the huggingface library implementation. It 
 
 
 
-## Getting Started
+## Usage
 
 ```shell
 pip3 install neuralqa
-neuralqa ui --port 4000
+neuralqa ui --host localhost --port 4000
 ```
+
+> Note that 
 
 navigate to [http://127.0.0.1:4000/#/](http://127.0.0.1:4000/#/).
 
@@ -63,8 +64,9 @@ navigate to [http://127.0.0.1:4000/#/](http://127.0.0.1:4000/#/).
 
 Follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch elastic search. 
 
+## Configuration [TBD]
+Neuralqa provides an interface to specify properties of each module via a yaml configuration file.
 
-
-
+## 
 
  

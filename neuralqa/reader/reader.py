@@ -1,7 +1,5 @@
 
 
-
-
 import tensorflow as tf
 import numpy as np
 from transformers import AutoTokenizer, TFAutoModelForQuestionAnswering
@@ -12,11 +10,12 @@ import logging
 logging.getLogger("transformers.tokenization_utils").setLevel(logging.ERROR)
 logging.getLogger("transformers.configuration_utils").setLevel(logging.ERROR)
 logging.getLogger("transformers.file_utils").setLevel(logging.ERROR)
-logging.getLogger("transformers.modeling_tf_pytorch_utils").setLevel(logging.ERROR)
+logging.getLogger(
+    "transformers.modeling_tf_pytorch_utils").setLevel(logging.ERROR)
 logging.getLogger("transformers.modeling_tf_utils").setLevel(logging.ERROR)
 
 
-class Model:
+class Reader:
     def __init__(self, model_name, model_path, model_type, **kwargs):
         self.load_model(model_name, model_path, model_type)
 
@@ -28,5 +27,3 @@ class Model:
             model_path, use_fast=True)
         self.model = TFAutoModelForQuestionAnswering.from_pretrained(
             model_path, from_pt=True)
-
-     

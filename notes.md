@@ -64,3 +64,26 @@ Caveat .. some want to have varies exposures.
 - expose front end but not api. Only front end should be able to call api
 - expose api to specific internal applications.
 - expose api to any applicaation
+
+
+## TODO
+- expose helpful functions that allow neural qa 
+    - `create_index` neuralqa.elasticsearch: import data into elastic search
+    - `expand_query` neuralqa.expander: 
+    - `BertModel` ... create model
+
+
+- specify interface for search queries
+    - configuration file to define how search queries should be processed
+        - list of fields to search over
+        - method for constructing highlights
+    - allow renaming of fields to create unified interface for UI to visualize
+        - excerpt
+        - title
+        - highlight
+
+- Config flow
+    - command line specify where config file is
+    - if not specified
+        - copy default yaml file to current directory
+        - print message for user to modify this file to enable additional config   

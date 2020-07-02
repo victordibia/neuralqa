@@ -12,7 +12,7 @@ import React, { Component } from "react";
 import {
     NavLink
 } from "react-router-dom";
-import { LogoGithub16 } from '@carbon/icons-react';
+// import { LogoGithub16 } from '@carbon/icons-react';
 
 import "./header.css"
 

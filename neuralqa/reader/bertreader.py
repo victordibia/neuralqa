@@ -1,4 +1,4 @@
-from neuralqa.model import Model
+from neuralqa.reader import Reader
 
 
 import tensorflow as tf
@@ -7,9 +7,9 @@ import time
 import logging
 
 
-class BertModel(Model):
+class BERTReader(Reader):
     def __init__(self, model_name, model_path, model_type="bert", **kwargs):
-        Model.__init__(self, model_name, model_path, model_type)
+        Reader.__init__(self, model_name, model_path, model_type)
         # self.load_model(model_name, model_path, model_type)
 
     def get_best_start_end_position(self, start_scores, end_scores):
