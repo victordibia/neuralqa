@@ -11,7 +11,7 @@ class ElasticSearchIndex(SearchIndex):
         self.es = Elasticsearch([{'host': host, 'port': port}])
         self.isAvailable = self.es.ping()
 
-    def run_query(self, search_query):
+    def run_query(self, index_name, search_query):
         """Makes a query to the elastic search server with the given search_query parameters.
         Also returns opinion_excerpt script field, which is a substring of the first opinion in the case
 
@@ -25,14 +25,20 @@ class ElasticSearchIndex(SearchIndex):
 
         # TODO: return careful error that bubbles up to UI
         try:
-            query_result = self.es.search(
-                index=self.index_name, body=search_query)
-        except ConnectionRefusedError:
-            return False
+            query_result = {
+                "status": True,
+                "result": self.es.search(index=index_name, body=search_query)
+            }
+        except ConnectionRefusedError as e:
+            query_result = {
+                "status": False,
+                "result": str(e)
+            }
         except Exception as e:
-            print('An error occured connecting to ElasticSearch: %s' % e)
-            return False
-
+            query_result = {
+                "status": False,
+                "result": str(e)
+            }
         return query_result
 
     def test_connection(self):
