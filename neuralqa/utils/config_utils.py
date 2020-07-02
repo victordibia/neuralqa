@@ -2,6 +2,7 @@ import confuse
 import yaml
 import os
 import logging
+import shutil
 
 
 class ConfigParser:
@@ -16,12 +17,17 @@ class ConfigParser:
         else:
             new_config_path = os.path.join(os.getcwd(), "config.yaml")
             if os.path.exists(new_config_path):
-                logging.info("config.yaml file found at " +
+                logging.info("Will use config.yaml file found in current directory " +
                              new_config_path)
                 self.load(new_config_path)
             else:
                 logging.info("No config path provided. Creating config file at " +
                              new_config_path)
+                default_config = "neuralqa/config_default.yaml"
+                shutil.copyfile(default_config, new_config_path)
 
     def load(self, config_path):
-        self.config = yaml.load(config_path)
+        with open(config_path) as f:
+            self.config = yaml.safe_load(f)
+
+        # print(" >> ", self.config["ui"]["options"]["stride"]["options"])

@@ -29,7 +29,7 @@ setup(
     author='Victor Dibia',
     url='https://github.com/victordibia/neuralqa',
     python_requires='>=3.5',
-    # download_url='https://github.com/fastforwardlabs/cmlbootstrap/archive/v0.0.2.tar.gz',
+    # download_url='https://github.com/victordibia/neuralqa/archive/v0.0.2.tar.gz',
     keywords=['NLP', 'Question Answering', 'Machine Learning'],
     install_requires=[
         'Flask',
@@ -39,7 +39,7 @@ setup(
         'torchvision',
         'transformers',
         'elasticsearch>=7.7.1',
-        'confuse>=1.1.0'
+        'pyyaml>=3.13'
     ],
     extras_require={
         'test': ['pytest']

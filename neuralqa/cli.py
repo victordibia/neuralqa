@@ -28,7 +28,7 @@ def test(host, port, index_host, index_port, config_path):
 @cli_args.INDEX_PORT
 @cli_args.CONFIG_PATH
 def ui(host, port, index_host, index_port, config_path):
-    _run_server(host, port, index_host, index_port)
+    _run_server(host, port, index_host, index_port, config_path)
 
 
 if __name__ == '__main__':
