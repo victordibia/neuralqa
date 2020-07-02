@@ -1,47 +1,51 @@
-appname: neuralqa
-loglevel: WARN
+appname: NeuralQA
 
 ui:
-  views:
-    advanced: False
-    samples: False
-    passages: True
-    explanations: True
-  options:
-    stride:
-      title: Token Stride
-      options:
-        - name: 0
-          value: 0
-        - name: 50
-          value: 50
-        - name: 100
-          value: 100
-        - name: 200
-          value: 200
-    passagelength:
-      title: Passages
-      options:
-        - name: 5
-          value: 5
-        - name: 10
-          value: 10
-        - name: 15
-          value: 15
-    highlightspan:
-      title: IR Highlight Span
-      options:
-        - name: 150
-          value: 150
-        - name: 250
-          value: 250
-        - name: 350
-          value: 350
+  queryview:
+    intro:
+      title: "NeuralQA: Question Answering on Large Datasets"
+      subtitle: "NeuralQA is an interactive tool for question answering (passage retrieval + document reading). You can manually provide a passage or select a search index from (e.g. case.law ) dataset under the QA configuration settings below. To begin, type in a question query below."
+    views:
+      intro: True
+      advanced: False
+      samples: False
+      passages: True
+      explanations: False
+      allanswers: True
+    options:
+      stride:
+        title: Token Stride
+        options:
+          - name: 0
+            value: 0
+          - name: 50
+            value: 50
+          - name: 100
+            value: 100
+          - name: 200
+            value: 200
+      passagelength:
+        title: Passages
+        options:
+          - name: 5
+            value: 5
+          - name: 10
+            value: 10
+          - name: 15
+            value: 15
+      highlightspan:
+        title: IR Highlight Span
+        options:
+          - name: 150
+            value: 150
+          - name: 250
+            value: 250
+          - name: 350
+            value: 350
 
-  page:
-    title: "NeuralQA: Question Answering on Large Datasets"
-    subtitle: "NeuralQA is an interactive tool for question answering (passage retrieval + document reading). You can manually provide a passage or select a search index from (e.g. case.law ) dataset under the QA configuration settings below. To begin, type in a question query below."
-  samples:
+  header:
+    appname: NeuralQA
+    appdescription: Question Answering on Large Datasets
 
 # server:
 #   host: localhost

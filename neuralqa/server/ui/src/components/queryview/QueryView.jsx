@@ -21,6 +21,9 @@ class QueryView extends Component {
     constructor(props) {
         super(props)
 
+        console.log(props);
+
+
         // Advanced options 
         this.numPassages = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
         this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
@@ -35,15 +38,14 @@ class QueryView extends Component {
         this.selectedDataset = 1
 
         this.state = {
-            apptitle: "NeuralQA",
+            apptitle: props.data.intro.title,
+            appsubtitle: props.data.intro.subtitle,
             passages: { "took": 0, hits: { hits: [] } },
             answers: { "took": 0, answers: [] },
             passageIsLoading: false,
             answerIsLoading: false,
             errorStatus: "",
-            showAdvancedConfig: true,
-            showSearchConfig: false,
-            showSamples: true,
+
             resultSize: this.numPassages[this.selectedSize].value,
             qaModelName: this.qaModelOptions[this.selectedQaModel].value,
             highlightSpan: this.highlightSpanOptions[this.selectedHighlightSpan].value,
@@ -51,8 +53,15 @@ class QueryView extends Component {
             dataset: this.datasetOptions[this.selectedDataset].value,
             sampleQA: SampleQA(),
             selectedSampleIndex: 0,
-            showAllAnswers: true,
-            explanations: {}
+            explanations: {},
+
+            showAdvancedConfig: props.data.views.advanced,
+            showExplanations: props.data.views.explanations,
+            showPassages: props.data.views.passages,
+            showSearchConfig: false,
+            showSamples: props.data.views.samples,
+            showAllAnswers: props.data.views.allanswers,
+            showIntro: props.data.views.intro
         }
 
         this.serverBasePath = window.location.protocol + "//" + window.location.host
@@ -212,7 +221,7 @@ class QueryView extends Component {
             });
     }
     clickExplainButton(e) {
-        console.log(e.target.getAttribute("id"));
+        // console.log(e.target.getAttribute("id"));
         let selectedAnswerId = e.target.getAttribute("id")
         this.getExplanation(selectedAnswerId)
     }
@@ -328,13 +337,13 @@ class QueryView extends Component {
                                     {/* | Total Probability {(data.probability * 1).toFixed(4)} [  {((data.start_probability * 1) / 2).toFixed(4)} | {((data.end_probability * 1) / 2).toFixed(4)} ] */}
                                 </div>
                                 <div className="boldtext">  <span className="answerquote">&#8220;</span> {data.answer} <span className="pt10 answerquote">&#8221;</span> </div>
-                                {!currentExplanation && <div>
+                                {(!currentExplanation) && <div>
                                     <div className="p10 mt10 mb10 contextrow lightgreyhighlight" dangerouslySetInnerHTML={{ __html: data.context }} />
-                                    <Button
+                                    {this.state.showExplanations && <Button
                                         id={index}
                                         onClick={this.clickExplainButton.bind(this)}
                                         size="small"
-                                    > Explain </Button>
+                                    > Explain </Button>}
                                 </div>}
 
                             </div>
@@ -402,15 +411,10 @@ class QueryView extends Component {
 
         return (
             <div>
-                <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
-                    <div className="boldtext mb5">{this.state.apptitle}:  Question Answering on Large Datasets</div>
-                    {this.state.apptitle} is an interactive tool for question answering (passage retrieval + document reading).
-                    You can manually provide a passage or select a search index from
-                    (e.g. <a href="http://case.law" rel="noopener noreferrer" target="_blank">case.law</a> ) dataset under the QA configuration settings below.
-
-                    To begin, type in a question query below.
-
-                </div>
+                {this.state.showIntro && <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
+                    <div className="boldtext mb5">{this.state.apptitle}</div>
+                    <div> {this.state.appsubtitle}</div>
+                </div>}
 
                 <div className={" mb10" + (this.state.showAdvancedConfig ? "" : " displaynone")}>
 
@@ -441,7 +445,7 @@ class QueryView extends Component {
                         {qaSamples}
                     </div>
                 }
-                <div className="mt5 mb10 mediumdesc"> Enter question </div>
+                <div className="mt5 mt10 mb10 mediumdesc"> Enter question </div>
                 <div className="flex searchbar">
 
                     <div key={"questioninput" + this.state.selectedSampleIndex} className="flexfull">

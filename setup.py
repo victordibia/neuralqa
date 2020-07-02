@@ -16,7 +16,7 @@ def package_files(directory):
 
 
 ui_files = package_files("neuralqa/server/ui/build")
-yaml_file = ["config.yaml"]
+yaml_file = ["config_default.yaml"]
 setup(
     name='neuralqa',
     packages=find_packages(exclude=['tests', 'tests.*']),

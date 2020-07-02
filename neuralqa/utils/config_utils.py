@@ -1,4 +1,3 @@
-import confuse
 import yaml
 import os
 import logging
@@ -23,8 +22,8 @@ class ConfigParser:
             else:
                 logging.info("No config path provided. Creating config file at " +
                              new_config_path)
-                default_config = "neuralqa/config_default.yaml"
-                shutil.copyfile(default_config, new_config_path)
+                # default_config = "neuralqa/config_default.yaml"
+                # shutil.copyfile(default_config, new_config_path)
 
     def load(self, config_path):
         with open(config_path) as f:
