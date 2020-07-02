@@ -3,7 +3,6 @@
 from neuralqa.reader import BERTReader
 from neuralqa.server.handlers import Handler
 from neuralqa.searchindex import ElasticSearchIndex
-
 from flask import Flask, jsonify, request, render_template
 import os
 import logging

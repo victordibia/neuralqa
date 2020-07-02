@@ -47,12 +47,13 @@ class Handler:
         Returns:
             [type] -- [description]
         """
+
         query_result = []
         result_size = 6
         question = "what is a fourth amendment right violation? "
         highlight_span = 250
         token_stride = 50
-        context_dataset = "manual"
+        index_name = "manual"
         context = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
 
         if request.method == "POST":
@@ -60,7 +61,7 @@ class Handler:
             result_size = data["size"]
             question = data["question"]
             context = data["context"]
-            context_dataset = data["dataset"]
+            index_name = data["dataset"]
             token_stride = int(data["stride"])
             highlight_span = data["highlightspan"]
             model_name = data["modelname"]
@@ -94,7 +95,7 @@ class Handler:
         start_time = time.time()
 
         # answer question based on provided context
-        if (context_dataset == "manual"):
+        if (index_name == "manual"):
             answers = self._model.answer_question(
                 question, context, stride=token_stride)
             for answer in answers:
@@ -102,8 +103,9 @@ class Handler:
                 answer_holder.append(answer)
         # answer question based on retrieved passages from elastic search
         else:
-            query_result = self._index.run_query(search_query)
-            if query_result:
+            query_result = self._index.run_query(index_name, search_query)
+            if query_result["status"]:
+                query_result = query_result["result"]
                 for i, hit in enumerate(query_result["hits"]["hits"]):
                     if ("casebody.data.opinions.text" in hit["highlight"]):
                         # context passage is a concatenation of highlights
@@ -128,6 +130,7 @@ class Handler:
         Returns:
             dictionary -- contains details on elastic search results.
         """
+        index_name = []
         query_result = []
         result_size, question, = 5, "motion in arrest judgment"
         opinion_excerpt_length = 500
@@ -166,7 +169,7 @@ class Handler:
             "size": result_size
         }
 
-        query_result = self._index.run_query(search_query)
+        query_result = self._index.run_query(index_name, search_query)
         return jsonify(query_result)
 
     def _get_explanation(self):

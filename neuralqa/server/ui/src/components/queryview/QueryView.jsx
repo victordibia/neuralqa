@@ -26,7 +26,7 @@ class QueryView extends Component {
         this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
         this.highlightSpanOptions = [{ id: "opt5", text: "150", value: 150, type: "highlight" }, { id: "opt4", text: "250", value: 250, type: "highlight" }, { id: "opt1", text: "350", value: 350, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
         this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
-        this.datasetOptions = [{ id: "opt1", text: "Case Law", value: "caselaw", type: "dataset" }, { id: "opt2", text: "Manual", value: "manual", type: "dataset" }]
+        this.datasetOptions = [{ id: "opt1", text: "Case Law", value: "cases", type: "dataset" }, { id: "opt2", text: "Manual", value: "manual", type: "dataset" }]
 
         this.selectedSize = 0
         this.selectedQaModel = 0
@@ -55,7 +55,8 @@ class QueryView extends Component {
             explanations: {}
         }
 
-        this.serverBasePath = "http://" + window.location.host // "http://localhost"
+        this.serverBasePath = window.location.protocol + "//" + window.location.host
+        // this.serverBasePath = "http://localhost:5000"
         this.passageEndpoint = "/passages"
         this.answerEndpoint = "/answer"
         this.explainEndpoint = "/explain"
@@ -135,13 +136,18 @@ class QueryView extends Component {
 
         let passages = postJSONData(passageUrl, postData)
         passages.then((data) => {
-            if (data) {
-                this.setState({ passages: data })
-                // console.log(Object.keys(data));
-                setTimeout(() => {
-                    this.setState({ passageIsLoading: false })
-                }, this.interfaceTimedDelay);
+            // console.log(data);
+
+            if (data.status) {
+                this.setState({ passages: data.result })
+                // console.log(Object.keys(data)); 
+            } else {
+
             }
+            let errorStatus = data.status ? "" : data.result;
+            setTimeout(() => {
+                this.setState({ passageIsLoading: false, errorStatus: errorStatus })
+            }, this.interfaceTimedDelay);
         })
             .catch(function (err) {
                 console.log('Fetch Error :-S', err);
@@ -413,7 +419,7 @@ class QueryView extends Component {
                     <div onClick={this.toggleSearchConfig.bind(this)} className="unselectable mt10 p10 clickable  flex greymoreinfo">
                         <div className="iblock flexfull minwidth485">
                             <strong> {!this.state.showSearchConfig && <span>&#x25BC;  </span>} {this.state.showSearchConfig && <span>&#x25B2;  </span>} </strong>
-                            QA Configuration
+                            Advanced Options
                             </div>
                         <div className="iblock   ">
                             <div className="iblock mr5"> <span className="boldtext"> </span></div>
