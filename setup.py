@@ -16,11 +16,11 @@ def package_files(directory):
 
 
 ui_files = package_files("neuralqa/server/ui/build")
-
+yaml_file = ["config.yaml"]
 setup(
     name='neuralqa',
     packages=find_packages(exclude=['tests', 'tests.*']),
-    package_data={"neuralqa": ui_files},
+    package_data={"neuralqa": ui_files + yaml_file},
     version=version,
     license='MIT',
     description='NeuralQA: Question Answering on Large Datasets',

@@ -12,31 +12,30 @@ class Handler:
             ("/answer", self._get_answer, ['GET', 'POST']),
             ("/explain", self._get_explanation, ['GET', 'POST']),
             ("/passages", self._get_passages, ['GET', 'POST']),
-            ("/uiconfig", self._ui_config, ['GET']),
+            # ("/uiconfig", self._ui_config, ['GET']),
         ]
 
         self._model = model
         self._index = index
-        self._config = ConfigParser()
 
-    def _ui_config(self):
-        """[summary]
-        """
+    # def _ui_config(self):
+    #     """[summary]
+    #     """
 
-        config = {
-            "views": {
-                "advanced": True,
-                "samples": True
-            },
-            "index": "",
-            "page": {
-                "title": "",
-                "subtitle": ""
-            },
+    #     config = {
+    #         "views": {
+    #             "advanced": True,
+    #             "samples": True
+    #         },
+    #         "index": "",
+    #         "page": {
+    #             "title": "",
+    #             "subtitle": ""
+    #         },
 
-        }
+    #     }
 
-        return jsonify(config)
+    #     return jsonify(config)
 
     def _get_answer(self):
         """Generate an answer for the given search query.

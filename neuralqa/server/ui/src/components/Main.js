@@ -9,6 +9,7 @@
 
 
 import React, { Component } from "react";
+import { getJSONData } from "./helperfunctions/HelperFunctions"
 import {
     Route,
     HashRouter,
@@ -63,14 +64,23 @@ class Main extends Component {
         this.state = {
         }
         updateLh(window.location)
+
+        this.serverBasePath = window.location.protocol + "//" + window.location.host
+        this.serverBasePath = "http://localhost:5000"
+        this.configEndpoint = "/config"
     }
 
     componentDidMount() {
+        let configUrl = this.serverBasePath + this.configEndpoint
+        let config = getJSONData(configUrl)
+        config.then((data) => {
+            console.log(data);
+        }).catch(function (err) {
+            console.log('Fetch Error :-S', err);
 
+        });
     }
     render() {
-
-
         return (
             <HashRouter>
                 <Header></Header>

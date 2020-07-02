@@ -59,8 +59,13 @@ def create_index_from_json(index_name, file_path, max_docs=None):
             for line in f:
                 i += 1
                 line = json.loads(str(line, 'utf8'))
-                index_status = es.index(
-                    index=index_name, id=i, body=line)
+                try:
+                    index_status = es.index(
+                        index=index_name, id=i, body=line)
+                except Exception as e:
+                    logging.info(
+                        "An error has occurred while creating index " + str(e))
+                    break
                 # logging.info(index_status)
                 if (i > max_docs):
                     break
@@ -68,8 +73,13 @@ def create_index_from_json(index_name, file_path, max_docs=None):
         with open(file_path) as f:
             data = json.load(f)
             for line in data:
-                index_status = es.index(
-                    index=index_name, id=i, body=line, op_type="create")
+                try:
+                    index_status = es.index(
+                        index=index_name, id=i, body=line, op_type="create")
+                except Exception as e:
+                    logging.info(
+                        "An error has occurred while creating index " + str(e))
+                    break
                 if (i > max_docs):
                     break
     logging.info(">> Creating index complete ")

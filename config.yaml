@@ -25,12 +25,14 @@ retriever:
       host: localhost
       port: 9200
       type: elasticsearch
+      enabled: False
     - supremecourt:
       name: Supreme Court Docs
       index: supremecourt
       host: localhost
       port: 9200
       type: elasticsearch
+      enabled: False
 
 reader:
   models:
@@ -38,19 +40,24 @@ reader:
       name: distilbertsquad2
       path: twmkn9/distilbert-base-uncased-squad2
       type: distilbert
+      enabled: True
     - bertsquad2:
       name: bertsquad2
       path: deepset/bert-base-cased-squad2
       type: bert
+      enabled: False
     - bertlargesquad2:
       name: distillbertsquad1
       path: deepset/bert-large-uncased-whole-word-masking-squad2
       type: bert
+      enabled: False
 
 expander:
   - maskedlm:
     name: maskedlm
     path: pathtomaskedlm
+    enabled: True
   - word2vec:
     name: word2vec
     path: pathtoword2vecmodel
+    enabled: True

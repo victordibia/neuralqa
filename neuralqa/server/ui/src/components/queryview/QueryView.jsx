@@ -56,7 +56,7 @@ class QueryView extends Component {
         }
 
         this.serverBasePath = window.location.protocol + "//" + window.location.host
-        // this.serverBasePath = "http://localhost:5000"
+        this.serverBasePath = "http://localhost:5000"
         this.passageEndpoint = "/passages"
         this.answerEndpoint = "/answer"
         this.explainEndpoint = "/explain"
@@ -148,11 +148,10 @@ class QueryView extends Component {
             setTimeout(() => {
                 this.setState({ passageIsLoading: false, errorStatus: errorStatus })
             }, this.interfaceTimedDelay);
-        })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-                self.setState({ passageIsLoading: false, errorStatus: "Failed to fetch passages. Passage server may need to be restarted." })
-            });
+        }).catch(function (err) {
+            console.log('Fetch Error :-S', err);
+            self.setState({ passageIsLoading: false, errorStatus: "Failed to fetch passages. Passage server may need to be restarted." })
+        });
     }
 
     askQuestionButtonClick(e) {
