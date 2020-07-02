@@ -23,7 +23,8 @@ class ElasticSearchIndex(SearchIndex):
         """
         query_result = None
 
-        # TODO: return careful error that bubbles up to UI
+        # return error as result on error.
+        # Calling function should check status before parsing result
         try:
             query_result = {
                 "status": True,

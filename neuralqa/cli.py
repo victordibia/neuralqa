@@ -2,7 +2,7 @@
 import click
 from neuralqa.server import _run_server
 from neuralqa.utils import cli_args
-from neuralqa.utils import *
+from neuralqa.utils import import_case_data
 
 
 @click.group()
@@ -20,7 +20,7 @@ def cli():
 @cli.command()
 def test():
     # config = ConfigParser()
-    down
+    import_case_data()
 
 
 @cli.command()
