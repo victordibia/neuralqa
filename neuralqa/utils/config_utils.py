@@ -6,7 +6,7 @@ import shutil
 
 class ConfigParser:
     def __init__(self, config_path):
-
+        module_file_path = os.path.dirname(os.path.abspath(__file__))
         if config_path:
             if os.path.exists(config_path):
                 self.load(config_path)
@@ -22,8 +22,10 @@ class ConfigParser:
             else:
                 logging.info("No config path provided. Creating config file at " +
                              new_config_path)
-                # default_config = "neuralqa/config_default.yaml"
-                # shutil.copyfile(default_config, new_config_path)
+                default_config_path = os.path.join(
+                    module_file_path, "../config_default.yaml")
+
+                shutil.copyfile(default_config_path, new_config_path)
 
     def load(self, config_path):
         with open(config_path) as f:
