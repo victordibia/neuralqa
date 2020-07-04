@@ -7,14 +7,33 @@ ui:
       subtitle: "NeuralQA is an interactive tool for question answering (passage retrieval + document reading). You can manually provide a passage or select a search index from (e.g. case.law ) dataset under the QA configuration settings below. To begin, type in a question query below."
     views:
       intro: True
-      advanced: False
+      advanced: True
       samples: False
       passages: True
-      explanations: False
+      explanations: True
       allanswers: True
     options:
+      model:
+        title: QA models
+        selected: distilbertsquad2
+        options:
+          - name: DistilBERT SQUAD2
+            value: distilbertsquad2
+          - name: BERT SQUAD2
+            value: bertsquad2
+      index:
+        title: Search Index
+        selected: manual
+        options:
+          - name: Manual
+            value: manual
+          - name: Case Law
+            value: cases
+          - name: Supremee Court
+            value: cases
       stride:
         title: Token Stride
+        selected: 0
         options:
           - name: 0
             value: 0
@@ -24,8 +43,9 @@ ui:
             value: 100
           - name: 200
             value: 200
-      passagelength:
+      maxpassages:
         title: Passages
+        selected: 5
         options:
           - name: 5
             value: 5
@@ -35,6 +55,7 @@ ui:
             value: 15
       highlightspan:
         title: IR Highlight Span
+        selected: 250
         options:
           - name: 150
             value: 150
@@ -42,6 +63,10 @@ ui:
             value: 250
           - name: 350
             value: 350
+          - name: 450
+            value: 450
+          - name: 650
+            value: 650
 
   header:
     appname: NeuralQA
@@ -81,11 +106,11 @@ reader:
       path: deepset/bert-base-cased-squad2
       type: bert
       enabled: False
-    - bertlargesquad2:
-      name: distillbertsquad1
-      path: deepset/bert-large-uncased-whole-word-masking-squad2
-      type: bert
-      enabled: False
+    # - bertlargesquad2:
+    #   name: distillbertsquad1
+    #   path: deepset/bert-large-uncased-whole-word-masking-squad2
+    #   type: bert
+    #   enabled: False
 
 expander:
   - maskedlm:

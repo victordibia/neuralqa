@@ -56,8 +56,6 @@ pip3 install neuralqa
 neuralqa ui --host localhost --port 4000
 ```
 
-> Note that 
-
 navigate to [http://127.0.0.1:4000/#/](http://127.0.0.1:4000/#/).
 
 #### (Optional) Install & Launch Elastic Search
@@ -65,8 +63,8 @@ navigate to [http://127.0.0.1:4000/#/](http://127.0.0.1:4000/#/).
 Follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch elastic search. 
 
 ## Configuration [TBD]
-Neuralqa provides an interface to specify properties of each module via a yaml configuration file.
+Neuralqa provides an interface to specify properties of each module via a [yaml configuration](neuralqa/config_default.yaml) file. When you launch the ui, you can specify path to your config file `--config-path`. If this is not provided, we will search for a config.yaml in the current folder or create a default copy in the current folder.
 
-## 
+
 
  

@@ -9,7 +9,7 @@
 
 
 import React, { Component } from "react";
-import { getJSONData } from "./helperfunctions/HelperFunctions"
+import { getJSONData, sampleConfig } from "./helperfunctions/HelperFunctions"
 import {
     Route,
     HashRouter,
@@ -70,10 +70,6 @@ class Main extends Component {
         this.serverBasePath = "http://localhost:5000"
         this.configEndpoint = "/config"
 
-        this.config_default = {
-            ui: {},
-            header: {}
-        }
     }
 
     componentDidMount() {
@@ -87,14 +83,14 @@ class Main extends Component {
             }
         }).catch(function (err) {
             console.log('Failed to fetch config', err);
-            self.setState({ config: self.config_default })
+            self.setState({ config: sampleConfig() })
         });
     }
     render() {
         const mQueryView = (props) => {
             return (
                 <QueryView
-                    data={this.state.config.ui.queryview}
+                    data={this.state.config.queryview}
                 />
             );
         }
@@ -103,7 +99,7 @@ class Main extends Component {
                 {this.state.config &&
                     <div>
                         <Header
-                            data={this.state.config.ui.header}
+                            data={this.state.config.header}
                         ></Header>
                         <main className="container-fluid p10">
                             <Route exact path="/" component={mQueryView} />

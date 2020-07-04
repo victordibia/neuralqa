@@ -26,6 +26,7 @@ class ConfigParser:
                     module_file_path, "../config_default.yaml")
 
                 shutil.copyfile(default_config_path, new_config_path)
+                self.load(new_config_path)
 
     def load(self, config_path):
         with open(config_path) as f:

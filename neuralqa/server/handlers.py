@@ -57,10 +57,10 @@ class Handler:
 
         if request.method == "POST":
             data = request.get_json()
-            result_size = data["size"]
+            result_size = data["maxpassages"]
             question = data["question"]
             context = data["context"]
-            index_name = data["dataset"]
+            index_name = data["searchindex"]
             token_stride = int(data["stride"])
             highlight_span = data["highlightspan"]
             model_name = data["modelname"]
@@ -137,7 +137,7 @@ class Handler:
 
         if request.method == "POST":
             data = request.get_json()
-            result_size = data["size"]
+            result_size = data["maxpassages"]
             question = data["question"]
             highlight_span = data["highlightspan"]
 

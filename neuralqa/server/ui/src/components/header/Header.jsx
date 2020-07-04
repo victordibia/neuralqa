@@ -19,8 +19,6 @@ import "./header.css"
 class Header extends Component {
     constructor(props) {
         super(props)
-        console.log(props);
-
         this.appName = props.data.appname || "NeuralQA"
         this.appDescription = props.data.appdescription || " Question Answering on Large Datasets."
     }

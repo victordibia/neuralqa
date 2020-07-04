@@ -31,7 +31,7 @@ def _run_server(host, port, index_host, index_port, config_path):
 
     @app.route('/config')
     def ui_config():
-        return jsonify(app_config.config)
+        return jsonify(app_config.config["ui"])
 
     # define the model to be used
     model_name = "distilbert"
