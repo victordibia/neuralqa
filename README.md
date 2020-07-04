@@ -8,7 +8,7 @@
  
 <img width="100%" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg">
 
-NeuralQA provides a [visual interface](https://victordibia.github.io/neuralqa/) for end-to-end  question answering (passage retrieval, query expansion, document reading, model explanation),  on large datasets. Passage retrieval is implemented using ElasticSearch and Document Reading is implemented using pretrained BERT models via the Huggingface [transformers api](https://github.com/huggingface/transformers). 
+NeuralQA (still in alpha) provides a [visual interface](https://victordibia.github.io/neuralqa/) for end-to-end  question answering (passage retrieval, query expansion, document reading, model explanation), on large datasets. Passage retrieval is implemented using ElasticSearch and Document Reading is implemented using pretrained BERT models via the Huggingface [transformers api](https://github.com/huggingface/transformers). 
 
 <!-- An example query and response using a BERT model is shown below.
 
@@ -61,7 +61,7 @@ navigate to [http://127.0.0.1:4000/#/](http://127.0.0.1:4000/#/).
 > Note: You can specify configuration for a retriever (host, port). To use NeuralQA with a retriever such as ElasticSearch, follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch a local elasticsearch instance. 
 
 ## Configuration [In Progress]
-Neuralqa provides an interface to specify properties of each module via a [yaml configuration](neuralqa/config_default.yaml) file. When you launch the ui, you can specify path to your config file `--config-path`. If this is not provided, we will search for a config.yaml in the current folder or create a default copy in the current folder. A sample of configuration for the UI is shown below:
+Neuralqa provides an interface to specify properties of each module (ui, retriever, reader, expander) via a [yaml configuration](neuralqa/config_default.yaml) file. When you launch the ui, you can specify the path to your config file `--config-path`. If this is not provided, NeuralQA will search for a config.yaml in the current folder or create a [default copy](neuralqa/config_default.yaml)) in the current folder. Sample configuration for the UI is shown below:
 
 ```yaml
 ui:
