@@ -3,13 +3,18 @@
 from neuralqa.reader import BERTReader
 from neuralqa.server.handlers import Handler
 from neuralqa.searchindex import ElasticSearchIndex
+from neuralqa.utils import ConfigParser
+
 from flask import Flask, jsonify, request, render_template
 import os
 import logging
 import time
 
 
-def _run_server(host, port, index_host, index_port):
+def _run_server(host, port, index_host, index_port, config_path):
+
+    app_config = ConfigParser(config_path)
+
     # Point Flask to the ui directory
     root_file_path = os.path.dirname(os.path.abspath(__file__))
     static_folder_root = os.path.join(root_file_path, "ui/build")
@@ -23,6 +28,10 @@ def _run_server(host, port, index_host, index_port):
     @app.route('/')
     def ui():
         return render_template('index.html')
+
+    @app.route('/config')
+    def ui_config():
+        return jsonify(app_config.config["ui"])
 
     # define the model to be used
     model_name = "distilbert"

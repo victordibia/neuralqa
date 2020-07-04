@@ -214,8 +214,8 @@ class BERTReader(Reader):
             token_words = self.tokenizer.convert_ids_to_tokens(token_ids)
             token_types = list(
                 encoded_tokens["token_type_ids"].numpy()[0].tolist())
-            answer_text = self.tokenizer.convert_tokens_to_string(
-                token_ids[answer_start:answer_end])
+            answer_text = self.tokenizer.decode(
+                token_ids[answer_start:answer_end],  skip_special_tokens=True)
 
             # clean up gradients and words
             gradients, token_words, token_types = self.clean_tokens(

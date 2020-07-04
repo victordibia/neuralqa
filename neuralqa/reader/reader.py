@@ -11,6 +11,8 @@ logging.getLogger("transformers.tokenization_utils").setLevel(logging.ERROR)
 logging.getLogger("transformers.configuration_utils").setLevel(logging.ERROR)
 logging.getLogger("transformers.file_utils").setLevel(logging.ERROR)
 logging.getLogger(
+    "transformers.tokenization_utils_base").setLevel(logging.ERROR)
+logging.getLogger(
     "transformers.modeling_tf_pytorch_utils").setLevel(logging.ERROR)
 logging.getLogger("transformers.modeling_tf_utils").setLevel(logging.ERROR)
 

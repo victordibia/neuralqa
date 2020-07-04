@@ -16,11 +16,11 @@ def package_files(directory):
 
 
 ui_files = package_files("neuralqa/server/ui/build")
-
+yaml_file = ["config_default.yaml"]
 setup(
     name='neuralqa',
     packages=find_packages(exclude=['tests', 'tests.*']),
-    package_data={"neuralqa": ui_files},
+    package_data={"neuralqa": ui_files + yaml_file},
     version=version,
     license='MIT',
     description='NeuralQA: Question Answering on Large Datasets',
@@ -29,7 +29,7 @@ setup(
     author='Victor Dibia',
     url='https://github.com/victordibia/neuralqa',
     python_requires='>=3.5',
-    # download_url='https://github.com/fastforwardlabs/cmlbootstrap/archive/v0.0.2.tar.gz',
+    # download_url='https://github.com/victordibia/neuralqa/archive/v0.0.2.tar.gz',
     keywords=['NLP', 'Question Answering', 'Machine Learning'],
     install_requires=[
         'Flask',
@@ -39,7 +39,7 @@ setup(
         'torchvision',
         'transformers',
         'elasticsearch>=7.7.1',
-        'confuse>=1.1.0'
+        'pyyaml>=3.13'
     ],
     extras_require={
         'test': ['pytest']

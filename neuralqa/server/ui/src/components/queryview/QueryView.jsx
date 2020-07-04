@@ -21,42 +21,52 @@ class QueryView extends Component {
     constructor(props) {
         super(props)
 
-        // Advanced options 
-        this.numPassages = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
-        this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
-        this.highlightSpanOptions = [{ id: "opt5", text: "150", value: 150, type: "highlight" }, { id: "opt4", text: "250", value: 250, type: "highlight" }, { id: "opt1", text: "350", value: 350, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
-        this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
-        this.datasetOptions = [{ id: "opt1", text: "Case Law", value: "cases", type: "dataset" }, { id: "opt2", text: "Manual", value: "manual", type: "dataset" }]
+        this.options = props.data.options
 
-        this.selectedSize = 0
-        this.selectedQaModel = 0
-        this.selectedHighlightSpan = 1
-        this.selectedChunkStride = 2
-        this.selectedDataset = 1
+
+        // Advanced options 
+        // this.numPassages = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
+        // this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
+        // this.highlightSpanOptions = [{ id: "opt5", text: "150", value: 150, type: "highlight" }, { id: "opt4", text: "250", value: 250, type: "highlight" }, { id: "opt1", text: "350", value: 350, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
+        // this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
+        // this.datasetOptions = [{ id: "opt1", text: "Case Law", value: "cases", type: "dataset" }, { id: "opt2", text: "Manual", value: "manual", type: "dataset" }]
+
+        // this.selectedSize = 0
+        // this.selectedQaModel = 0
+        // this.selectedHighlightSpan = 0
+        // this.selectedChunkStride = 0
+        // this.selectedSearchIndex = 0
 
         this.state = {
-            apptitle: "NeuralQA",
+            apptitle: props.data.intro.title,
+            appsubtitle: props.data.intro.subtitle,
             passages: { "took": 0, hits: { hits: [] } },
             answers: { "took": 0, answers: [] },
             passageIsLoading: false,
             answerIsLoading: false,
             errorStatus: "",
-            showAdvancedConfig: true,
-            showSearchConfig: false,
-            showSamples: true,
-            resultSize: this.numPassages[this.selectedSize].value,
-            qaModelName: this.qaModelOptions[this.selectedQaModel].value,
-            highlightSpan: this.highlightSpanOptions[this.selectedHighlightSpan].value,
-            chunkStride: this.chunkStrideOptions[this.selectedChunkStride].value,
-            dataset: this.datasetOptions[this.selectedDataset].value,
+
+            maxPassages: this.options.maxpassages.selected,
+            qaModelName: this.options.model.selected,
+            highlightSpan: this.options.highlightspan.selected,
+            chunkStride: this.options.stride.selected,
+            searchIndex: this.options.index.selected,
+
             sampleQA: SampleQA(),
             selectedSampleIndex: 0,
-            showAllAnswers: true,
-            explanations: {}
+            explanations: {},
+
+            showAdvancedConfig: props.data.views.advanced,
+            showExplanations: props.data.views.explanations,
+            showPassages: props.data.views.passages,
+            showSearchConfig: false,
+            showSamples: props.data.views.samples,
+            showAllAnswers: props.data.views.allanswers,
+            showIntro: props.data.views.intro
         }
 
         this.serverBasePath = window.location.protocol + "//" + window.location.host
-        // this.serverBasePath = "http://localhost:5000"
+        this.serverBasePath = "http://localhost:5000"
         this.passageEndpoint = "/passages"
         this.answerEndpoint = "/answer"
         this.explainEndpoint = "/explain"
@@ -88,19 +98,17 @@ class QueryView extends Component {
         let question = document.getElementById("questioninput").value
         let context = document.getElementById("contextinput") ? document.getElementById("contextinput").value : null
         let postData = {
-            size: this.state.resultSize,
+            maxpassages: this.state.maxPassages,
             context: context || this.state.sampleQA[0].context,
             question: question || this.state.sampleQA[0].context,
             highlightspan: this.state.highlightSpan,
             modelname: this.state.qaModelName,
-            dataset: this.state.dataset,
+            searchindex: this.state.searchIndex,
             stride: this.state.chunkStride
         }
-        if (this.state.dataset !== "manual") {
+        if (this.state.searchIndex !== "manual") {
             this.getPassages(postData)
         }
-
-        // console.log(postData);
 
 
         this.getAnswers(postData)
@@ -148,11 +156,10 @@ class QueryView extends Component {
             setTimeout(() => {
                 this.setState({ passageIsLoading: false, errorStatus: errorStatus })
             }, this.interfaceTimedDelay);
-        })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-                self.setState({ passageIsLoading: false, errorStatus: "Failed to fetch passages. Passage server may need to be restarted." })
-            });
+        }).catch(function (err) {
+            console.log('Fetch Error :-S', err);
+            self.setState({ passageIsLoading: false, errorStatus: "Failed to fetch passages. Passage server may need to be restarted." })
+        });
     }
 
     askQuestionButtonClick(e) {
@@ -213,18 +220,23 @@ class QueryView extends Component {
             });
     }
     clickExplainButton(e) {
-        console.log(e.target.getAttribute("id"));
+        // console.log(e.target.getAttribute("id"));
         let selectedAnswerId = e.target.getAttribute("id")
         this.getExplanation(selectedAnswerId)
     }
 
 
     updateConfigSelectParams(e) {
+        // console.log(e.target.options);
+
         let configType = e.target.options[e.target.selectedIndex].getAttribute("type")
         let selectedValue = e.target.options[e.target.selectedIndex].value
+
+        // console.log(configType, selectedValue);
+
         switch (configType) {
-            case "size":
-                this.setState({ resultSize: selectedValue })
+            case "maxpassages":
+                this.setState({ maxPassages: selectedValue })
                 break
             case "model":
                 this.setState({ qaModelName: selectedValue })
@@ -232,11 +244,11 @@ class QueryView extends Component {
             case "stride":
                 this.setState({ chunkStride: selectedValue })
                 break
-            case "highlight":
+            case "highlightspan":
                 this.setState({ highlightSpan: selectedValue })
                 break
-            case "dataset":
-                this.setState({ dataset: selectedValue })
+            case "index":
+                this.setState({ searchIndex: selectedValue })
                 break
             default:
                 break
@@ -244,19 +256,20 @@ class QueryView extends Component {
         this.resetAnswer()
     }
 
-    getSelectItems(selectData, defaultValue) {
-        let selectItems = selectData.map((data, i) => {
+
+    getOptionItems(option, defaultValue) {
+        let selectItems = this.options[option].options.map((data, i) => {
             return (
-                <SelectItem key={"select" + data.type + i}
+                <SelectItem key={"select" + option + i}
                     value={data.value}
-                    text={data.text}
-                    type={data.type}
+                    text={data.name + ""}
+                    type={option}
                 />
             )
         })
         let selectElement = (<Select
-            id={selectData[0].type + "select"}
-            defaultValue={defaultValue}
+            id={option + "select"}
+            defaultValue={this.options[option].selected}
             hideLabel={true}
             style={{ width: "100%" }}
             onChange={this.updateConfigSelectParams.bind(this)}
@@ -269,9 +282,6 @@ class QueryView extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
     }
-
-
-
 
     render() {
 
@@ -329,13 +339,13 @@ class QueryView extends Component {
                                     {/* | Total Probability {(data.probability * 1).toFixed(4)} [  {((data.start_probability * 1) / 2).toFixed(4)} | {((data.end_probability * 1) / 2).toFixed(4)} ] */}
                                 </div>
                                 <div className="boldtext">  <span className="answerquote">&#8220;</span> {data.answer} <span className="pt10 answerquote">&#8221;</span> </div>
-                                {!currentExplanation && <div>
+                                {(!currentExplanation) && <div>
                                     <div className="p10 mt10 mb10 contextrow lightgreyhighlight" dangerouslySetInnerHTML={{ __html: data.context }} />
-                                    <Button
+                                    {this.state.showExplanations && <Button
                                         id={index}
                                         onClick={this.clickExplainButton.bind(this)}
                                         size="small"
-                                    > Explain </Button>
+                                    > Explain </Button>}
                                 </div>}
 
                             </div>
@@ -372,29 +382,29 @@ class QueryView extends Component {
 
                 <div className="w100  displayblock   p10">
                     <div className="  iblock mr10">
-                        <div className="mediumdesc pb7 pt5"> Dataset <span className="boldtext"> {this.state.dataset} </span> </div>
-                        {this.getSelectItems(this.datasetOptions, this.datasetOptions[this.selectedDataset].value)}
+                        <div className="mediumdesc pb7 pt5"> {this.options.index.title} <span className="boldtext"> {this.state.searchIndex} </span> </div>
+                        {this.getOptionItems("index", "")}
                     </div>
 
                     <div className="pl10 borderleftdash iblock mr10">
-                        <div className="mediumdesc pb7 pt5"> QA Model <span className="boldtext"> {abbreviateString(this.state.qaModelName, 16)} </span> </div>
-                        {this.getSelectItems(this.qaModelOptions, this.qaModelOptions[0].value)}
+                        <div className="mediumdesc pb7 pt5"> {this.options.model.title} <span className="boldtext"> {abbreviateString(this.state.qaModelName, 16)} </span> </div>
+                        {this.getOptionItems("model", "")}
                     </div>
 
                     <div className="iblock mr10">
-                        <div className="mediumdesc pb7 pt5"> Token Stride <span className="boldtext"> {this.state.chunkStride} </span> </div>
-                        {this.getSelectItems(this.chunkStrideOptions, this.chunkStrideOptions[0].value)}
+                        <div className="mediumdesc pb7 pt5"> {this.options.stride.title}<span className="boldtext"> {this.state.chunkStride} </span> </div>
+                        {this.getOptionItems("stride", "")}
                     </div>
 
                     {/* show IR search pipeline config is dataset is not manual  */}
-                    {this.state.dataset !== "manual" && <div className="pl10 borderleftdash iblock mr10 ">
-                        <div className="mediumdesc pb7 pt5"> Passages <span className="boldtext"> {this.state.resultSize} </span> </div>
-                        {this.getSelectItems(this.numPassages, this.numPassages[0].value)}
+                    {this.state.searchIndex !== "manual" && <div className="pl10 borderleftdash iblock mr10 ">
+                        <div className="mediumdesc pb7 pt5"> {this.options.maxpassages.title} <span className="boldtext"> {this.state.maxPassages} </span> </div>
+                        {this.getOptionItems("maxpassages", "")}
                     </div>}
 
-                    {this.state.dataset !== "manual" && <div className="iblock mr10 ">
-                        <div className="mediumdesc pb7 pt5"> IR Highlight Span <span className="boldtext"> {this.state.highlightSpan} </span> </div>
-                        {this.getSelectItems(this.highlightSpanOptions, this.highlightSpanOptions[0].value)}
+                    {this.state.searchIndex !== "manual" && <div className="iblock mr10 ">
+                        <div className="mediumdesc pb7 pt5"> {this.options.highlightspan.title} <span className="boldtext"> {this.state.highlightSpan} </span> </div>
+                        {this.getOptionItems("highlightspan", "")}
                     </div>}
                 </div>
             </div>
@@ -403,15 +413,10 @@ class QueryView extends Component {
 
         return (
             <div>
-                <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
-                    <div className="boldtext mb5">{this.state.apptitle}:  Question Answering on Large Datasets</div>
-                    {this.state.apptitle} is an interactive tool for question answering (passage retrieval + document reading).
-                    You can manually provide a passage or select a search index from
-                    (e.g. <a href="http://case.law" rel="noopener noreferrer" target="_blank">case.law</a> ) dataset under the QA configuration settings below.
-
-                    To begin, type in a question query below.
-
-                </div>
+                {this.state.showIntro && <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
+                    <div className="boldtext mb5">{this.state.apptitle}</div>
+                    <div> {this.state.appsubtitle}</div>
+                </div>}
 
                 <div className={" mb10" + (this.state.showAdvancedConfig ? "" : " displaynone")}>
 
@@ -424,7 +429,7 @@ class QueryView extends Component {
                         <div className="iblock   ">
                             <div className="iblock mr5"> <span className="boldtext"> </span></div>
                             <div className="iblock">
-                                <div className="smalldesc"> {this.state.resultSize} Results | {this.state.qaModelName.toUpperCase()} </div>
+                                <div className="smalldesc"> {this.state.maxPassages} Results | {this.state.qaModelName.toUpperCase()} </div>
                             </div>
                         </div>
 
@@ -436,13 +441,13 @@ class QueryView extends Component {
                     </div>}
                 </div>
 
-                {(this.state.dataset === "manual" && this.state.showSamples) &&
+                {(this.state.searchIndex === "manual" && this.state.showSamples) &&
                     <div className=" mb10">
                         <div className="smalldesc p5"> Select any sample question/passage pair below </div>
                         {qaSamples}
                     </div>
                 }
-                <div className="mt5 mb10 mediumdesc"> Enter question </div>
+                <div className="mt5 mt10 mb10 mediumdesc"> Enter question </div>
                 <div className="flex searchbar">
 
                     <div key={"questioninput" + this.state.selectedSampleIndex} className="flexfull">
@@ -467,7 +472,7 @@ class QueryView extends Component {
 
                 {/* {this.state.sampleQA[this.state.selectedSampleIndex].context} */}
 
-                {this.state.dataset === "manual" &&
+                {this.state.searchIndex === "manual" &&
                     <div key={"contexttextarea" + this.state.selectedSampleIndex} className="mt10">
                         <div className="mt5 mb10 mediumdesc"> Enter passage </div>
                         <TextArea
@@ -537,7 +542,7 @@ class QueryView extends Component {
                     </div>
                 }
 
-                {(!askedElapsed && passageList.length === 0 && this.state.dataset !== "manual" && !(this.state.passageIsLoading)) &&
+                {(!askedElapsed && passageList.length === 0 && this.state.searchIndex !== "manual" && !(this.state.passageIsLoading)) &&
                     <div className="p10 mt5 orangehighlight">
                         Your query did not match any passages. Try a different query.
                     </div>

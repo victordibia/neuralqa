@@ -9,6 +9,7 @@
 
 
 import React, { Component } from "react";
+import { getJSONData, sampleConfig } from "./helperfunctions/HelperFunctions"
 import {
     Route,
     HashRouter,
@@ -61,25 +62,52 @@ class Main extends Component {
         super(props);
 
         this.state = {
+            config: null
         }
         updateLh(window.location)
+
+        this.serverBasePath = window.location.protocol + "//" + window.location.host
+        this.serverBasePath = "http://localhost:5000"
+        this.configEndpoint = "/config"
+
     }
 
     componentDidMount() {
-
+        let configUrl = this.serverBasePath + this.configEndpoint
+        let config = getJSONData(configUrl)
+        let self = this
+        config.then((data) => {
+            // console.log(data);
+            if (data) {
+                this.setState({ config: data })
+            }
+        }).catch(function (err) {
+            console.log('Failed to fetch config', err);
+            self.setState({ config: sampleConfig() })
+        });
     }
     render() {
-
-
+        const mQueryView = (props) => {
+            return (
+                <QueryView
+                    data={this.state.config.queryview}
+                />
+            );
+        }
         return (
             <HashRouter>
-                <Header></Header>
+                {this.state.config &&
+                    <div>
+                        <Header
+                            data={this.state.config.header}
+                        ></Header>
+                        <main className="container-fluid p10">
+                            <Route exact path="/" component={mQueryView} />
+                            {/* <Route exact path="/train" component={Train} /> */}
+                        </main>
+                    </div>
+                }
 
-                <main className="container-fluid p10">
-                    <Route exact path="/" component={QueryView} />
-                    {/* <Route exact path="/train" component={Train} /> */}
-
-                </main>
                 <div id="footer"> <Footer /> </div>
             </HashRouter>
 

@@ -10,7 +10,7 @@
 
 import React, { Component } from "react";
 import {
-    NavLink
+    // NavLink
 } from "react-router-dom";
 // import { LogoGithub16 } from '@carbon/icons-react';
 
@@ -19,9 +19,8 @@ import "./header.css"
 class Header extends Component {
     constructor(props) {
         super(props)
-
-        this.appName = "NeuralQA"
-        this.appDescription = "Question Answering."
+        this.appName = props.data.appname || "NeuralQA"
+        this.appDescription = props.data.appdescription || " Question Answering on Large Datasets."
     }
     render() {
         return (
@@ -38,9 +37,9 @@ class Header extends Component {
                             <div className="h100 apptitle  flex flexjustifycenter  mr10">
                                 <div className="whitetext boldtext  iblock mr10">  {this.appName} </div>
                             </div>
-                            <div className="h100   flex flexjustifycenter  navbarlinks ">
+                            {/* <div className="h100   flex flexjustifycenter  navbarlinks ">
                                 <NavLink exact to="/"> NeuralQA</NavLink>
-                            </div>
+                            </div> */}
                             {/* <div className="h100   flex flexjustifycenter   navbarlinks mr10">
                                 <a className=" dispalyblock h100  " href="https://github.com/victordibia/qa/" target="_blank" rel="noopener noreferrer">
                                     <LogoGithub16 className=" whitefill gitlogo  "></LogoGithub16>
