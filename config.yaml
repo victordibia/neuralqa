@@ -29,8 +29,8 @@ ui:
             value: manual
           - name: Case Law
             value: cases
-          - name: Supremee Court
-            value: cases
+          - name: Supreme Court
+            value: supremecourt
       stride:
         title: Token Stride
         selected: 0
