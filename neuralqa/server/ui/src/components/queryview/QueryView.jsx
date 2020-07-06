@@ -529,7 +529,7 @@ class QueryView extends Component {
                     </div>
                 }
 
-                {passageList.length > 0 &&
+                {(this.state.showPassages && passageList.length) > 0 &&
                     <div>
                         <div className="mt10 mb10">
                             <span className="boldtext">Passage Query Results </span>
