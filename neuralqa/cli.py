@@ -18,6 +18,7 @@ def cli():
 @cli_args.CONFIG_PATH
 def test(host, port, index_host, index_port, config_path):
     config = ConfigParser(config_path)
+    print(config.config["reader"]["models"])
     # import_case_data()
 
 

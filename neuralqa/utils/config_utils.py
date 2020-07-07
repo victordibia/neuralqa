@@ -6,30 +6,54 @@ import shutil
 
 class ConfigParser:
     def __init__(self, config_path):
+
         module_file_path = os.path.dirname(os.path.abspath(__file__))
+        self.default_config_path = os.path.join(
+            module_file_path, "../config_default.yaml")
+        self.current_config_path = os.path.join(os.getcwd(), "config.yaml")
+
         if config_path:
             if os.path.exists(config_path):
-                self.load(config_path)
+                self.config = self.load_config(config_path)
             else:
-                logging.info("Config file does not exist. " +
+                logging.info("Supplied config file does not exist. " +
                              os.path.join(os.getcwd(), config_path))
+                logging.info("Creating new config file at " +
+                             self.current_config_path)
+                self.config = self.load_default_config()
         else:
-            new_config_path = os.path.join(os.getcwd(), "config.yaml")
-            if os.path.exists(new_config_path):
+
+            if os.path.exists(self.current_config_path):
                 logging.info("Will use config.yaml file found in current directory " +
-                             new_config_path)
-                self.load(new_config_path)
+                             self.current_config_path)
+                self.config = self.load_config(self.current_config_path)
             else:
-                logging.info("No config path provided. Creating config file at " +
-                             new_config_path)
-                default_config_path = os.path.join(
-                    module_file_path, "../config_default.yaml")
+                logging.info("Creating new config file at " +
+                             self.current_config_path)
+                shutil.copyfile(self.default_config_path,
+                                self.current_config_path)
+                self.config = self.load_default_config()
 
-                shutil.copyfile(default_config_path, new_config_path)
-                self.load(new_config_path)
+    def load_default_config(self):
+        with open(self.default_config_path) as f:
+            default_config = yaml.safe_load(f)
+        return default_config
 
-    def load(self, config_path):
+    def load_config(self, config_path):
+        """Specially load a config file path. 
+        Will first load the default config file, and update its values with 
+        the content of the file in config_path.
+
+        Args:
+            config_path ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
+        default_config = self.load_default_config()
+
         with open(config_path) as f:
-            self.config = yaml.safe_load(f)
+            config = yaml.safe_load(f)
 
-        # print(" >> ", self.config["ui"]["options"]["stride"]["options"])
+        default_config.update(config)
+        return default_config

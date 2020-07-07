@@ -82,7 +82,7 @@ class Main extends Component {
                 this.setState({ config: data })
             }
         }).catch(function (err) {
-            console.log('Failed to fetch config', err);
+            console.log('Failed to fetch config, using default config.', err);
             self.setState({ config: sampleConfig() })
         });
     }

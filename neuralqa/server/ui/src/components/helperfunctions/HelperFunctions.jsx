@@ -32,7 +32,7 @@ export function getJSONData(url) {
     return fetch(url).then(function (response) {
         if (response.status !== 200) {
             console.log('Looks like there was a problem. Status Code: ' + response.status);
-            return;
+            return Promise.reject(response.status);
         }
         return response.json().then(function (data) {
             return data
@@ -40,129 +40,6 @@ export function getJSONData(url) {
     }).catch(function (err) {
         return Promise.reject(err)
     });
-}
-
-export function sampleConfig() {
-    return {
-        "header": {
-            "appdescription": "Question Answering on Large Datasets",
-            "appname": "NeuralQA"
-        },
-        "queryview": {
-            "intro": {
-                "subtitle": "NeuralQA is an interactive tool for question answering (passage retrieval + document reading). You can manually provide a passage or select a search index from (e.g. case.law ) dataset under the QA configuration settings below. To begin, type in a question query below.",
-                "title": "NeuralQA: Question Answering on Large Datasets"
-            },
-            "options": {
-                "highlightspan": {
-                    "options": [
-                        {
-                            "name": 150,
-                            "value": 150
-                        },
-                        {
-                            "name": 250,
-                            "value": 250
-                        },
-                        {
-                            "name": 350,
-                            "value": 350
-                        },
-                        {
-                            "name": 450,
-                            "value": 450
-                        },
-                        {
-                            "name": 650,
-                            "value": 650
-                        }
-                    ],
-                    "selected": 250,
-                    "title": "IR Highlight Span"
-                },
-                "index": {
-                    "options": [
-                        {
-                            "name": "Manual",
-                            "value": "manual"
-                        },
-                        {
-                            "name": "Case Law",
-                            "value": "cases"
-                        },
-                        {
-                            "name": "Supremee Court",
-                            "value": "cases"
-                        }
-                    ],
-                    "selected": "manual",
-                    "title": "Search Index"
-                },
-                "maxpassages": {
-                    "options": [
-                        {
-                            "name": 5,
-                            "value": 5
-                        },
-                        {
-                            "name": 10,
-                            "value": 10
-                        },
-                        {
-                            "name": 15,
-                            "value": 15
-                        }
-                    ],
-                    "selected": 5,
-                    "title": "Passages"
-                },
-                "model": {
-                    "options": [
-                        {
-                            "name": "DistilBERT SQUAD2",
-                            "value": "distilbertsquad2"
-                        },
-                        {
-                            "name": "BERT SQUAD2",
-                            "value": "bertsquad2"
-                        }
-                    ],
-                    "selected": "distilbertsquad2",
-                    "title": "QA models"
-                },
-                "stride": {
-                    "options": [
-                        {
-                            "name": 0,
-                            "value": 0
-                        },
-                        {
-                            "name": 50,
-                            "value": 50
-                        },
-                        {
-                            "name": 100,
-                            "value": 100
-                        },
-                        {
-                            "name": 200,
-                            "value": 200
-                        }
-                    ],
-                    "selected": 0,
-                    "title": "Token Stride"
-                }
-            },
-            "views": {
-                "advanced": true,
-                "allanswers": true,
-                "explanations": true,
-                "intro": true,
-                "passages": true,
-                "samples": false
-            }
-        }
-    }
 }
 
 
@@ -176,7 +53,7 @@ export function postJSONData(url, postData) {
     }).then(function (response) {
         if (response.status !== 200) {
             console.log('Looks like there was a problem. Status Code: ' + response.status);
-            return;
+            return Promise.reject(response.status);
         }
         return response.json().then(function (data) {
             return data
@@ -185,6 +62,12 @@ export function postJSONData(url, postData) {
         return Promise.reject(err)
     });
 }
+
+export function sampleConfig() {
+    return { "header": { "appdescription": "Question Answering on Large Datasets", "appname": "NeuralQA" }, "queryview": { "intro": { "disclaimer": " .. ", "subtitle": "NeuralQA is an interactive tool for question answering (passage retrieval + document reading). You can manually provide a passage or select a search index from (e.g. case.law ) dataset under the QA configuration settings below. To begin, type in a question query below.", "title": "NeuralQA: Question Answering on Large Datasets" }, "options": { "highlightspan": { "options": [{ "name": 150, "value": 150 }, { "name": 250, "value": 250 }, { "name": 350, "value": 350 }, { "name": 450, "value": 450 }, { "name": 650, "value": 650 }], "selected": 250, "title": "IR Highlight Span" }, "index": { "options": [{ "name": "Manual", "value": "manual" }, { "name": "Case Law", "value": "cases" }, { "name": "Supreme Court", "value": "supremecourt" }], "selected": "manual", "title": "Search Index" }, "maxpassages": { "options": [{ "name": 5, "value": 5 }, { "name": 10, "value": 10 }, { "name": 15, "value": 15 }], "selected": 5, "title": "Passages" }, "models": { "options": [{ "name": "DistilBERT SQUAD2", "type": "distilbert", "value": "twmkn9/distilbert-base-uncased-squad2" }, { "name": "BERT SQUAD2", "type": "bert", "value": "deepset/bert-base-cased-squad2" }], "selected": "distilbertsquad2", "title": "QA models" }, "stride": { "options": [{ "name": 0, "value": 0 }, { "name": 50, "value": 50 }, { "name": 100, "value": 100 }, { "name": 200, "value": 200 }], "selected": 0, "title": "Token Stride" } }, "views": { "advanced": true, "allanswers": true, "explanations": true, "intro": true, "passages": true, "samples": false } } }
+}
+
+
 
 export function SampleQA() {
     let questions = [

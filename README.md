@@ -51,6 +51,8 @@ NeuralQA document reader is based on the huggingface library implementation. It 
 
 ## Usage
 
+Create a folder you would like to use for NeuralQA. Run the following command line interface from within that folder.
+
 ```shell
 pip3 install neuralqa
 neuralqa ui --host localhost --port 4000

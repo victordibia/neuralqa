@@ -5,7 +5,7 @@ import time
 
 
 class Handler:
-    def __init__(self, model, index):
+    def __init__(self, reader_pool, index):
 
         self._handlers = [
             ("/test", self._test_handler, ['GET', 'POST']),
@@ -15,27 +15,8 @@ class Handler:
             # ("/uiconfig", self._ui_config, ['GET']),
         ]
 
-        self._model = model
+        self._reader_pool = reader_pool
         self._index = index
-
-    # def _ui_config(self):
-    #     """[summary]
-    #     """
-
-    #     config = {
-    #         "views": {
-    #             "advanced": True,
-    #             "samples": True
-    #         },
-    #         "index": "",
-    #         "page": {
-    #             "title": "",
-    #             "subtitle": ""
-    #         },
-
-    #     }
-
-    #     return jsonify(config)
 
     def _get_answer(self):
         """Generate an answer for the given search query.
@@ -54,6 +35,7 @@ class Handler:
         token_stride = 50
         index_name = "manual"
         context = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
+        model_name = self._reader_pool.selected_model
 
         if request.method == "POST":
             data = request.get_json()
@@ -65,10 +47,8 @@ class Handler:
             highlight_span = data["highlightspan"]
             model_name = data["modelname"]
 
-        # load a different model if the selected model is different
-        # if(_model.name != model_name):
-        #     loaded_model_name, model, tokenizer = model_utils.load_model(
-        #         model_name=model_name)
+        # switch to the selected model
+        self._reader_pool.selected_model = model_name
 
         included_fields = ["name"]
         search_query = {
@@ -95,7 +75,7 @@ class Handler:
 
         # answer question based on provided context
         if (index_name == "manual"):
-            answers = self._model.answer_question(
+            answers = self._reader_pool.model.answer_question(
                 question, context, stride=token_stride)
             for answer in answers:
                 answer["index"] = 0
@@ -110,7 +90,7 @@ class Handler:
                         # context passage is a concatenation of highlights
                         context = " .. ".join(
                             hit["highlight"]["casebody.data.opinions.text"])
-                        answers = self._model.answer_question(
+                        answers = self._reader_pool.model.answer_question(
                             question, context, stride=token_stride)
                         for answer in answers:
                             answer["index"] = i
@@ -186,7 +166,7 @@ class Handler:
             question = data["question"]
             context = data["context"].replace("<em>", "").replace("</em>", "")
 
-        gradients, token_words, token_types, answer_text = self._model.explain_model(
+        gradients, token_words, token_types, answer_text = self._reader_pool.model.explain_model(
             question, context)
 
         explanation_result = {"gradients": gradients,

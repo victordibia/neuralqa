@@ -87,3 +87,9 @@ Caveat .. some want to have varies exposures.
     - if not specified
         - copy default yaml file to current directory
         - print message for user to modify this file to enable additional config   
+
+
+Release Checklist
+- verify latest build of ui without debug flags ... e.g. setting port to loccal port
+- verify version bump
+ 
