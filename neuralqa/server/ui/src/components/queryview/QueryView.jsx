@@ -21,6 +21,8 @@ class QueryView extends Component {
     constructor(props) {
         super(props)
 
+        // console.log(props.data);
+
         this.options = props.data.options
 
 
@@ -47,7 +49,7 @@ class QueryView extends Component {
             errorStatus: "",
 
             maxPassages: this.options.maxpassages.selected,
-            qaModelName: this.options.model.selected,
+            qaModelName: this.options.models.selected,
             highlightSpan: this.options.highlightspan.selected,
             chunkStride: this.options.stride.selected,
             searchIndex: this.options.index.selected,
@@ -130,11 +132,10 @@ class QueryView extends Component {
                     this.setState({ answerIsLoading: false })
                 }, this.interfaceTimedDelay);
             }
-        })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-                self.setState({ answerIsLoading: false, errorStatus: "Failed to fetch answer. Answer server may need to be restarted." })
-            });
+        }).catch(function (err) {
+            console.log('Failed to fetch answers', err);
+            self.setState({ answerIsLoading: false, errorStatus: "Failed to fetch answer. Answer server may need to be restarted. Error msg : " + err })
+        });
     }
 
     getPassages(postData) {
@@ -152,7 +153,7 @@ class QueryView extends Component {
             } else {
 
             }
-            let errorStatus = data.status ? "" : data.result;
+            let errorStatus = data.status ? "" : "Error Fetching Passages. \n" + data.result;
             setTimeout(() => {
                 this.setState({ passageIsLoading: false, errorStatus: errorStatus })
             }, this.interfaceTimedDelay);
@@ -238,7 +239,7 @@ class QueryView extends Component {
             case "maxpassages":
                 this.setState({ maxPassages: selectedValue })
                 break
-            case "model":
+            case "models":
                 this.setState({ qaModelName: selectedValue })
                 break
             case "stride":
@@ -387,8 +388,8 @@ class QueryView extends Component {
                     </div>
 
                     <div className="pl10 borderleftdash iblock mr10">
-                        <div className="mediumdesc pb7 pt5"> {this.options.model.title} <span className="boldtext"> {abbreviateString(this.state.qaModelName, 16)} </span> </div>
-                        {this.getOptionItems("model", "")}
+                        <div className="mediumdesc pb7 pt5"> {this.options.models.title} <span className="boldtext"> {abbreviateString(this.state.qaModelName, 16)} </span> </div>
+                        {this.getOptionItems("models", "")}
                     </div>
 
                     <div className="iblock mr10">
@@ -512,8 +513,8 @@ class QueryView extends Component {
                             </div>
 
                             <div className="flexfull  sectionheading">
-                                <span className="boldtext">  BERT Answer Results</span>
-                                {!this.state.answerIsLoading && <span className="mediumdesc"> {answerList.length} item{answerList.length > 1 ? "s" : ""} | {this.state.answers["took"].toFixed(3)} seconds </span>}
+                                <span className="boldtext"> {answerList.length} Answer{answerList.length > 1 ? "s" : ""} found  </span>
+                                {!this.state.answerIsLoading && <span className="mediumdesc"> {this.state.answers["took"].toFixed(3)} seconds. </span>}
                             </div>
                             <div className="lh2m">
                                 {this.state.answerIsLoading && <span className="mediumdesc"> Loading answers ... </span>}
@@ -532,9 +533,9 @@ class QueryView extends Component {
                 {(this.state.showPassages && passageList.length) > 0 &&
                     <div>
                         <div className="mt10 mb10">
-                            <span className="boldtext">Passage Query Results </span>
+                            <span className="boldtext"> {this.state.passages["hits"]["hits"].length} Passages found. </span>
                             {this.state.passageIsLoading && <span className="mediumdesc"> Loading passages ... </span>}
-                            {!this.state.passageIsLoading && <span className="mediumdesc"> {this.state.passages["hits"]["hits"].length} items | {this.state.passages["took"] / 1000} seconds </span>}
+                            {!this.state.passageIsLoading && <span className="mediumdesc">  {this.state.passages["took"] / 1000} seconds </span>}
                         </div>
                         <div className="passagebox  mt10">
                             {passageList}
