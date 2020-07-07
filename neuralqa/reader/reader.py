@@ -22,7 +22,8 @@ class Reader:
         self.load_model(model_name, model_path, model_type)
 
     def load_model(self, model_name, model_path, model_type):
-        logging.info(" >> loading model " + model_name)
+        logging.info(" >> loading HF model " +
+                     model_name + " from " + model_path)
         self.type = model_type
         self.name = model_name
         self.tokenizer = AutoTokenizer.from_pretrained(
