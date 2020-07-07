@@ -1,6 +1,6 @@
 
 
-from neuralqa.reader import BERTReader
+from neuralqa.reader import BERTReader, ReaderPool
 from neuralqa.server.handlers import Handler
 from neuralqa.searchindex import ElasticSearchIndex
 from neuralqa.utils import ConfigParser
@@ -31,13 +31,20 @@ def _run_server(host, port, index_host, index_port, config_path):
 
     @app.route('/config')
     def ui_config():
-        return jsonify(app_config.config["ui"])
+        config = app_config.config["ui"]
+        # show only listed models to ui
+        # config["queryview"]["options"]["models"]["selected"] = app_config.config["reader"]["models"][0]["value"]
+        config["queryview"]["options"]["models"] = app_config.config["reader"]["models"]
+        return jsonify(config)
 
     # define the model to be used
-    model_name = "distilbert"
-    model_path = "twmkn9/distilbert-base-uncased-squad2"
-    model = BERTReader(model_name, model_path)
-    print(">> model loaded")
+    # model_name = "distilbert"
+    # model_path = "twmkn9/distilbert-base-uncased-squad2"
+    # model = BERTReader(model_name, model_path)
+    # print(">> model loaded")
+
+    # Define a Reader Pool
+    reader_pool = ReaderPool(app_config.config["reader"]["models"])
 
     # define the search index to be used if any
     search_index = ElasticSearchIndex(
@@ -45,7 +52,7 @@ def _run_server(host, port, index_host, index_port, config_path):
     # print(">> index connnection status", self._index.test_connection())
 
     # create a handler that responds to queries using model and search index
-    handler = Handler(model, search_index)
+    handler = Handler(reader_pool, search_index)
     # add a list of supported api endpints.
     for http_path, handler, methods in handler.get_endpoints():
         app.add_url_rule(http_path, handler.__name__, handler, methods=methods)
