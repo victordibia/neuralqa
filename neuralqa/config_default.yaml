@@ -8,8 +8,8 @@ ui:
       disclaimer: " .. "
     views:
       intro: True
-      advanced: True
-      samples: False # show/hide sample question answer pairs
+      advanced: True # if false, default retriever/reader settings will be used.
+      samples: True # show/hide sample question answer pairs
       passages: True # show/hide passages which are retrieved
       explanations: True # show/hide explanations button
       allanswers: True # show all answers or just the best answer (based on probability score)
@@ -97,12 +97,15 @@ retriever:
 
 reader:
   models:
-    - name: DistilBERT SQUAD2
-      value: twmkn9/distilbert-base-uncased-squad2
-      type: distilbert
-    - name: BERT SQUAD2
-      value: deepset/bert-base-cased-squad2
-      type: bert
+    title: QA model
+    selected: twmkn9/distilbert-base-uncased-squad2
+    options:
+      - name: DistilBERT SQUAD2
+        value: twmkn9/distilbert-base-uncased-squad2
+        type: distilbert
+      - name: BERT SQUAD2
+        value: deepset/bert-base-cased-squad2
+        type: bert
     # - bertlargesquad2:
     #   name: distillbertsquad1
     #   path: deepset/bert-large-uncased-whole-word-masking-squad2
