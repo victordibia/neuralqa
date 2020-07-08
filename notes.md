@@ -93,3 +93,7 @@ Release Checklist
 - verify latest build of ui without debug flags ... e.g. setting port to loccal port
 - verify version bump
  
+
+## FAQs
+- How does NeuralQA handle really long passages? BERT can process input of max size 512 tokes (question + context + special tokens), how does NeuralQA handle longer passages? 
+We divide the context into multiple chunks (with some optional striding) and find answers within each chunk. For very very long passages, you can 

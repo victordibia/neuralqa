@@ -9,7 +9,7 @@
 
 
 import React, { Component } from "react";
-import { Button, Select, SelectItem, TextInput, TextArea, Loading } from 'carbon-components-react';
+import { Button, Select, Checkbox, Tooltip, SelectItem, TextInput, TextArea, Loading } from 'carbon-components-react';
 import { postJSONData, SampleQA, abbreviateString } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
 // import * as _ from "lodash"
@@ -26,18 +26,6 @@ class QueryView extends Component {
         this.options = props.data.options
 
 
-        // Advanced options 
-        // this.numPassages = [{ id: "opt1", text: "5", value: 5, type: "size" }, { id: "opt2", text: "10", value: 10, type: "size" }]
-        // this.qaModelOptions = [{ id: "opt1", text: "DistilBert SQUAD2", value: "distilbertcasedsquad2", type: "model" }, { id: "opt2", text: "BERT SQUAD2", value: "bertcasedsquad2", type: "model" }]
-        // this.highlightSpanOptions = [{ id: "opt5", text: "150", value: 150, type: "highlight" }, { id: "opt4", text: "250", value: 250, type: "highlight" }, { id: "opt1", text: "350", value: 350, type: "highlight" }, { id: "opt2", text: "650", value: 650, type: "highlight" }, { id: "opt3", text: "850", value: 850, type: "highlight" }]
-        // this.chunkStrideOptions = [{ id: "opt1", text: "0", value: 0, type: "stride" }, { id: "opt2", text: "50", value: 50, type: "stride" }, { id: "opt3", text: "100", value: 100, type: "stride" }, { id: "opt4", text: "300", value: 300, type: "stride" }]
-        // this.datasetOptions = [{ id: "opt1", text: "Case Law", value: "cases", type: "dataset" }, { id: "opt2", text: "Manual", value: "manual", type: "dataset" }]
-
-        // this.selectedSize = 0
-        // this.selectedQaModel = 0
-        // this.selectedHighlightSpan = 0
-        // this.selectedChunkStride = 0
-        // this.selectedSearchIndex = 0
 
         this.state = {
             apptitle: props.data.intro.title,
@@ -64,7 +52,8 @@ class QueryView extends Component {
             showSearchConfig: false,
             showSamples: props.data.views.samples,
             showAllAnswers: props.data.views.allanswers,
-            showIntro: props.data.views.intro
+            showIntro: props.data.views.intro,
+            relSnip: true
         }
 
         this.serverBasePath = window.location.protocol + "//" + window.location.host
@@ -74,6 +63,11 @@ class QueryView extends Component {
         this.explainEndpoint = "/explain"
         this.interfaceTimedDelay = 400
         this.maxStatusElasped = 6  // Remove error/status msgs after maxStatusElasped secs
+
+        this.checkOptions = [
+            { label: "Relevant Snippets", action: "relsnip", checked: this.state.relSnip },
+
+        ]
 
     }
 
@@ -220,6 +214,19 @@ class QueryView extends Component {
                 self.setState({ answerIsLoading: false, errorStatus: "Failed to fetch explainations. Explaination server may need to be restarted." })
             });
     }
+
+    checkBoxClick(e) {
+
+        switch (e.target.getAttribute("action")) {
+            case "relsnip":
+                this.setState({ relSnip: e.target.checked })
+                break
+
+            default:
+                break
+        }
+
+    }
     clickExplainButton(e) {
         // console.log(e.target.getAttribute("id"));
         let selectedAnswerId = e.target.getAttribute("id")
@@ -285,6 +292,22 @@ class QueryView extends Component {
     }
 
     render() {
+
+        let checkBoxOptions = this.checkOptions.map((data) => {
+            return (
+                <div key={data.label + "checkbox"} className="mediumdesc iblock mr10">
+                    <Checkbox
+                        defaultChecked={data.checked}
+                        wrapperClassName={"mediumdesc chartchecks"}
+                        className={"mediumdesc "}
+                        labelText={data.label}
+                        id={data.action + "checkboxid"}
+                        action={data.action}
+                        onClick={this.checkBoxClick.bind(this)}
+                    ></Checkbox>
+                </div>
+            )
+        })
 
         let loadingStatus = this.state.passageIsLoading || this.state.answerIsLoading;
         // Create a list view for passages
@@ -374,14 +397,14 @@ class QueryView extends Component {
 
         // Create configuration bar 
         let configBar = (
-            <div ref="modelconfigbar" style={{ zIndex: 100 }} className={"w100 unselectable greyhighlight   modelconfigbar "}>
+            <div ref="modelconfigbar" style={{ zIndex: 100 }} className={"w100 p10 unselectable greyhighlight modelconfigbar"}>
 
-                <div className="underline p10">
+                <div className="underline pb10">
                     {<div className="smallblueball pulse iblock"></div>}
                     Select QA model configuration.
                 </div>
 
-                <div className="w100  displayblock   p10">
+                <div className="w100   displayblock mt5 ">
                     <div className="  iblock mr10">
                         <div className="mediumdesc pb7 pt5"> {this.options.index.title} <span className="boldtext"> {this.state.searchIndex} </span> </div>
                         {this.getOptionItems("index", "")}
@@ -407,6 +430,26 @@ class QueryView extends Component {
                         <div className="mediumdesc pb7 pt5"> {this.options.highlightspan.title} <span className="boldtext"> {this.state.highlightSpan} </span> </div>
                         {this.getOptionItems("highlightspan", "")}
                     </div>}
+                </div>
+
+                <div className="pl10 pt5 pr10 pb5 greyborder mt10 ">
+                    <div className="boldtext  iblock mr5">
+                        {/* <div className="iblock "> Charts </div> */}
+                        <div className="iblock boldtext  ">
+                            <Tooltip
+                                direction="right"
+                                triggerText="Select Charts"
+                            >
+                                <div className="tooltiptext">
+                                    Add/Remove charts that visualize the state of the model as training progresses.
+                                    For example, the Training Loss chart shows the "loss" or error of the model as training progresses.
+                                        </div>
+
+                            </Tooltip>
+                        </div>
+
+                    </div>
+                    {checkBoxOptions}
                 </div>
             </div>
         )

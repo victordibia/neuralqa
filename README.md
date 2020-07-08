@@ -1,10 +1,8 @@
 
-## NeuralQA: Question Answering on Large Datasets with BERT
+## NeuralQA: A Usable Library for Question Answering on Large Datasets with BERT
 [![License: MIT](https://img.shields.io/github/license/victordibia/neuralqa?style=flat-square)](https://opensource.org/licenses/MIT)
 
 
-
-<img height="30px" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/iconlogodark.png">
  
 <img width="100%" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg">
 

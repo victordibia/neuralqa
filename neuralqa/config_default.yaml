@@ -86,14 +86,12 @@ retriever:
       host: localhost
       port: 9200
       type: elasticsearch
-      enabled: False
     - supremecourt:
       name: Supreme Court Docs
       index: supremecourt
       host: localhost
       port: 9200
       type: elasticsearch
-      enabled: False
 
 reader:
   models:
