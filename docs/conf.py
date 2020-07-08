@@ -25,6 +25,8 @@ author = 'Victor Dibia'
 # The full version, including alpha/beta/rc tags
 release = '0.0.16a'
 
+# set master doc
+master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------
 
