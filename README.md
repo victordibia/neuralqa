@@ -22,17 +22,13 @@ BERT Answer: [1.01s] 18 years ’ imprisonment, but mitigated the sentence to 12
 
 <img width="100%" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/architecture.png">
 
-<!-- - Document Import 
-    - documents into a search index (ElasticSearch)
-    - Automatically segment large documents into smaller segments -->
-- Passage Retrieval
-    - For each search query, scan an index (elasticsearch), retrieve matched passages
-- Query Enrichment
-    - Optionally apply contextual query enrichment before retrieving passages
-    - Optionally construct new passages from retrieved highlights (smaller passages for BERT to read)
-- Explanation
-    - Provide explanations for answer queries using gradients
-- Launch a user interface that allows you to perform search queries.
+NeuralQA is comprised of several high level modules:
+
+- **Retriever**: For each search query (question), scan an index (elasticsearch), and retrieve a list of candidate matched passages.
+
+- **Document Reader**: For each retrieved passage, a BERT based model predicts a span that contains the answer to the question. In practice, retrieved passages may be lengthy and BERT based models can process a maximum of 512 tokens at a time. NeuralQA handles this in two ways. Lengthy passages are chunked into smaller sections with an configurable stride. Secondly, NeuralQA offers the option of extracting a subset of relevant snippets (RelSnip) which a BERT reader can then scan to find answers. Relevant snippets are portions of the retrieved document that contain exact match results for the search query. 
+
+- **User Interface**: NeuralQA provides a visual user interface for performing queries (manual queries where question and context are provided as well as queries over a search index), viewing results and also sensemaking of results  (reranking of passages based on answer scores, highlighting keyword match, model explanations).  
 
 
 <!-- 
