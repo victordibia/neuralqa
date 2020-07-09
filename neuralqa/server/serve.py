@@ -33,8 +33,8 @@ def _run_server(host, port, index_host, index_port, config_path):
     def ui_config():
         config = app_config.config["ui"]
         # show only listed models to ui
-        # config["queryview"]["options"]["models"]["selected"] = app_config.config["reader"]["models"][0]["value"]
-        config["queryview"]["options"]["models"] = app_config.config["reader"]["models"]
+        config["queryview"]["options"]["reader"] = app_config.config["reader"]
+        config["queryview"]["options"]["retriever"] = app_config.config["retriever"]
         return jsonify(config)
 
     # define the model to be used
@@ -44,7 +44,7 @@ def _run_server(host, port, index_host, index_port, config_path):
     # print(">> model loaded")
 
     # Define a Reader Pool
-    reader_pool = ReaderPool(app_config.config["reader"]["models"])
+    reader_pool = ReaderPool(app_config.config["reader"])
 
     # define the search index to be used if any
     search_index = ElasticSearchIndex(

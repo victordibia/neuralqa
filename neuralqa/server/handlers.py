@@ -35,20 +35,20 @@ class Handler:
         token_stride = 50
         index_name = "manual"
         context = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
-        model_name = self._reader_pool.selected_model
+        reader = self._reader_pool.selected_model
 
         if request.method == "POST":
             data = request.get_json()
             result_size = data["maxpassages"]
             question = data["question"]
             context = data["context"]
-            index_name = data["searchindex"]
+            index_name = data["retriever"]
             token_stride = int(data["stride"])
             highlight_span = data["highlightspan"]
-            model_name = data["modelname"]
+            reader = data["reader"]
 
         # switch to the selected model
-        self._reader_pool.selected_model = model_name
+        self._reader_pool.selected_model = reader
 
         included_fields = ["name"]
         search_query = {
