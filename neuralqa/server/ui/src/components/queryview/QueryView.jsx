@@ -9,7 +9,7 @@
 
 
 import React, { Component } from "react";
-import { Button, Select, Checkbox, Tooltip, SelectItem, TextInput, TextArea, Loading } from 'carbon-components-react';
+import { Button, Select, Toggle, Checkbox, Tooltip, SelectItem, TextInput, TextArea, Loading } from 'carbon-components-react';
 import { postJSONData, SampleQA, abbreviateString } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
 // import * as _ from "lodash"
@@ -37,27 +37,31 @@ class QueryView extends Component {
             errorStatus: "",
 
             maxPassages: this.options.maxpassages.selected,
-            qaModelName: this.options.models.selected,
+            reader: this.options.reader.selected,
             highlightSpan: this.options.highlightspan.selected,
             chunkStride: this.options.stride.selected,
-            searchIndex: this.options.index.selected,
+            retriever: this.options.retriever.selected,
 
             sampleQA: SampleQA(),
             selectedSampleIndex: 0,
             explanations: {},
 
-            showAdvancedConfig: props.data.views.advanced,
-            showExplanations: props.data.views.explanations,
-            showPassages: props.data.views.passages,
-            showSearchConfig: false,
+            showAdvancedView: false,
+            showExplanationsView: props.data.views.explanations,
+            showPassagesView: props.data.views.passages,
+
+            // showAdvanced: props.data.views.advanced,
+            openAdvancedConfigDrawer: true,
             showSamples: props.data.views.samples,
             showAllAnswers: props.data.views.allanswers,
             showIntro: props.data.views.intro,
             relSnip: true
+
+
         }
 
         this.serverBasePath = window.location.protocol + "//" + window.location.host
-        // this.serverBasePath = "http://localhost:5000"
+        this.serverBasePath = "http://localhost:5000"
         this.passageEndpoint = "/passages"
         this.answerEndpoint = "/answer"
         this.explainEndpoint = "/explain"
@@ -98,11 +102,11 @@ class QueryView extends Component {
             context: context || this.state.sampleQA[0].context,
             question: question || this.state.sampleQA[0].context,
             highlightspan: this.state.highlightSpan,
-            modelname: this.state.qaModelName,
-            searchindex: this.state.searchIndex,
+            reader: this.state.reader,
+            retriever: this.state.retriever,
             stride: this.state.chunkStride
         }
-        if (this.state.searchIndex !== "manual") {
+        if (this.state.retriever !== "manual") {
             this.getPassages(postData)
         }
 
@@ -168,11 +172,11 @@ class QueryView extends Component {
     }
 
     toggleAdvancedOptions(e) {
-        this.setState({ showAdvancedConfig: !(this.state.showAdvancedConfig) })
+        this.setState({ showAdvancedView: !(this.state.showAdvancedView) })
     }
 
     toggleSearchConfig(e) {
-        this.setState({ showSearchConfig: !(this.state.showSearchConfig) })
+        this.setState({ openAdvancedConfigDrawer: !(this.state.openAdvancedConfigDrawer) })
     }
 
     clickSampleQuestion(e) {
@@ -246,8 +250,8 @@ class QueryView extends Component {
             case "maxpassages":
                 this.setState({ maxPassages: selectedValue })
                 break
-            case "models":
-                this.setState({ qaModelName: selectedValue })
+            case "reader":
+                this.setState({ reader: selectedValue })
                 break
             case "stride":
                 this.setState({ chunkStride: selectedValue })
@@ -255,8 +259,8 @@ class QueryView extends Component {
             case "highlightspan":
                 this.setState({ highlightSpan: selectedValue })
                 break
-            case "index":
-                this.setState({ searchIndex: selectedValue })
+            case "retriever":
+                this.setState({ retriever: selectedValue })
                 break
             default:
                 break
@@ -286,6 +290,10 @@ class QueryView extends Component {
         </Select>)
 
         return selectElement
+    }
+
+    toggleAdvancedOptions(e) {
+        this.setState({ showAdvancedView: !(this.state.showAdvancedView) })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -365,7 +373,7 @@ class QueryView extends Component {
                                 <div className="boldtext">  <span className="answerquote">&#8220;</span> {data.answer} <span className="pt10 answerquote">&#8221;</span> </div>
                                 {(!currentExplanation) && <div>
                                     <div className="p10 mt10 mb10 contextrow lightgreyhighlight" dangerouslySetInnerHTML={{ __html: data.context }} />
-                                    {this.state.showExplanations && <Button
+                                    {this.state.showExplanationsView && <Button
                                         id={index}
                                         onClick={this.clickExplainButton.bind(this)}
                                         size="small"
@@ -406,13 +414,13 @@ class QueryView extends Component {
 
                 <div className="w100   displayblock mt5 ">
                     <div className="  iblock mr10">
-                        <div className="mediumdesc pb7 pt5"> {this.options.index.title} <span className="boldtext"> {this.state.searchIndex} </span> </div>
-                        {this.getOptionItems("index", "")}
+                        <div className="mediumdesc pb7 pt5"> {this.options.retriever.title} <span className="boldtext"> {this.state.retriever} </span> </div>
+                        {this.getOptionItems("retriever", "")}
                     </div>
 
                     <div className="pl10 borderleftdash iblock mr10">
-                        <div className="mediumdesc pb7 pt5"> {this.options.models.title} <span className="boldtext"> {abbreviateString(this.state.qaModelName, 16)} </span> </div>
-                        {this.getOptionItems("models", "")}
+                        <div className="mediumdesc pb7 pt5"> {this.options.reader.title} <span className="boldtext"> {abbreviateString(this.state.reader, 16)} </span> </div>
+                        {this.getOptionItems("reader", "")}
                     </div>
 
                     <div className="iblock mr10">
@@ -421,12 +429,12 @@ class QueryView extends Component {
                     </div>
 
                     {/* show IR search pipeline config is dataset is not manual  */}
-                    {this.state.searchIndex !== "manual" && <div className="pl10 borderleftdash iblock mr10 ">
+                    {this.state.retriever !== "manual" && <div className="pl10 borderleftdash iblock mr10 ">
                         <div className="mediumdesc pb7 pt5"> {this.options.maxpassages.title} <span className="boldtext"> {this.state.maxPassages} </span> </div>
                         {this.getOptionItems("maxpassages", "")}
                     </div>}
 
-                    {this.state.searchIndex !== "manual" && <div className="iblock mr10 ">
+                    {this.state.retriever !== "manual" && <div className="iblock mr10 ">
                         <div className="mediumdesc pb7 pt5"> {this.options.highlightspan.title} <span className="boldtext"> {this.state.highlightSpan} </span> </div>
                         {this.getOptionItems("highlightspan", "")}
                     </div>}
@@ -457,35 +465,58 @@ class QueryView extends Component {
 
         return (
             <div>
-                {this.state.showIntro && <div className="mynotif mt10 h100 lh10  lightbluehightlight maxh16  mb10">
-                    <div className="boldtext mb5">{this.state.apptitle}</div>
-                    <div> {this.state.appsubtitle}</div>
-                </div>}
+                {this.state.showIntro &&
+                    <div className="clearfix mynotif positionrelative  mt10 h100 lh10  lightbluehightlight maxh16  mb10">
+                        {this.props.data.views.advanced && <div className=" floatright lightgreyhighlight ml10  pr10 pl10 pb10 ">
+                            {/* <div className="mediumdesc boldtext"> Advanced Options</div> */}
 
-                <div className={" mb10" + (this.state.showAdvancedConfig ? "" : " displaynone")}>
+                            <div className="boldtext  iblock ">
+                                <Toggle
+                                    id="advancedoptionstoggle"
+                                    className='smalldesc boldtext mr10'
+                                    labelA='Off'
+                                    labelB='On'
+                                    defaultToggled={this.state.showAdvancedView}
+                                    // onChange action('onChange'),
+                                    onToggle={this.toggleAdvancedOptions.bind(this)}
+                                ></Toggle>
+                            </div>
+
+                            <div className="mediumdesc boldtext"> Advanced Options</div>
+                        </div>
+                        }
+                        <span className="boldtext mb5">{this.state.apptitle}</span>
+                        <br />
+                        {this.state.appsubtitle}
+
+                    </div>
+
+                }
+
+                <div className={" mb10" + (this.state.showAdvancedView ? "" : " displaynone")}>
 
                     {/* config panel and content */}
                     <div onClick={this.toggleSearchConfig.bind(this)} className="unselectable mt10 p10 clickable  flex greymoreinfo">
                         <div className="iblock flexfull minwidth485">
-                            <strong> {!this.state.showSearchConfig && <span>&#x25BC;  </span>} {this.state.showSearchConfig && <span>&#x25B2;  </span>} </strong>
+                            <strong> {!this.state.openAdvancedConfigDrawer && <span>&#x25BC;  </span>} {this.state.openAdvancedConfigDrawer && <span>&#x25B2;  </span>} </strong>
                             Advanced Options
                             </div>
                         <div className="iblock   ">
                             <div className="iblock mr5"> <span className="boldtext"> </span></div>
                             <div className="iblock">
-                                <div className="smalldesc"> {this.state.maxPassages} Results | {this.state.qaModelName.toUpperCase()} </div>
+                                <div className="smalldesc"> {this.state.maxPassages} Results | {this.state.reader.toUpperCase()} </div>
                             </div>
                         </div>
 
                     </div>
 
-                    {<div className={"flex underline p10 modelconfigdiv w100  " + (this.state.showSearchConfig ? "" : " displaynone")} >
+                    {<div className={"flex underline p10 modelconfigdiv w100  " + (this.state.openAdvancedConfigDrawer ? "" : " displaynone")} >
                         {/* <div> Advanced configuration settings </div> */}
                         <div className="w100"> {configBar}</div>
                     </div>}
                 </div>
 
-                {(this.state.searchIndex === "manual" && this.state.showSamples) &&
+                {(this.state.retriever === "manual" && this.state.showSamples) &&
                     <div className=" mb10">
                         <div className="smalldesc p5"> Select any sample question/passage pair below </div>
                         {qaSamples}
@@ -516,7 +547,7 @@ class QueryView extends Component {
 
                 {/* {this.state.sampleQA[this.state.selectedSampleIndex].context} */}
 
-                {this.state.searchIndex === "manual" &&
+                {this.state.retriever === "manual" &&
                     <div key={"contexttextarea" + this.state.selectedSampleIndex} className="mt10">
                         <div className="mt5 mb10 mediumdesc"> Enter passage </div>
                         <TextArea
@@ -573,7 +604,7 @@ class QueryView extends Component {
                     </div>
                 }
 
-                {(this.state.showPassages && passageList.length) > 0 &&
+                {(this.state.showPassagesView && passageList.length) > 0 &&
                     <div>
                         <div className="mt10 mb10">
                             <span className="boldtext"> {this.state.passages["hits"]["hits"].length} Passages found. </span>
@@ -586,7 +617,7 @@ class QueryView extends Component {
                     </div>
                 }
 
-                {(!askedElapsed && passageList.length === 0 && this.state.searchIndex !== "manual" && !(this.state.passageIsLoading)) &&
+                {(!askedElapsed && passageList.length === 0 && this.state.retriever !== "manual" && !(this.state.passageIsLoading)) &&
                     <div className="p10 mt5 orangehighlight">
                         Your query did not match any passages. Try a different query.
                     </div>

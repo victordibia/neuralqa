@@ -131,6 +131,9 @@
 .floatright {
     float: right;
 }
+.clearfix{
+    overflow: auto;
+}
 
 .p10 {
     padding: 10px;

@@ -31,7 +31,7 @@ $css--plex: true;
 @import 'carbon-components/scss/components/button/_button';
 @import 'carbon-components/scss/components/checkbox/_checkbox';
 // @import 'carbon-components/scss/components/radio-button/_radio-button'; 
-// @import 'carbon-components/scss/components/toggle/_toggle';
+@import 'carbon-components/scss/components/toggle/_toggle';
 // @import 'carbon-components/scss/components/search/_search'; 
 @import 'carbon-components/scss/components/tooltip/_tooltip'; 
 @import 'carbon-components/scss/components/slider/_slider';
@@ -41,3 +41,10 @@ $css--plex: true;
 // @import 'carbon-components/scss/components/combo-box/_combo-box';
 
 // @import 'carbon-components/scss/components/list-box/_list-box';
+
+// .bx--toggle-input__label, .bx--toggle-input{
+//     background-color: green;
+//     margin: 0px;
+//     padding: 0px;
+//     height: 24px ;
+// }
