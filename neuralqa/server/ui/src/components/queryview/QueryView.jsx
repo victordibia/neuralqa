@@ -10,7 +10,7 @@
 
 import React, { Component } from "react";
 import { Button, Select, Toggle, Checkbox, Tooltip, SelectItem, TextInput, TextArea, Loading } from 'carbon-components-react';
-import { postJSONData, SampleQA, abbreviateString } from "../helperfunctions/HelperFunctions"
+import { postJSONData, abbreviateString } from "../helperfunctions/HelperFunctions"
 import "./queryview.css"
 // import * as _ from "lodash"
 
@@ -44,7 +44,7 @@ class QueryView extends Component {
             expander: this.options.expander.selected,
             relsnip: this.options.relsnip.selected,
 
-            sampleQA: SampleQA(),
+            sampleQA: this.options.samples,
             selectedSampleIndex: 0,
             explanations: {},
             showAdvancedView: false,
