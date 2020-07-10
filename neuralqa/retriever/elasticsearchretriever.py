@@ -1,12 +1,12 @@
-from neuralqa.searchindex import SearchIndex
+from neuralqa.retriever import Retriever
 from elasticsearch import Elasticsearch, ConnectionError
 import logging
 logging.getLogger("elasticsearch").setLevel(logging.CRITICAL)
 
 
-class ElasticSearchIndex(SearchIndex):
+class ElasticSearchRetriever(Retriever):
     def __init__(self, index_type="elasticsearch", host="localhost", port=9200):
-        SearchIndex.__init__(self, index_type)
+        Retriever.__init__(self, index_type)
 
         self.es = Elasticsearch([{'host': host, 'port': port}])
         self.isAvailable = self.es.ping()
@@ -44,7 +44,7 @@ class ElasticSearchIndex(SearchIndex):
 
     def test_connection(self):
         try:
-            self.es.cluster.health(wait_for_status='yellow')
+            self.es.cluster.health()
             return True
         except ConnectionError:
             return False
