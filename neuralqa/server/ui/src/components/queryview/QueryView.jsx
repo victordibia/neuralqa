@@ -41,21 +41,23 @@ class QueryView extends Component {
             highlightSpan: this.options.highlightspan.selected,
             chunkStride: this.options.stride.selected,
             retriever: this.options.retriever.selected,
+            expander: this.options.expander.selected,
+            relsnip: this.options.relsnip.selected,
 
             sampleQA: SampleQA(),
             selectedSampleIndex: 0,
             explanations: {},
-
             showAdvancedView: false,
             showExplanationsView: props.data.views.explanations,
             showPassagesView: props.data.views.passages,
+            showExpander: true, //props.data.views.expander,
 
             // showAdvanced: props.data.views.advanced,
             openAdvancedConfigDrawer: true,
             showSamples: props.data.views.samples,
             showAllAnswers: props.data.views.allanswers,
             showIntro: props.data.views.intro,
-            relSnip: true
+
 
 
         }
@@ -69,7 +71,7 @@ class QueryView extends Component {
         this.maxStatusElasped = 6  // Remove error/status msgs after maxStatusElasped secs
 
         this.checkOptions = [
-            { label: "Relevant Snippets", action: "relsnip", checked: this.state.relSnip },
+            { label: "Relevant Snippets", action: "relsnip", checked: this.state.relsnip },
 
         ]
 
@@ -104,7 +106,9 @@ class QueryView extends Component {
             highlightspan: this.state.highlightSpan,
             reader: this.state.reader,
             retriever: this.state.retriever,
-            stride: this.state.chunkStride
+            stride: this.state.chunkStride,
+            relsnip: this.state.relsnip,
+            expander: this.state.expander
         }
         if (this.state.retriever !== "manual") {
             this.getPassages(postData)
@@ -223,7 +227,7 @@ class QueryView extends Component {
 
         switch (e.target.getAttribute("action")) {
             case "relsnip":
-                this.setState({ relSnip: e.target.checked })
+                this.setState({ relsnip: e.target.checked })
                 break
 
             default:
@@ -261,6 +265,12 @@ class QueryView extends Component {
                 break
             case "retriever":
                 this.setState({ retriever: selectedValue })
+                break
+            case "relsnip":
+                this.setState({ relsnip: selectedValue })
+                break
+            case "expander":
+                this.setState({ expander: selectedValue })
                 break
             default:
                 break
@@ -423,6 +433,11 @@ class QueryView extends Component {
                         {this.getOptionItems("reader", "")}
                     </div>
 
+                    {this.state.retriever !== "manual" && <div className=" iblock mr10">
+                        <div className="mediumdesc pb7 pt5"> {this.options.relsnip.title} <span className="boldtext"> {abbreviateString(this.state.relsnip + "", 16)} </span> </div>
+                        {this.getOptionItems("relsnip", "")}
+                    </div>}
+
                     <div className="iblock mr10">
                         <div className="mediumdesc pb7 pt5"> {this.options.stride.title}<span className="boldtext"> {this.state.chunkStride} </span> </div>
                         {this.getOptionItems("stride", "")}
@@ -434,31 +449,21 @@ class QueryView extends Component {
                         {this.getOptionItems("maxpassages", "")}
                     </div>}
 
+
+                    {(this.state.retriever !== "manual" && this.state.showExpander) && <div className=" iblock mr10">
+                        <div className="mediumdesc pb7 pt5"> {this.options.expander.title} <span className="boldtext"> {abbreviateString(this.state.expander + "", 16)} </span> </div>
+                        {this.getOptionItems("expander", "")}
+                    </div>}
+
+
+
                     {this.state.retriever !== "manual" && <div className="iblock mr10 ">
                         <div className="mediumdesc pb7 pt5"> {this.options.highlightspan.title} <span className="boldtext"> {this.state.highlightSpan} </span> </div>
                         {this.getOptionItems("highlightspan", "")}
                     </div>}
                 </div>
 
-                <div className="pl10 pt5 pr10 pb5 greyborder mt10 ">
-                    <div className="boldtext  iblock mr5">
-                        {/* <div className="iblock "> Charts </div> */}
-                        <div className="iblock boldtext  ">
-                            <Tooltip
-                                direction="right"
-                                triggerText="Select Charts"
-                            >
-                                <div className="tooltiptext">
-                                    Add/Remove charts that visualize the state of the model as training progresses.
-                                    For example, the Training Loss chart shows the "loss" or error of the model as training progresses.
-                                        </div>
 
-                            </Tooltip>
-                        </div>
-
-                    </div>
-                    {checkBoxOptions}
-                </div>
             </div>
         )
 

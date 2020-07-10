@@ -36,6 +36,7 @@ class Handler:
         index_name = "manual"
         context = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
         reader = self._reader_pool.selected_model
+        relsnip = True
 
         if request.method == "POST":
             data = request.get_json()
@@ -46,7 +47,9 @@ class Handler:
             token_stride = int(data["stride"])
             highlight_span = data["highlightspan"]
             reader = data["reader"]
+            reader = data["relsnip"]
 
+        print(">>>", relsnip)
         # switch to the selected model
         self._reader_pool.selected_model = reader
 
@@ -88,8 +91,12 @@ class Handler:
                 for i, hit in enumerate(query_result["hits"]["hits"]):
                     if ("casebody.data.opinions.text" in hit["highlight"]):
                         # context passage is a concatenation of highlights
-                        context = " .. ".join(
-                            hit["highlight"]["casebody.data.opinions.text"])
+                        if (relsnip):
+                            context = " .. ".join(
+                                hit["highlight"]["casebody.data.opinions.text"])
+                        else:
+                            print(hit["_source"])
+
                         answers = self._reader_pool.model.answer_question(
                             question, context, stride=token_stride)
                         for answer in answers:

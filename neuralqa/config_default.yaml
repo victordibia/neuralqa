@@ -61,6 +61,7 @@ ui:
 retriever:
   title: Retriever
   selected: manual
+
   options:
     - name: Manual
       value: manual
@@ -80,7 +81,15 @@ retriever:
       #   password: None
       #   type: elasticsearch
   readtopn: 0
-  relsnip: true
+
+relsnip:
+  title: Relsnip
+  selected: True
+  options:
+    - name: Yes
+      value: True
+    - name: No
+      value: False
 
 reader:
   title: Reader
@@ -99,11 +108,12 @@ reader:
   #   enabled: False
 
 expander:
-  - maskedlm:
-    name: maskedlm
-    path: pathtomaskedlm
-    enabled: True
-  - word2vec:
-    name: word2vec
-    path: pathtoword2vecmodel
-    enabled: True
+  title: Expander
+  selected: "None"
+  options:
+    - name: "None"
+      value: "None"
+    - name: Synonyms
+      value: synonyms
+    - name: Masked LM
+      value: maskedlm
