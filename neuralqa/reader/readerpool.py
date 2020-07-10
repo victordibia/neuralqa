@@ -27,5 +27,5 @@ class ReaderPool():
         else:
             default_model = next(iter(self.reader_pool))
             logging.info(
-                ">> Model you are attempting to use does not exist in model pool. Using the following default model instead " + default_model)
+                ">> Model you are attempting to use %s does not exist in model pool. Using the following default model instead %s ", selected_model, default_model)
             self._selected_model = default_model

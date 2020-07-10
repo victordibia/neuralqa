@@ -9,6 +9,12 @@
     margin-bottom: 5px;
 }
 
+.rightbox{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
 .highlightsection > em, .contextrow > em {
     background-color: #fcfcaa;
     padding: 0px 5px 0px 5px;

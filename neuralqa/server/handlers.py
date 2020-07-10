@@ -5,7 +5,7 @@ import time
 
 
 class Handler:
-    def __init__(self, reader_pool, index):
+    def __init__(self, reader_pool, retriever):
 
         self._handlers = [
             ("/test", self._test_handler, ['GET', 'POST']),
@@ -16,7 +16,7 @@ class Handler:
         ]
 
         self._reader_pool = reader_pool
-        self._index = index
+        self._retriever = retriever
 
     def _get_answer(self):
         """Generate an answer for the given search query.
@@ -35,20 +35,23 @@ class Handler:
         token_stride = 50
         index_name = "manual"
         context = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
-        model_name = self._reader_pool.selected_model
+        reader = self._reader_pool.selected_model
+        relsnip = True
 
         if request.method == "POST":
             data = request.get_json()
             result_size = data["maxpassages"]
             question = data["question"]
             context = data["context"]
-            index_name = data["searchindex"]
+            index_name = data["retriever"]
             token_stride = int(data["stride"])
             highlight_span = data["highlightspan"]
-            model_name = data["modelname"]
+            reader = data["reader"]
+            relsnip = data["relsnip"]
 
+        print(">>>", relsnip)
         # switch to the selected model
-        self._reader_pool.selected_model = model_name
+        self._reader_pool.selected_model = reader
 
         included_fields = ["name"]
         search_query = {
@@ -82,14 +85,18 @@ class Handler:
                 answer_holder.append(answer)
         # answer question based on retrieved passages from elastic search
         else:
-            query_result = self._index.run_query(index_name, search_query)
+            query_result = self._retriever.run_query(index_name, search_query)
             if query_result["status"]:
                 query_result = query_result["result"]
                 for i, hit in enumerate(query_result["hits"]["hits"]):
                     if ("casebody.data.opinions.text" in hit["highlight"]):
                         # context passage is a concatenation of highlights
-                        context = " .. ".join(
-                            hit["highlight"]["casebody.data.opinions.text"])
+                        if (relsnip):
+                            context = " .. ".join(
+                                hit["highlight"]["casebody.data.opinions.text"])
+                        else:
+                            print(hit["_source"])
+
                         answers = self._reader_pool.model.answer_question(
                             question, context, stride=token_stride)
                         for answer in answers:
@@ -148,7 +155,7 @@ class Handler:
             "size": result_size
         }
 
-        query_result = self._index.run_query(index_name, search_query)
+        query_result = self._retriever.run_query(index_name, search_query)
         return jsonify(query_result)
 
     def _get_explanation(self):

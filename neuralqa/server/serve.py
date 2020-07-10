@@ -2,7 +2,7 @@
 
 from neuralqa.reader import BERTReader, ReaderPool
 from neuralqa.server.handlers import Handler
-from neuralqa.searchindex import ElasticSearchIndex
+from neuralqa.retriever import ElasticSearchRetriever
 from neuralqa.utils import ConfigParser
 
 from flask import Flask, jsonify, request, render_template
@@ -33,8 +33,11 @@ def _run_server(host, port, index_host, index_port, config_path):
     def ui_config():
         config = app_config.config["ui"]
         # show only listed models to ui
-        # config["queryview"]["options"]["models"]["selected"] = app_config.config["reader"]["models"][0]["value"]
-        config["queryview"]["options"]["models"] = app_config.config["reader"]["models"]
+        config["queryview"]["options"]["relsnip"] = app_config.config["relsnip"]
+        config["queryview"]["options"]["samples"] = app_config.config["samples"]
+        config["queryview"]["options"]["expander"] = app_config.config["expander"]
+        config["queryview"]["options"]["reader"] = app_config.config["reader"]
+        config["queryview"]["options"]["retriever"] = app_config.config["retriever"]
         return jsonify(config)
 
     # define the model to be used
@@ -44,15 +47,14 @@ def _run_server(host, port, index_host, index_port, config_path):
     # print(">> model loaded")
 
     # Define a Reader Pool
-    reader_pool = ReaderPool(app_config.config["reader"]["models"])
+    reader_pool = ReaderPool(app_config.config["reader"])
 
     # define the search index to be used if any
-    search_index = ElasticSearchIndex(
-        host=index_host, port=index_port)
+    retriever = ElasticSearchRetriever(host=index_host, port=index_port)
     # print(">> index connnection status", self._index.test_connection())
 
     # create a handler that responds to queries using model and search index
-    handler = Handler(reader_pool, search_index)
+    handler = Handler(reader_pool, retriever)
     # add a list of supported api endpints.
     for http_path, handler, methods in handler.get_endpoints():
         app.add_url_rule(http_path, handler.__name__, handler, methods=methods)
