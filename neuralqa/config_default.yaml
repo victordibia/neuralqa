@@ -1,6 +1,9 @@
 appname: NeuralQA
 
 ui:
+  header:
+    appname: NeuralQA
+    appdescription: Question Answering on Large Datasets
   queryview:
     intro:
       title: "NeuralQA: Question Answering on Large Datasets"
@@ -13,6 +16,7 @@ ui:
       passages: True # show/hide passages which are retrieved
       explanations: True # show/hide explanations button
       allanswers: True # show all answers or just the best answer (based on probability score)
+      expander: False
     options:
       stride:
         title: Token Stride
@@ -27,7 +31,7 @@ ui:
           - name: 200
             value: 200
       maxpassages:
-        title: Passages
+        title: Max Passages
         selected: 5
         options:
           - name: 5
@@ -50,10 +54,7 @@ ui:
             value: 450
           - name: 650
             value: 650
-
-  header:
-    appname: NeuralQA
-    appdescription: Question Answering on Large Datasets
+    samples:
 
 # server:
 #   host: localhost
@@ -65,21 +66,20 @@ retriever:
   options:
     - name: Manual
       value: manual
-
-      # - name: Case Law
-      #   value: cases
-      #   host: localhost
-      #   port: 9200
-      #   username: None
-      #   password: None
-      #   type: elasticsearch
-      # - name: Supreme Court
-      #   value: supremecourt
-      #   host: localhost
-      #   port: 9200
-      #   username: None
-      #   password: None
-      #   type: elasticsearch
+    - name: Case Law
+      value: cases
+      host: localhost
+      port: 9200
+      username: None
+      password: None
+      type: elasticsearch
+    # - name: Supreme Court
+    #   value: supremecourt
+    #   host: localhost
+    #   port: 9200
+    #   username: None
+    #   password: None
+    #   type: elasticsearch
   readtopn: 0
 
 relsnip:
@@ -112,8 +112,40 @@ expander:
   selected: "None"
   options:
     - name: "None"
-      value: "None"
+      value: "none"
     - name: Synonyms
       value: synonyms
     - name: Masked LM
       value: maskedlm
+
+# optional selection of samples to show in the UI
+samples:
+  - question: "what is the goal of the fourth amendment?  "
+    context:
+      The Fourth Amendment of the U.S. Constitution provides that the right of
+      the people to be secure in their persons, houses, papers, and effects, against
+      unreasonable searches and seizures, shall not be violated, and no Warrants shall
+      issue, but upon probable cause, supported by Oath or affirmation, and particularly
+      describing the place to be searched, and the persons or things to be seized.'The
+      ultimate goal of this provision is to protect people’s right to privacy and freedom
+      from unreasonable intrusions by the government. However, the Fourth Amendment
+      does not guarantee protection from all searches and seizures, but only those done
+      by the government and deemed unreasonable under the law.
+  - question: Who was the first woman to serve on the supreme court in America
+    context:
+      Sandra Day O’Connor, née Sandra Day, (born March 26, 1930, El Paso, Texas,
+      U.S.), associate justice of the Supreme Court of the United States from 1981 to
+      2006. She was the first woman to serve on the Supreme Court. A moderate conservative,
+      she was known for her dispassionate and meticulously researched opinions. Sandra
+      Day grew up on a large family ranch near Duncan, Arizona. She received undergraduate
+      (1950) and law (1952) degrees from Stanford University, where she met the future
+      chief justice of the United States William Rehnquist.
+  - question: Where did Sandra Day grow up?
+    context:
+      Sandra Day O’Connor, née Sandra Day, (born March 26, 1930, El Paso, Texas,
+      U.S.), associate justice of the Supreme Court of the United States from 1981 to
+      2006. She was the first woman to serve on the Supreme Court. A moderate conservative,
+      she was known for her dispassionate and meticulously researched opinions. Sandra
+      Day grew up on a large family ranch near Duncan, Arizona. She received undergraduate
+      (1950) and law (1952) degrees from Stanford University, where she met the future
+      chief justice of the United States William Rehnquist.
