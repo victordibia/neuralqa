@@ -70,7 +70,7 @@ class QueryView extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    // this.serverBasePath = "http://localhost:5000";
+    this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/passages";
     this.answerEndpoint = "/answer";
     this.explainEndpoint = "/explain";
