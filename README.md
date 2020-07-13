@@ -1,4 +1,4 @@
-## NeuralQA: A Usable Library for Question Answering on Large Datasets with BERT
+## NeuralQA: A Usable Library for (Extractive) Question Answering on Large Datasets with BERT
 
 [![License: MIT](https://img.shields.io/github/license/victordibia/neuralqa?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Documentation Status](https://readthedocs.org/projects/neuralqa/badge/?version=latest&style=flat-square)](https://neuralqa.readthedocs.io/en/latest/?badge=latest)
@@ -7,7 +7,7 @@
 
 <img width="100%" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg">
 
-`NeuralQA` provides an easy to use api and visual interface for Question Answering (QA),
+`NeuralQA` provides an easy to use api and visual interface for Extractive Question Answering (QA),
 on large datasets. The QA process is comprised of two main stages - **Passage retrieval (Retriever)** is implemented using [ElasticSearch](https://www.elastic.co/downloads/elasticsearch)
 and **Document Reading (Reader)** is implemented using pretrained BERT models via the
 Huggingface [Transformers](https://github.com/huggingface/transformers) api.
