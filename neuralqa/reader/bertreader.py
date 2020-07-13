@@ -121,7 +121,7 @@ class BERTReader(Reader):
     # move this to some utils file
     def clean_tokens(self, gradients, tokens, token_types):
         """
-        Clean the tokens and gradients gradients
+        Clean the tokens and  gradients
         Remove "[CLS]","[CLR]", "[SEP]" tokens
         Reduce (mean) gradients values for tokens that are split ##
         """
