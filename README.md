@@ -86,7 +86,7 @@ A paper introducing NeuralQA and its components can be [found here](docs/images/
 ```
 @article{Dibia2020NeuralQA,
   title={NeuralQA: A Usable Library for Question Answering (Contextual QueryExpansion + BERT) on Large Datasets},
-  author={VictorDibia},
+  author={Victor Dibia},
   year={2020},
 }
 
