@@ -78,3 +78,16 @@ reader:
 ## Documentation
 
 An attempt is being made to better document NeuralQA here - [https://neuralqa.readthedocs.io/en/latest/](https://neuralqa.readthedocs.io/en/latest/).
+
+## Citation
+
+A paper introducing NeuralQA and its components can be [found here](docs/images/neuralqa.pdf).
+
+```
+@article{Dibia2020NeuralQA,
+  title={NeuralQA: A Usable Library for Question Answering (Contextual QueryExpansion + BERT) on Large Datasets},
+  author={Victor Dibia},
+  year={2020},
+}
+
+```

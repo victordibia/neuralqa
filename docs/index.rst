@@ -33,6 +33,9 @@ Launch the web interface via command line:
 
 Why NeuralQA?
 *********************
+
+The goal of NeuralQA is to provide the quickest path to exploring QA with as little as possible to your current infrastructure. 
+
 NeuralQA is helpful in a few ways:
 
 - A visual interface for sensemaking of model results.  
