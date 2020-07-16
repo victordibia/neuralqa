@@ -1,4 +1,4 @@
-## NeuralQA: A Usable Library for (Extractive) Question Answering on Large Datasets with BERT
+## NeuralQA: A Usable Library for Open Domain Queston Answering with BERT
 
 [![License: MIT](https://img.shields.io/github/license/victordibia/neuralqa?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Documentation Status](https://readthedocs.org/projects/neuralqa/badge/?version=latest&style=flat-square)](https://neuralqa.readthedocs.io/en/latest/?badge=latest)
@@ -78,3 +78,16 @@ reader:
 ## Documentation
 
 An attempt is being made to better document NeuralQA here - [https://neuralqa.readthedocs.io/en/latest/](https://neuralqa.readthedocs.io/en/latest/).
+
+## Citation
+
+A paper introducing NeuralQA and its components can be [found here](docs/images/neuralqa.pdf).
+
+```
+@article{Dibia2020NeuralQA,
+  title={NeuralQA: A Usable Library for Question Answering (Contextual QueryExpansion + BERT) on Large Datasets},
+  author={VictorDibia},
+  year={2020},
+}
+
+```

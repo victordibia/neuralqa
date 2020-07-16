@@ -12,7 +12,6 @@ import {
   Button,
   Select,
   Toggle,
-  Checkbox,
   Tooltip,
   SelectItem,
   TextInput,
@@ -199,10 +198,6 @@ class QueryView extends Component {
     }
   }
 
-  toggleAdvancedOptions(e) {
-    this.setState({ showAdvancedView: !this.state.showAdvancedView });
-  }
-
   toggleSearchConfig(e) {
     this.setState({
       openAdvancedConfigDrawer: !this.state.openAdvancedConfigDrawer,
@@ -367,11 +362,11 @@ class QueryView extends Component {
                 }}
               />
               {/* <div className="pb5"> {data.highlight["casebody.data.opinions.text"]}</div> */}
-              <div className="pt5">
+              {/* <div className="pt5">
                 {" "}
                 <span className="excerpttitle"> Case Excerpt: </span>{" "}
                 {data.fields.opinion_excerpt} ...{" "}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
