@@ -32,7 +32,9 @@ setup(
     # download_url='https://github.com/victordibia/neuralqa/archive/v0.0.2.tar.gz',
     keywords=['NLP', 'Question Answering', 'Machine Learning'],
     install_requires=[
-        'Flask',
+        'fastapi',
+        'aiofiles',
+        'uvicorn',
         'numpy',
         'tensorflow>=2.1.0',
         'torch',
