@@ -12,16 +12,19 @@ class ConfigParser:
             module_file_path, "../config_default.yaml")
         self.current_config_path = os.path.join(os.getcwd(), "config.yaml")
 
-        if config_path:
-            if os.path.exists(config_path):
-                self.config = self.load_config(config_path)
-            else:
+        if config_path and os.path.exists(config_path):
+            self.config = self.load_config(config_path)
+            # else:
+            #     logging.info("Supplied config file does not exist. " +
+            #                  os.path.join(os.getcwd(), config_path))
+            #     logging.info("Creating new config file at " +
+            #                  self.current_config_path)
+            #     self.config = self.load_default_config()
+        else:
+
+            if (config_path and not os.path.exists(config_path)):
                 logging.info("Supplied config file does not exist. " +
                              os.path.join(os.getcwd(), config_path))
-                logging.info("Creating new config file at " +
-                             self.current_config_path)
-                self.config = self.load_default_config()
-        else:
 
             if os.path.exists(self.current_config_path):
                 logging.info("Will use config.yaml file found in current directory " +
