@@ -73,8 +73,8 @@ class Handler:
                                 context = " .. ".join(
                                     hit["highlight"]["casebody.data.opinions.text"])
                             else:
-                                context = hit["_source"]
-                                print(hit["_source"])
+                                context = str(hit["_source"])
+                                # print(context)
 
                             answers = self._reader_pool.model.answer_question(
                                 params.question, context, stride=params.token_stride)
