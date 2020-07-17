@@ -1,62 +1,50 @@
 
 
 from neuralqa.reader import BERTReader, ReaderPool
-from neuralqa.server.handlers import Handler
+from neuralqa.server.routehandlers import Handler
 from neuralqa.retriever import ElasticSearchRetriever
 from neuralqa.utils import ConfigParser
 
-from flask import Flask, jsonify, request, render_template
+
 import os
 import logging
 import time
+import uvicorn
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 
-def _run_server(host, port, index_host, index_port, config_path):
+config_path = os.environ.get("NEURALQA_CONFIG_PATH")
+app_config = ConfigParser(config_path)
 
-    app_config = ConfigParser(config_path)
+app = FastAPI()
+api = FastAPI(root_path="/api")
 
-    # Point Flask to the ui directory
-    root_file_path = os.path.dirname(os.path.abspath(__file__))
-    static_folder_root = os.path.join(root_file_path, "ui/build")
-    # print(static_folder_root)
+root_file_path = os.path.dirname(os.path.abspath(__file__))
+static_folder_root = os.path.join(root_file_path, "ui/build")
 
-    app = Flask(__name__, static_url_path='',
-                static_folder=static_folder_root,
-                template_folder=static_folder_root)
+app.mount("/api", api)
+app.mount("/", StaticFiles(directory=static_folder_root, html=True),
+          name="ui")
 
-    # serve front end ui/
-    @app.route('/')
-    def ui():
-        return render_template('index.html')
 
-    @app.route('/config')
-    def ui_config():
-        config = app_config.config["ui"]
-        # show only listed models to ui
-        config["queryview"]["options"]["relsnip"] = app_config.config["relsnip"]
-        config["queryview"]["options"]["samples"] = app_config.config["samples"]
-        config["queryview"]["options"]["expander"] = app_config.config["expander"]
-        config["queryview"]["options"]["reader"] = app_config.config["reader"]
-        config["queryview"]["options"]["retriever"] = app_config.config["retriever"]
-        return jsonify(config)
+@api.get('/config')
+async def ui_config():
+    config = app_config.config["ui"]
+    # show only listed models to ui
+    config["queryview"]["options"]["relsnip"] = app_config.config["relsnip"]
+    config["queryview"]["options"]["samples"] = app_config.config["samples"]
+    config["queryview"]["options"]["expander"] = app_config.config["expander"]
+    config["queryview"]["options"]["reader"] = app_config.config["reader"]
+    config["queryview"]["options"]["retriever"] = app_config.config["retriever"]
+    return config
 
-    # define the model to be used
-    # model_name = "distilbert"
-    # model_path = "twmkn9/distilbert-base-uncased-squad2"
-    # model = BERTReader(model_name, model_path)
-    # print(">> model loaded")
+# # Define a Reader Pool
+reader_pool = ReaderPool(app_config.config["reader"])
 
-    # Define a Reader Pool
-    reader_pool = ReaderPool(app_config.config["reader"])
+# # define the search index to be used if any
+retriever = ElasticSearchRetriever()
 
-    # define the search index to be used if any
-    retriever = ElasticSearchRetriever(host=index_host, port=index_port)
-    # print(">> index connnection status", self._index.test_connection())
-
-    # create a handler that responds to queries using model and search index
-    handler = Handler(reader_pool, retriever)
-    # add a list of supported api endpints.
-    for http_path, handler, methods in handler.get_endpoints():
-        app.add_url_rule(http_path, handler.__name__, handler, methods=methods)
-
-    app.run(debug=False, port=port, host=host)
+handlers = Handler(reader_pool, retriever)
+# handlers = Handler(None, None)
+api.include_router(handlers.router)

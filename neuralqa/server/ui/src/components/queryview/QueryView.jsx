@@ -69,9 +69,9 @@ class QueryView extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    this.serverBasePath = "http://localhost:5000";
+    // this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/api/documents";
-    this.answerEndpoint = "/api/answer";
+    this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
     this.interfaceTimedDelay = 400;
     this.maxStatusElasped = 6; // Remove error/status msgs after maxStatusElasped secs
