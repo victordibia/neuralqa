@@ -74,6 +74,20 @@ NeuralQA is comprised of several high level modules:
 
 - **User Interface**: NeuralQA provides a visual user interface for performing queries (manual queries where question and context are provided as well as queries over a search index), viewing results and also sensemaking of results  (reranking of passages based on answer scores, highlighting keyword match, model explanations).  
  
+
+Citation
+********************** 
+A paper introducing NeuralQA and its components can be `found here <https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/neuralqa.pdf>`_.
+
+.. code-block:: 
+
+  @article{Dibia2020NeuralQA,
+    title={NeuralQA: A Usable Library for Question Answering (Contextual QueryExpansion + BERT) on Large Datasets},
+    author={Victor Dibia},
+    year={2020},
+  }
+
+ 
 .. toctree::
     :maxdepth: 3
     :caption: Contents:
