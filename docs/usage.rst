@@ -56,7 +56,7 @@ The primary command for ``NeuralQA``  is the `neuralqa ui` .  Use the following 
 Rest API Docs
 **************************************************
 
-The rest api for ``NeuralQA`` is implemented using `FastApi <https://fastapi.tiangolo.com/>`_. This means you do get excellent documentation for free. In your browser, type the following:
+The rest api for ``NeuralQA`` is implemented using `FastAPI <https://fastapi.tiangolo.com/>`_. This means you do get excellent documentation for free. In your browser, type the following:
 
 
 .. code-block:: shell
