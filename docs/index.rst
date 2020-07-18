@@ -22,10 +22,7 @@ Launch the web interface via command line:
 
 .. code-block:: shell
 
-    neuralqa ui --port 5000 --workers 1
-
-.. note::
-  ``NeuralQA`` uses the `uvicorn <https://www.uvicorn.org/deployment/>`_ asgi webserver with support for multiple workers (use the worker flag to set the number of worker processes). Note that model weights used by ``NeuralQA`` are loaded into memory on status *for each thread*.
+    neuralqa ui --port 5000 
 
 .. image:: https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg
   :width: 100% 
@@ -36,7 +33,7 @@ Launch the web interface via command line:
 Why NeuralQA?
 *********************
 
-The goal of NeuralQA is to provide the quickest path to exploring QA with as little as possible to your current infrastructure. 
+The goal of NeuralQA is to provide the quickest path to exploring QA with as little changes as possible to your current infrastructure. 
 
 NeuralQA is helpful in a few ways:
 

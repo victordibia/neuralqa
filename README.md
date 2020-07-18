@@ -1,7 +1,7 @@
 ## NeuralQA: A Usable Library for (Extractive) Question Answering on Large Datasets with BERT
 
 [![License: MIT](https://img.shields.io/github/license/victordibia/neuralqa?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Documentation Status](https://readthedocs.org/projects/neuralqa/badge/?version=latest&style=flat-square)](https://neuralqa.readthedocs.io/en/latest/?badge=latest)
+![docs](https://github.com/victordibia/neuralqa/workflows/docs/badge.svg)
 
 > Still in **alpha**, lots of changes anticipated.
 
@@ -77,7 +77,7 @@ reader:
 
 ## Documentation
 
-An attempt is being made to better document NeuralQA here - [https://neuralqa.readthedocs.io/en/latest/](https://neuralqa.readthedocs.io/en/latest/).
+An attempt is being made to better document NeuralQA here - [https://victordibia.github.io/neuralqa/](https://neuralqa.readthedocs.io/en/latest/).
 
 ## Citation
 
