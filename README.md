@@ -21,9 +21,9 @@ pip3 install neuralqa
 neuralqa ui --host localhost --port 4000
 ```
 
-navigate to [http://127.0.0.1:4000/#/](http://127.0.0.1:4000/#/).
+navigate to [http://localhost:4000/#/](http://localhost:4000/#/).
 
-> Note: You can specify configuration for a retriever (host, port). To use NeuralQA with a retriever such as ElasticSearch, follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch a local elasticsearch instance.
+> Note: To use NeuralQA with a retriever such as ElasticSearch, follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch a local elasticsearch instance and add it to your config.yaml file.
 
 ### How Does it Work?
 

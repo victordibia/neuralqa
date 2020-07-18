@@ -108,9 +108,12 @@
   position: absolute;
   right: 0px;
   top: 0px;
-  background-color: #0062ff;
+  background-color: #807e7e;
   padding: 10px;
   color: white;
+}
+.whatsthis:hover {
+  background-color: #0062ff;
 }
 
 .infodesctitle {

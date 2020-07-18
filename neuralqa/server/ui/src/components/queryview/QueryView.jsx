@@ -108,7 +108,7 @@ class QueryView extends Component {
       {
         title: "RelSnip",
         description:
-          "Relevant Snippets (RelSnip) is a method for constructing smaller documents from lengthy documents. (RelSnip) is implemented as follows: For each retrieved document, we apply a highlighter (Lucene Unified Highlighter) which breaks the document into fragments and uses the BM25 algorithm to score each fragment as if they were individual documents in the corpus. Next, we concatenate the top n fragments as a new document which is processed by the reader.",
+          "Relevant Snippets (RelSnip) is a method for constructing smaller documents from lengthy documents. (RelSnip) is implemented as follows: For each retrieved document, we apply a highlighter (Lucene Unified Highlighter) which breaks the document into fragments and uses the BM25 algorithm to score each fragment as if they were individual documents in the corpus. Next, we concatenate the top n fragments as a new document which is then processed by the reader.",
       },
     ];
   }
@@ -138,10 +138,10 @@ class QueryView extends Component {
       ? document.getElementById("contextinput").value
       : null;
     let postData = {
-      maxdocuments: this.state.maxdocuments,
+      max_documents: this.state.maxdocuments,
       context: context || this.state.sampleQA[0].context,
       question: question || this.state.sampleQA[0].context,
-      highlightspan: this.state.highlightSpan,
+      highlight_span: this.state.highlightSpan,
       reader: this.state.reader,
       retriever: this.state.retriever,
       tokenstride: this.state.chunkStride,
