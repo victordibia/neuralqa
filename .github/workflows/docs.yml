@@ -13,18 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       # Standard drop-in approach that should work for most people.
-      - uses: victordibia/neuralqa@master
+      - uses: ammaraskar/sphinx-action@master
         with:
           docs-folder: "docs/"
       # Example of using a custom build-command.
-      - uses: victordibia/neuralqa@master
+      - uses: ammaraskar/sphinx-action@master
         with:
           build-command: "sphinx-build -b html . _build"
           docs-folder: "docs2/"
       # Grabbing custom dependencies and building as a pdf.
-      - uses: victordibia/neuralqa@master
+      - uses: ammaraskar/sphinx-action@master
         with:
           pre-build-command: "apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended"
           build-command: "make latexpdf"
@@ -40,3 +40,23 @@ jobs:
         with:
           name: Documentation
           path: docs2/_build/latex/pdfexample.pdf
+      # Publish built docs to gh-pages branch.
+      # ===============================
+      - name: Commit documentation changes
+        run: |
+          git clone https://github.com/ammaraskar/sphinx-action-test.git --branch gh-pages --single-branch gh-pages
+          cp -r docs/_build/html/* gh-pages/
+          cd gh-pages
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update documentation" -a || true
+          # The above command will fail if no changes were present, so we ignore
+          # that.
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: gh-pages
+          directory: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+    # ===============================
