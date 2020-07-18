@@ -163,17 +163,13 @@ Huggingface <a class="reference external" href="https://github.com/huggingface/t
 </pre></div>
 </div>
 <p>Launch the web interface via command line:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>neuralqa ui --port <span class="m">5000</span> --workers <span class="m">1</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>neuralqa ui --port <span class="m">5000</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code> uses the <a class="reference external" href="https://www.uvicorn.org/deployment/">uvicorn</a> asgi webserver with support for multiple workers (use the worker flag to set the number of worker processes). Note that model weights used by <code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code> are loaded into memory on status <em>for each thread</em>.</p>
 </div>
 <a class="reference internal image-reference" href="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg"><img alt="NeuralQA User Interface Screenshot" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg" style="width: 100%;" /></a>
 <div class="section" id="why-neuralqa">
 <h2>Why NeuralQA?<a class="headerlink" href="#why-neuralqa" title="Permalink to this headline">¶</a></h2>
-<p>The goal of NeuralQA is to provide the quickest path to exploring QA with as little as possible to your current infrastructure.</p>
+<p>The goal of NeuralQA is to provide the quickest path to exploring QA with as little changes as possible to your current infrastructure.</p>
 <p>NeuralQA is helpful in a few ways:</p>
 <ul class="simple">
 <li><p>A visual interface for sensemaking of model results.</p></li>
