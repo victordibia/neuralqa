@@ -52,7 +52,7 @@ class QueryView extends Component {
       sampleQA: this.options.samples,
       selectedSampleIndex: 0,
       explanations: {},
-      showAdvancedView: true,
+      showAdvancedView: false,
       showExplanationsView: props.data.views.explanations,
       showPassagesView: props.data.views.passages,
       showExpander: true, //props.data.views.expander,

@@ -16,9 +16,11 @@ Viewing the UI
  
 .. code-block:: shell
 
-    neuralqa ui --port 5000
+    neuralqa ui --port 5000 --workers 1
 
 
+.. note::
+  ``NeuralQA`` uses the `uvicorn <https://www.uvicorn.org/deployment/>`_ asgi webserver with support for multiple workers (use the worker flag to set the number of worker processes). Note that model weights used by ``NeuralQA`` are loaded into memory on status *for each thread*.
 
 .. image:: https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg
   :width: 100%
@@ -27,7 +29,7 @@ Viewing the UI
 
 
 Command Line Options
-**************************************************
+*********************************
 
 The primary command for ``NeuralQA``  is the `neuralqa ui` .  Use the following command to view the available options.
 

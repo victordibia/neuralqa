@@ -30,8 +30,8 @@ ui:
             value: 100
           - name: 200
             value: 200
-      maxpassages:
-        title: Max Passages
+      maxdocuments:
+        title: Max Documents
         selected: 5
         options:
           - name: 5
@@ -41,7 +41,7 @@ ui:
           - name: 15
             value: 15
       highlightspan:
-        title: IR Highlight Span
+        title: Highlight Span
         selected: 250
         options:
           - name: 150
@@ -56,9 +56,6 @@ ui:
             value: 650
     samples:
 
-# server:
-#   host: localhost
-#   port: 3008
 retriever:
   title: Retriever
   selected: manual
@@ -73,13 +70,13 @@ retriever:
       username: None
       password: None
       type: elasticsearch
-    # - name: Supreme Court
-    #   value: supremecourt
-    #   host: localhost
-    #   port: 9200
-    #   username: None
-    #   password: None
-    #   type: elasticsearch
+    - name: Supreme Court
+      value: supremecourt
+      host: localhost
+      port: 9200
+      username: None
+      password: None
+      type: elasticsearch
   readtopn: 0
 
 relsnip:
@@ -91,6 +88,10 @@ relsnip:
     - name: No
       value: False
 
+server: # webserver host and port defaults
+  host: localhost
+  port: 5000
+
 reader:
   title: Reader
   selected: twmkn9/distilbert-base-uncased-squad2
@@ -98,14 +99,6 @@ reader:
     - name: DistilBERT SQUAD2
       value: twmkn9/distilbert-base-uncased-squad2
       type: distilbert
-    # - name: BERT SQUAD2
-    #   value: deepset/bert-base-cased-squad2
-    #   type: bert
-  # - bertlargesquad2:
-  #   name: distillbertsquad1
-  #   path: deepset/bert-large-uncased-whole-word-masking-squad2
-  #   type: bert
-  #   enabled: False
 
 expander:
   title: Expander
@@ -113,8 +106,8 @@ expander:
   options:
     - name: "None"
       value: "none"
-    - name: Synonyms
-      value: synonyms
+    # - name: Synonyms
+    #   value: synonyms
     - name: Masked LM
       value: maskedlm
 
