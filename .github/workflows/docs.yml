@@ -15,14 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       # Standard drop-in approach that should work for most people.
-      - uses: ammaraskar/sphinx-action@master
-        with:
-          docs-folder: "docs/"
+
       # Example of using a custom build-command.
       - uses: ammaraskar/sphinx-action@master
         with:
           build-command: "pip install sphinx_rtd_theme && sphinx-build -b html . _build"
-          docs-folder: "docs2/"
+          docs-folder: "docs/"
       # Grabbing custom dependencies and building as a pdf.
       - uses: ammaraskar/sphinx-action@master
         with:
