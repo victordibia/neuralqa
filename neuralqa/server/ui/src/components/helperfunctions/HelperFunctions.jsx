@@ -97,14 +97,14 @@ export function sampleConfig() {
           selected: 250,
           title: "IR Highlight Span",
         },
-        maxpassages: {
+        maxdocuments: {
           options: [
             { name: 5, value: 5 },
             { name: 10, value: 10 },
             { name: 15, value: 15 },
           ],
           selected: 5,
-          title: "Passages",
+          title: "Max Documents",
         },
         reader: {
           options: [

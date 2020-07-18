@@ -12,7 +12,7 @@ import {
   Button,
   Select,
   Toggle,
-  Tooltip,
+  Modal,
   SelectItem,
   TextInput,
   TextArea,
@@ -23,9 +23,6 @@ import {
   abbreviateString,
 } from "../helperfunctions/HelperFunctions";
 import "./queryview.css";
-// import * as _ from "lodash"
-
-// const { Table, TableHead, TableHeader, TableBody, TableCell, TableRow } = DataTable;
 
 class QueryView extends Component {
   constructor(props) {
@@ -44,7 +41,7 @@ class QueryView extends Component {
       answerIsLoading: false,
       errorStatus: "",
 
-      maxPassages: this.options.maxpassages.selected,
+      maxdocuments: this.options.maxdocuments.selected,
       reader: this.options.reader.selected,
       highlightSpan: this.options.highlightspan.selected,
       chunkStride: this.options.stride.selected,
@@ -55,7 +52,7 @@ class QueryView extends Component {
       sampleQA: this.options.samples,
       selectedSampleIndex: 0,
       explanations: {},
-      showAdvancedView: false,
+      showAdvancedView: true,
       showExplanationsView: props.data.views.explanations,
       showPassagesView: props.data.views.passages,
       showExpander: true, //props.data.views.expander,
@@ -65,6 +62,7 @@ class QueryView extends Component {
       showSamples: props.data.views.samples,
       showAllAnswers: props.data.views.allanswers,
       showIntro: props.data.views.intro,
+      showInfoModal: false,
     };
 
     this.serverBasePath =
@@ -76,11 +74,41 @@ class QueryView extends Component {
     this.interfaceTimedDelay = 400;
     this.maxStatusElasped = 6; // Remove error/status msgs after maxStatusElasped secs
 
-    this.checkOptions = [
+    this.advancedOptionsDescriptions = [
       {
-        label: "Relevant Snippets",
-        action: "relsnip",
-        checked: this.state.relsnip,
+        title: "Retriever",
+        description:
+          "A list of search indexes that will be used to retrieve documents that match the search query. If set to manual, the interface will let you provide a document/passage in addition to your question",
+      },
+      {
+        title: "Reader",
+        description:
+          "A Question Answering model that will take in your question and retrieved documentss (or manual passsage) and extract an answer to the question if it exists in the document.",
+      },
+      {
+        title: "Token Stride",
+        description:
+          "Token stride specifies the overlap between document chunks. QA reader models have limitations on the maximum size of text tokens they can process in a single pass. Lengthy documents are typically broken down in to smaller document chunks and iteratively processed by the model. ",
+      },
+
+      {
+        title: "Documents",
+        description: "Number of documents to return for a retriever query.",
+      },
+      {
+        title: "Expander",
+        description:
+          "Methods for identifying additional query terms that can improve recall.",
+      },
+      {
+        title: "Highlight Span",
+        description:
+          "Size of each highlight fragment. Retrieved documents are automatically highlighted. ",
+      },
+      {
+        title: "RelSnip",
+        description:
+          "Relevant Snippets (RelSnip) is a method for constructing smaller documents from lengthy documents. (RelSnip) is implemented as follows: For each retrieved document, we apply a highlighter (Lucene Unified Highlighter) which breaks the document into fragments and uses the BM25 algorithm to score each fragment as if they were individual documents in the corpus. Next, we concatenate the top n fragments as a new document which is processed by the reader.",
       },
     ];
   }
@@ -110,13 +138,13 @@ class QueryView extends Component {
       ? document.getElementById("contextinput").value
       : null;
     let postData = {
-      maxpassages: this.state.maxPassages,
+      maxdocuments: this.state.maxdocuments,
       context: context || this.state.sampleQA[0].context,
       question: question || this.state.sampleQA[0].context,
       highlightspan: this.state.highlightSpan,
       reader: this.state.reader,
       retriever: this.state.retriever,
-      stride: this.state.chunkStride,
+      tokenstride: this.state.chunkStride,
       relsnip: this.state.relsnip,
       expander: this.state.expander,
     };
@@ -203,7 +231,9 @@ class QueryView extends Component {
       openAdvancedConfigDrawer: !this.state.openAdvancedConfigDrawer,
     });
   }
-
+  clickInfo(e) {
+    this.setState({ showInfoModal: !this.state.showInfoModal });
+  }
   clickSampleQuestion(e) {
     this.setState(
       {
@@ -269,8 +299,8 @@ class QueryView extends Component {
     // console.log(configType, selectedValue);
 
     switch (configType) {
-      case "maxpassages":
-        this.setState({ maxPassages: selectedValue });
+      case "maxdocuments":
+        this.setState({ maxdocuments: selectedValue });
         break;
       case "reader":
         this.setState({ reader: selectedValue });
@@ -331,6 +361,20 @@ class QueryView extends Component {
   render() {
     let loadingStatus =
       this.state.passageIsLoading || this.state.answerIsLoading;
+
+    // Whats this/info box
+    let infoBox = this.advancedOptionsDescriptions.map((data, index) => {
+      return (
+        <div
+          className="infodescrow underline pb10 pt5"
+          key={"infodesc" + index}
+        >
+          <div className=" infodesctitle"> {data.title}</div>
+          <div className=" infodescdesc"> {data.description}</div>
+        </div>
+      );
+    });
+
     // Create a list view for passages
     let passageList = this.state.passages["hits"]["hits"].map((data, index) => {
       let dataTitle = "";
@@ -477,14 +521,21 @@ class QueryView extends Component {
       <div
         ref="modelconfigbar"
         style={{ zIndex: 100 }}
-        className={"w100 p10 unselectable greyhighlight modelconfigbar"}
+        className={"w100 pl10  pb10 unselectable greyhighlight modelconfigbar"}
       >
-        <div className="underline pb10">
-          {<div className="smallblueball pulse iblock"></div>}
-          Select QA model configuration.
+        <div className="positionrelative  ">
+          <div className=" pt10 pb10 underline">
+            Select QA model configuration.
+          </div>
+          <div
+            className="whatsthis clickable"
+            onClick={this.clickInfo.bind(this)}
+          >
+            {" "}
+            &#63; what is this?{" "}
+          </div>
         </div>
-
-        <div className="w100   displayblock mt5 ">
+        <div className="w100   displayblock  ">
           <div className="  iblock mr10">
             <div className="mediumdesc pb7 pt5">
               {" "}
@@ -506,20 +557,6 @@ class QueryView extends Component {
             {this.getOptionItems("reader", "")}
           </div>
 
-          {this.state.retriever !== "manual" && (
-            <div className=" iblock mr10">
-              <div className="mediumdesc pb7 pt5">
-                {" "}
-                {this.options.relsnip.title}{" "}
-                <span className="boldtext">
-                  {" "}
-                  {abbreviateString(this.state.relsnip + "", 16)}{" "}
-                </span>{" "}
-              </div>
-              {this.getOptionItems("relsnip", "")}
-            </div>
-          )}
-
           <div className="iblock mr10">
             <div className="mediumdesc pb7 pt5">
               {" "}
@@ -534,10 +571,10 @@ class QueryView extends Component {
             <div className="pl10 borderleftdash iblock mr10 ">
               <div className="mediumdesc pb7 pt5">
                 {" "}
-                {this.options.maxpassages.title}{" "}
-                <span className="boldtext"> {this.state.maxPassages} </span>{" "}
+                {this.options.maxdocuments.title}{" "}
+                <span className="boldtext"> {this.state.maxdocuments} </span>{" "}
               </div>
-              {this.getOptionItems("maxpassages", "")}
+              {this.getOptionItems("maxdocuments", "")}
             </div>
           )}
 
@@ -565,12 +602,38 @@ class QueryView extends Component {
               {this.getOptionItems("highlightspan", "")}
             </div>
           )}
+
+          {this.state.retriever !== "manual" && (
+            <div className=" iblock mr10">
+              <div className="mediumdesc pb7 pt5">
+                {" "}
+                {this.options.relsnip.title}{" "}
+                <span className="boldtext">
+                  {" "}
+                  {abbreviateString(this.state.relsnip + "", 16)}{" "}
+                </span>{" "}
+              </div>
+              {this.getOptionItems("relsnip", "")}
+            </div>
+          )}
         </div>
       </div>
     );
 
     return (
       <div>
+        <Modal
+          open={this.state.showInfoModal}
+          modalHeading={"Description of advanced options"}
+          passiveModal={true}
+          aria-label={"Info Modal"}
+          modalAriaLabel={"Info Modal"}
+          onRequestClose={this.clickInfo.bind(this)}
+          hasScrollingContent={true}
+          // secondaryButtonText={"Cancel"}
+        >
+          {infoBox}
+        </Modal>
         {this.state.showIntro && (
           <div className="clearfix mynotif positionrelative  mt10 h100 lh10  lightbluehightlight maxh16  mb10">
             {this.props.data.views.advanced && (
@@ -626,7 +689,7 @@ class QueryView extends Component {
               <div className="iblock">
                 <div className="smalldesc">
                   {" "}
-                  {this.state.maxPassages} Results |{" "}
+                  {this.state.maxdocuments} Results |{" "}
                   {this.state.reader.toUpperCase()}{" "}
                 </div>
               </div>
