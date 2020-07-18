@@ -6,3 +6,4 @@ aiofiles
 fastapi
 elasticsearch>=7.7.1
 pyyaml>=3.13
+sphinx_rtd_theme
