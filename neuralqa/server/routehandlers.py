@@ -46,7 +46,7 @@ class Handler:
                         "name": {}
                     }
                 },
-                "size": params.result_size
+                "size": params.max_documents
             }
 
             answer_holder = []
@@ -56,7 +56,7 @@ class Handler:
             # answer question based on provided context
             if (params.retriever == "manual"):
                 answers = self._reader_pool.model.answer_question(
-                    params.question, params.context, stride=params.token_stride)
+                    params.question, params.context, stride=params.tokenstride)
                 for answer in answers:
                     answer["index"] = 0
                     answer_holder.append(answer)
@@ -77,7 +77,7 @@ class Handler:
                                 # print(context)
 
                             answers = self._reader_pool.model.answer_question(
-                                params.question, context, stride=params.token_stride)
+                                params.question, context, stride=params.tokenstride)
                             for answer in answers:
                                 answer["index"] = i
                                 answer_holder.append(answer)
@@ -101,7 +101,7 @@ class Handler:
             opinion_excerpt_length = 500
 
             # return only included fields + script_field,
-            # limit response to top result_size matches return highlights
+            # limit response to top max_documents matches return highlights
             search_query = {
                 "_source": included_fields,
                 "query": {
@@ -122,7 +122,7 @@ class Handler:
                         "name": {}
                     }
                 },
-                "size": params.result_size
+                "size": params.max_documents
             }
 
             query_result = self._retriever.run_query(

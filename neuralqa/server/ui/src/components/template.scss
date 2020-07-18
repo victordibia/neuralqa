@@ -1,6 +1,6 @@
 // @import 'carbon-components/scss/globals/scss/_styles.scss';
 
- //-------------------------
+//-------------------------
 // 🌍 Global
 //-------------------------
 
@@ -11,32 +11,27 @@ $css--use-layer: true;
 $css--reset: true;
 $css--typography: true;
 $css--plex: true;
- 
 
- 
-
-@import 'carbon-components/scss/globals/scss/_typography'; 
-@import 'carbon-components/scss/globals/scss/_css--font-face'; 
-@import 'carbon-components/scss/globals/scss/_css--body'; 
-
+@import "carbon-components/scss/globals/scss/_typography";
+@import "carbon-components/scss/globals/scss/_css--font-face";
+@import "carbon-components/scss/globals/scss/_css--body";
 
 //-------------------------
 // 🍕 Components
 //-------------------------
- 
-@import 'carbon-components/scss/components/select/_select';
-// @import 'carbon-components/scss/components/data-table/_data-table';
-@import 'carbon-components/scss/components/loading/_loading';
-// @import 'carbon-components/scss/components/modal/_modal';
-@import 'carbon-components/scss/components/button/_button';
-@import 'carbon-components/scss/components/checkbox/_checkbox';
-// @import 'carbon-components/scss/components/radio-button/_radio-button'; 
-@import 'carbon-components/scss/components/toggle/_toggle';
-// @import 'carbon-components/scss/components/search/_search'; 
-@import 'carbon-components/scss/components/tooltip/_tooltip'; 
-@import 'carbon-components/scss/components/slider/_slider';
-@import 'carbon-components/scss/components/text-area/_text-area';
 
+@import "carbon-components/scss/components/select/_select";
+// @import 'carbon-components/scss/components/data-table/_data-table';
+@import "carbon-components/scss/components/loading/_loading";
+@import "carbon-components/scss/components/modal/_modal";
+@import "carbon-components/scss/components/button/_button";
+@import "carbon-components/scss/components/checkbox/_checkbox";
+// @import 'carbon-components/scss/components/radio-button/_radio-button';
+@import "carbon-components/scss/components/toggle/_toggle";
+// @import 'carbon-components/scss/components/search/_search';
+@import "carbon-components/scss/components/tooltip/_tooltip";
+@import "carbon-components/scss/components/slider/_slider";
+@import "carbon-components/scss/components/text-area/_text-area";
 
 // @import 'carbon-components/scss/components/combo-box/_combo-box';
 
