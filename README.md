@@ -18,10 +18,10 @@ Create a folder you would like to use for NeuralQA. Run the following command li
 
 ```shell
 pip3 install neuralqa
-neuralqa ui --host localhost --port 4000
+neuralqa ui --port 4000
 ```
 
-navigate to [http://localhost:4000/#/](http://localhost:4000/#/).
+navigate to [http://localhost:4000/#/](http://localhost:4000/#/). Learn about other command line options in the documentation [here](https://neuralqa.readthedocs.io/en/latest/usage.html#command-line-options).
 
 > Note: To use NeuralQA with a retriever such as ElasticSearch, follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch a local elasticsearch instance and add it to your config.yaml file.
 
