@@ -5,4 +5,4 @@ uvicorn
 aiofiles
 fastapi
 elasticsearch>=7.7.1
-pyyaml>=3.13
+pyyaml>=3.13 

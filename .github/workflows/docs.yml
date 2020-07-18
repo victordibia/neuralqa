@@ -15,9 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # Example of using a custom build-command.
+
       - uses: ammaraskar/sphinx-action@master
         with:
           docs-folder: "docs/"
+
 
       # Publish built docs to gh-pages branch.
       # ===============================
