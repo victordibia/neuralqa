@@ -1,7 +1,7 @@
 ## NeuralQA: A Usable Library for (Extractive) Question Answering on Large Datasets with BERT
 
 [![License: MIT](https://img.shields.io/github/license/victordibia/neuralqa?style=flat-square)](https://opensource.org/licenses/MIT)
-![docs](https://github.com/victordibia/neuralqa/workflows/docs/badge.svg)
+![docs](https://github.com/victordibia/neuralqa/workflows/docs/badge.svg?style=flat-square)
 
 > Still in **alpha**, lots of changes anticipated.
 
@@ -21,7 +21,7 @@ pip3 install neuralqa
 neuralqa ui --port 4000
 ```
 
-navigate to [http://localhost:4000/#/](http://localhost:4000/#/). Learn about other command line options in the documentation [here](https://neuralqa.readthedocs.io/en/latest/usage.html#command-line-options).
+navigate to [http://localhost:4000/#/](http://localhost:4000/#/). Learn about other command line options in the documentation [here](https://victordibia.github.io/neuralqa/usage.html#command-line-options).
 
 > Note: To use NeuralQA with a retriever such as ElasticSearch, follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch a local elasticsearch instance and add it to your config.yaml file.
 
@@ -77,7 +77,7 @@ reader:
 
 ## Documentation
 
-An attempt is being made to better document NeuralQA here - [https://victordibia.github.io/neuralqa/](https://neuralqa.readthedocs.io/en/latest/).
+An attempt is being made to better document NeuralQA here - [https://victordibia.github.io/neuralqa/](https://victordibia.github.io/neuralqa/).
 
 ## Citation
 
