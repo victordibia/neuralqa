@@ -1,6 +1,8 @@
 from neuralqa.retriever import Retriever
 from elasticsearch import Elasticsearch, ConnectionError
 import logging
+
+
 logging.getLogger("elasticsearch").setLevel(logging.CRITICAL)
 
 

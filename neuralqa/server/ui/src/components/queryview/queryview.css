@@ -117,8 +117,14 @@
 }
 
 .infodesctitle {
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .infodescrow {
+}
+
+.infocircle {
+  border-radius: 50%;
+  border: 1px solid white;
+  padding: 0px 5px 0px 5px;
 }
