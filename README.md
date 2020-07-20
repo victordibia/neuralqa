@@ -78,10 +78,7 @@ reader:
 ## Documentation
 
 An attempt is being made to better document NeuralQA here - [https://victordibia.github.io/neuralqa/](https://victordibia.github.io/neuralqa/).
-<<<<<<< HEAD
-=======
  
->>>>>>> a3cc95c363eb6bf3c6ece2e1f6ff5572df8cae56
 
 ## Citation
 
