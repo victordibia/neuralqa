@@ -77,36 +77,43 @@ class QueryView extends Component {
     this.advancedOptionsDescriptions = [
       {
         title: "Retriever",
+        value: "retriever",
         description:
           "A list of search indexes that will be used to retrieve documents that match the search query. If set to manual, the interface will let you provide a document/passage in addition to your question",
       },
       {
         title: "Reader",
+        value: "reader",
         description:
           "A Question Answering model that will take in your question and retrieved documentss (or manual passsage) and extract an answer to the question if it exists in the document.",
       },
       {
         title: "Token Stride",
+        value: "chunkStride",
         description:
           "Token stride specifies the overlap between document chunks. QA reader models have limitations on the maximum size of text tokens they can process in a single pass. Lengthy documents are typically broken down in to smaller document chunks and iteratively processed by the model. ",
       },
 
       {
-        title: "Documents",
+        title: "Max Documents",
+        value: "maxdocuments",
         description: "Number of documents to return for a retriever query.",
       },
       {
         title: "Expander",
+        value: "expander",
         description:
           "Methods for identifying additional query terms that can improve recall.",
       },
       {
         title: "Highlight Span",
+        value: "highlightSpan",
         description:
           "Size of each highlight fragment. Retrieved documents are automatically highlighted. ",
       },
       {
         title: "RelSnip",
+        value: "relsnip",
         description:
           "Relevant Snippets (RelSnip) is a method for constructing smaller documents from lengthy documents. (RelSnip) is implemented as follows: For each retrieved document, we apply a highlighter (Lucene Unified Highlighter) which breaks the document into fragments and uses the BM25 algorithm to score each fragment as if they were individual documents in the corpus. Next, we concatenate the top n fragments as a new document which is then processed by the reader.",
       },
@@ -369,7 +376,10 @@ class QueryView extends Component {
           className="infodescrow underline pb10 pt5"
           key={"infodesc" + index}
         >
-          <div className=" infodesctitle"> {data.title}</div>
+          <div className=" infodesctitle">
+            <span className="boldtext"> {data.title}</span>{" "}
+            {this.state[data.value] + ""}
+          </div>
           <div className=" infodescdesc"> {data.description}</div>
         </div>
       );
@@ -405,12 +415,11 @@ class QueryView extends Component {
                   __html: "... " + caseHighlight + " ... ",
                 }}
               />
-              {/* <div className="pb5"> {data.highlight["casebody.data.opinions.text"]}</div> */}
-              {/* <div className="pt5">
-                {" "}
+
+              <div className="pt5">
                 <span className="excerpttitle"> Case Excerpt: </span>{" "}
                 {data.fields.opinion_excerpt} ...{" "}
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
@@ -531,8 +540,7 @@ class QueryView extends Component {
             className="whatsthis clickable"
             onClick={this.clickInfo.bind(this)}
           >
-            {" "}
-            &#63; what is this?{" "}
+            <span className="infocircle"> &#63;</span> info
           </div>
         </div>
         <div className="w100   displayblock  ">
