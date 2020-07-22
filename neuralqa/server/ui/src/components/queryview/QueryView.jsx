@@ -67,7 +67,7 @@ class QueryView extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    this.serverBasePath = "http://localhost:5000";
+    // this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
@@ -411,7 +411,7 @@ class QueryView extends Component {
               className="highlightsection iblock lhmedium  "
               dangerouslySetInnerHTML={{
                 __html:
-                  "<span class='excerpttitle'> All highlights: </span> <span class='lhmedium '>" +
+                  "<span class='excerpttitle mediumdesc'> All highlights: </span> <span class='lhmedium mediumdesc'>" +
                   data +
                   "</span>",
               }}
@@ -838,7 +838,7 @@ class QueryView extends Component {
             <div className="mt10 mb10">
               <span className="boldtext">
                 {" "}
-                {this.state.passages["highlights"].length} Passages found.{" "}
+                {this.state.passages["highlights"].length} Documents found.{" "}
               </span>
               {this.state.passageIsLoading && (
                 <span className="mediumdesc"> Loading passages ... </span>
