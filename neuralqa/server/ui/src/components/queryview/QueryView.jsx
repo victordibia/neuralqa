@@ -35,7 +35,7 @@ class QueryView extends Component {
     this.state = {
       apptitle: props.data.intro.title,
       appsubtitle: props.data.intro.subtitle,
-      passages: { took: 0, hits: { hits: [] } },
+      passages: { took: 0, highlights: [] },
       answers: { took: 0, answers: [] },
       passageIsLoading: false,
       answerIsLoading: false,
@@ -67,13 +67,13 @@ class QueryView extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    // this.serverBasePath = "http://localhost:5000";
+    this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
     this.interfaceTimedDelay = 400;
     this.maxStatusElasped = 6; // Remove error/status msgs after maxStatusElasped secs
-
+    this.documentTitleLength = 150; // Number of characters to display as the title of the snippets
     this.advancedOptionsDescriptions = [
       {
         title: "Retriever",
@@ -126,7 +126,7 @@ class QueryView extends Component {
 
   resetAnswer() {
     this.setState({
-      passages: { took: 0, hits: { hits: [] } },
+      passages: { took: 0, highlights: [] },
       answers: { took: 0, answers: [] },
       errorStatus: "",
       explanations: {},
@@ -185,7 +185,7 @@ class QueryView extends Component {
         self.setState({
           answerIsLoading: false,
           errorStatus:
-            "Failed to fetch answer. Answer server may need to be restarted. Error msg : " +
+            "Reader failed to fetch answer. Reader server may need to be restarted. Error msg : " +
             err,
         });
       });
@@ -202,13 +202,13 @@ class QueryView extends Component {
         // console.log(data);
 
         if (data.status) {
-          this.setState({ passages: data.result });
+          this.setState({ passages: data });
           // console.log(Object.keys(data));
         } else {
         }
         let errorStatus = data.status
           ? ""
-          : "Error Fetching Passages. \n" + data.result;
+          : "Error Fetching Passages. \n" + data.errormsg;
         setTimeout(() => {
           this.setState({ passageIsLoading: false, errorStatus: errorStatus });
         }, this.interfaceTimedDelay);
@@ -218,7 +218,7 @@ class QueryView extends Component {
         self.setState({
           passageIsLoading: false,
           errorStatus:
-            "Failed to fetch passages. Passage server may need to be restarted.",
+            "Retriever to fetch documents. Retriever server may need to be restarted.",
         });
       });
   }
@@ -244,7 +244,7 @@ class QueryView extends Component {
   clickSampleQuestion(e) {
     this.setState(
       {
-        passages: { took: 0, hits: { hits: [] } },
+        passages: { took: 0, highlights: [] },
         answers: { took: 0, answers: [] },
         selectedSampleIndex: e.target.getAttribute("qindex"),
       },
@@ -386,41 +386,36 @@ class QueryView extends Component {
     });
 
     // Create a list view for passages
-    let passageList = this.state.passages["hits"]["hits"].map((data, index) => {
-      let dataTitle = "";
-      if (data.highlight["name"] !== undefined) {
-        for (let title of data.highlight["name"]) {
-          dataTitle = dataTitle + " ... " + title;
-        }
-      } else {
-        dataTitle = data._source.name;
-      }
-      let caseHighlight =
-        data.highlight["casebody.data.opinions.text"] || "No highlight.";
+    let passageList = this.state.passages["highlights"].map((data, index) => {
+      let dataTitle = data.substring(0, this.documentTitleLength);
+      // if (data.highlight["name"] !== undefined) {
+      //   for (let title of data.highlight["name"]) {
+      //     dataTitle = dataTitle + " ... " + title;
+      //   }
+      // } else {
+      //   dataTitle = data._source.name;
+      // }
+      // let caseHighlight =
+      //   data.highlight["casebody.data.opinions.text"] || "No highlight.";
 
       return (
         <div className="passagerow flex" key={"passagerow" + index}>
-          <div className="answerrowtitletag mr10"> P{index} </div>
+          <div className="answerrowtitletag mr10"> D{index} </div>
           <div className="flexfull">
             <div
-              className="passagetitle highlightsection lhmedium"
+              className="passagetitle highlightsection mb10   underline lhmedium"
               dangerouslySetInnerHTML={{ __html: dataTitle }}
             />
 
-            <div className="mediumdesc lhmedium passagexcerpt">
-              {/* <div className="answerrowtitletag mr10"> P{index} </div> */}
-              <div
-                className="highlightsection underline "
-                dangerouslySetInnerHTML={{
-                  __html: "... " + caseHighlight + " ... ",
-                }}
-              />
-
-              <div className="pt5">
-                <span className="excerpttitle"> Case Excerpt: </span>{" "}
-                {data.fields.opinion_excerpt} ...{" "}
-              </div>
-            </div>
+            <span
+              className="highlightsection iblock lhmedium  "
+              dangerouslySetInnerHTML={{
+                __html:
+                  "<span class='excerpttitle'> All highlights: </span> <span class='lhmedium '>" +
+                  data +
+                  "</span>",
+              }}
+            />
           </div>
         </div>
       );
@@ -843,7 +838,7 @@ class QueryView extends Component {
             <div className="mt10 mb10">
               <span className="boldtext">
                 {" "}
-                {this.state.passages["hits"]["hits"].length} Passages found.{" "}
+                {this.state.passages["highlights"].length} Passages found.{" "}
               </span>
               {this.state.passageIsLoading && (
                 <span className="mediumdesc"> Loading passages ... </span>
