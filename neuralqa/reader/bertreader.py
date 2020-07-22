@@ -6,6 +6,8 @@ import numpy as np
 import time
 import logging
 
+logger = logging.getLogger(__name__)
+
 
 class BERTReader(Reader):
     def __init__(self, model_name, model_path, model_type="bert", **kwargs):
