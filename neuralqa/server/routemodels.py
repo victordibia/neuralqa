@@ -19,7 +19,7 @@ class Answer(BaseModel):
     question: str = "what is a fourth amendment right violation? "
     highlight_span: int = 250
     tokenstride: int = 50
-    context: str = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
+    context: Optional[str] = "The fourth amendment kind of protects the rights of citizens .. such that they dont get searched"
     reader: str = None
     relsnip: bool = True
     retriever: Optional[str] = "manual"
