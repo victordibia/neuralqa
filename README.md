@@ -1,7 +1,7 @@
 ## NeuralQA: A Usable Library for (Extractive) Question Answering on Large Datasets with BERT
 
-[![License: MIT](https://img.shields.io/github/license/victordibia/neuralqa?style=flat-square)](https://opensource.org/licenses/MIT)
-![docs](https://github.com/victordibia/neuralqa/workflows/docs/badge.svg)
+[![License: MIT](https://img.shields.io/github/license/victordibia/neuralqa)](https://opensource.org/licenses/MIT)
+![docs](https://github.com/victordibia/neuralqa/workflows/docs/badge.svg?style=flat-square)
 
 > Still in **alpha**, lots of changes anticipated.
 
@@ -21,7 +21,7 @@ pip3 install neuralqa
 neuralqa ui --port 4000
 ```
 
-navigate to [http://localhost:4000/#/](http://localhost:4000/#/). Learn about other command line options in the documentation [here](https://neuralqa.readthedocs.io/en/latest/usage.html#command-line-options).
+navigate to [http://localhost:4000/#/](http://localhost:4000/#/). Learn about other command line options in the documentation [here](https://victordibia.github.io/neuralqa/usage.html#command-line-options).
 
 > Note: To use NeuralQA with a retriever such as ElasticSearch, follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch a local elasticsearch instance and add it to your config.yaml file.
 
@@ -34,6 +34,8 @@ NeuralQA is comprised of several high level modules:
 - **Retriever**: For each search query (question), scan an index (elasticsearch), and retrieve a list of candidate matched passages.
 
 - **Reader**: For each retrieved passage, a BERT based model predicts a span that contains the answer to the question. In practice, retrieved passages may be lengthy and BERT based models can process a maximum of 512 tokens at a time. NeuralQA handles this in two ways. Lengthy passages are chunked into smaller sections with a configurable stride. Secondly, NeuralQA offers the option of extracting a subset of relevant snippets (RelSnip) which a BERT reader can then scan to find answers. Relevant snippets are portions of the retrieved document that contain exact match results for the search query.
+
+- **Expander**: Methods for generating additional queries to improve recall.
 
 - **User Interface**: NeuralQA provides a visual user interface for performing queries (manual queries where question and context are provided as well as queries over a search index), viewing results and also sensemaking of results (reranking of passages based on answer scores, highlighting keyword match, model explanations).
 
@@ -78,7 +80,6 @@ reader:
 ## Documentation
 
 An attempt is being made to better document NeuralQA here - [https://victordibia.github.io/neuralqa/](https://victordibia.github.io/neuralqa/).
- 
 
 ## Citation
 
