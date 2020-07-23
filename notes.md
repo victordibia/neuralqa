@@ -57,10 +57,17 @@ Other implementation notes
 ## Serving UI/API
 
 - Serve both ui and api over same backend api. This simplifies build in that we can think of /ui as just another api end point. Users can still run the backend without the ui as long as they conform to api standards.  
-  Caveat .. some want to have varies exposures.
+  Caveat .. some want to have varied exposure.
 - expose front end but not api. Only front end should be able to call api
 - expose api to specific internal applications.
 - expose api to any applicaation
+
+## Retriever Interface on yaml
+
+- search fields [] : a list of the fields in the index we want to search on
+- title field (optional): this is used as a title if available, else the first n size of the body is used.
+- body field: a subset of this field is shown in the UI, this is also the field that is returned to the reader for reading.
+- body offset: snippet of body that is shown on ui
 
 ## TODO
 
@@ -90,8 +97,27 @@ Release Checklist
 - verify latest build of ui without debug flags ... e.g. setting port to loccal port
 - verify version bump
 - copy latest config.yaml to config-default.yaml
+- remove CORS testing harness for UI
+  - remove manual UI pointers to port 5000
+  - remove CORS allow rules on backend api
 
 ## FAQs
 
 - How does NeuralQA handle really long passages? BERT can process input of max size 512 tokes (question + context + special tokens), how does NeuralQA handle longer passages?
   We divide the context into multiple chunks (with some optional striding) and find answers within each chunk. For very very long passages, you can
+
+## Notes on Running/Testing Locally
+
+- Clone the repo
+- cd neuralqa
+- pip install -r requirements.txt
+- build the ui
+  - cd neuralqa/server/ui
+  - yarn install
+  - yarn build
+- python neuralqa/cli.py test
+  - the command above should load several datasets into your index. Ensure elasticsearch is running!!. Details are in neuralqa/utils/data_utils.py
+- python neuralqa/cli.py ui
+  - this should startup neuralqa and create config.yaml in the current directory. You can stop it with Ctrl + C.
+  - now modify config.yaml .. add a path to your own model folder
+  - restart neuralqa with command above.

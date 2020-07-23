@@ -10,10 +10,13 @@ class RetrieverPool():
 
         self.retriever_pool = {}
         for retriever in retrievers["options"]:
+            if (retriever["value"] in self.retriever_pool):
+                raise ValueError(
+                    "Duplicate retriever value : {} ".format(retriever["value"]))
+
             if (retriever["type"] == "elasticsearch"):
                 self.retriever_pool[retriever["value"]] = ElasticSearchRetriever(
-                    host=retriever["host"], port=retriever["port"], body_field=retriever["fields"]["body_field"],
-                    secondary_fields=retriever["fields"]["secondary_fields"])
+                    host=retriever["host"], port=retriever["port"], body_field=retriever["fields"]["body_field"])
             if (retriever["type"] == "solr"):
                 logger.info("We do not yet support Solr retrievers")
         self.selected_retriever = retrievers["selected"]
@@ -33,5 +36,5 @@ class RetrieverPool():
         else:
             default_retriever = next(iter(self.retriever_pool))
             logger.info(
-                ">> Retriever you are attempting to use %s does not exist in retriever pool. Using the following default retriever instead %s ", selected_retriever, default_retriever)
+                ">> Retriever you are attempting to use (%s) does not exist in retriever pool. Using the following default retriever instead %s ", selected_retriever, default_retriever)
             self._selected_retriever = default_retriever

@@ -11,6 +11,7 @@ class Document(BaseModel):
     highlight_span: int = 250
     retriever: Optional[str] = None
     expander: Optional[str] = None
+    relsnip: Optional[bool] = True
 
 
 class Answer(BaseModel):

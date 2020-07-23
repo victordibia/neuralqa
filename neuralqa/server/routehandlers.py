@@ -30,10 +30,11 @@ class Handler:
                 [type] -- [description]
             """
 
+            # print(params)
+
             # switch to the selected model and retriever
             self.reader_pool.selected_model = params.reader
-            self.retriever_pool.selected_retriever = params.retriever
-
+            
             answer_holder = []
             response = {}
             start_time = time.time()
@@ -47,28 +48,27 @@ class Handler:
                     answer_holder.append(answer)
             # answer question based on retrieved passages from elastic search
             else:
+                self.retriever_pool.selected_retriever = params.retriever
                 num_fragments = 5
                 query_results = self.retriever_pool.retriever.run_query(params.retriever, params.question,
                                                                         max_documents=params.max_documents, highlight_span=params.highlight_span,
                                                                         relsnip=params.relsnip, num_fragments=num_fragments, highlight_tags=False)
+                # print(query_results)
+                if ( query_results["status"]): 
+                    # if relsnip is not enabled, read the entire document ... this is super slow
+                    docs = query_results["highlights"] if params.relsnip else query_results["docs"]
 
-                if (not query_results["status"]):
-                    return query_results
+                    for i, doc in enumerate(docs):
+                        doc = doc.replace("\n", " ")
+                        answers = self.reader_pool.model.answer_question(
+                            params.question, doc, stride=params.tokenstride)
+                        for answer in answers:
+                            answer["index"] = i
+                            answer_holder.append(answer)
 
-                # if relsnip is not enabled, read the entire document ... this is super slow
-                docs = query_results["highlights"] if params.relsnip else query_results["docs"]
-
-                for i, doc in enumerate(docs):
-                    doc = doc.replace("\n", " ")
-                    answers = self.reader_pool.model.answer_question(
-                        params.question, doc, stride=params.tokenstride)
-                    for answer in answers:
-                        answer["index"] = i
-                        answer_holder.append(answer)
-
-            # sort answers by probability
-            answer_holder = sorted(
-                answer_holder, key=lambda k: k['probability'], reverse=True)
+                # sort answers by probability
+                answer_holder = sorted(
+                    answer_holder, key=lambda k: k['probability'], reverse=True)
             elapsed_time = time.time() - start_time
             response = {"answers": answer_holder, "took": elapsed_time}
             return response
@@ -81,10 +81,14 @@ class Handler:
                 dictionary -- contains details on elastic search results.
             """
 
+            self.retriever_pool.selected_retriever = params.retriever
             num_fragments = 5
             query_results = self.retriever_pool.retriever.run_query(
-                params.retriever, params.question, max_documents=params.max_documents, highlight_span=params.highlight_span, relsnip=True, num_fragments=num_fragments)
-
+                params.retriever, params.question, max_documents=params.max_documents, highlight_span=params.highlight_span, relsnip=params.relsnip, num_fragments=num_fragments)
+            print(query_results)
+            max_doc_size = 1200
+            if not params.relsnip:
+                query_results["highlights"] = [doc[:max_doc_size] + " .." for doc in query_results["docs"]] 
             return query_results
 
         @router.post("/explain")

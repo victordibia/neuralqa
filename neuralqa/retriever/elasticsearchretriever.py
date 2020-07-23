@@ -13,8 +13,7 @@ class ElasticSearchRetriever(Retriever):
 
         self.username = ""
         self.password = ""
-        self.body_field = ""
-        self.secondary_fields = []
+        self.body_field = "" 
         self.host = host
         self.port = port
 
@@ -43,10 +42,11 @@ class ElasticSearchRetriever(Retriever):
         }
 
         search_query = {
+            "_source":{"includes": [self.body_field]},
             "query": {
                 "multi_match": {
                     "query":    search_query,
-                    "fields": [self.body_field] + self.secondary_fields
+                    "fields": [self.body_field] 
                 }
             },
             "size": max_documents
@@ -56,17 +56,17 @@ class ElasticSearchRetriever(Retriever):
         results = {}
 
         if (relsnip):
-            search_query["_source"] = {"includes": [""]}
+            # search_query["_source"] = {"includes": [""]} 
             search_query["highlight"] = highlight_params
-        else:
-            search_query["_source"] = {"includes": [self.body_field]}
+        # else:
+        #     search_query["_source"] = {"includes": [self.body_field]}
 
         try:
             query_result = self.es.search(
                 index=index_name, body=search_query)
             # RelSnip: for each document, we concatenate all
             # fragments in each document and return as the document.
-            highlights = [".".join(hit["highlight"][self.body_field])
+            highlights = [" ".join(hit["highlight"][self.body_field])
                           for hit in query_result["hits"]["hits"] if "highlight" in hit]
             docs = [((hit["_source"][self.body_field]))
                     for hit in query_result["hits"]["hits"] if hit["_source"]]
@@ -80,37 +80,7 @@ class ElasticSearchRetriever(Retriever):
         results["status"] = status
         return results
 
-    # def run_query(self, index_name, search_query):
-    #     """Makes a query to the elastic search server with the given search_query parameters.
-    #     Also returns opinion_excerpt script field, which is a substring of the first opinion in the case
-
-    #     Arguments:
-    #         search_query {[dictionary]} -- [contains a dictionary that corresponds to an elastic search query on the ]
-
-    #     Returns:
-    #         [dictionary] -- [dictionary of results from elastic search.]
-    #     """
-    #     query_result = None
-
-    #     # return error as result on error.
-    #     # Calling function should check status before parsing result
-    #     try:
-    #         query_result = {
-    #             "status": True,
-    #             "result": self.es.search(index=index_name, body=search_query)
-    #         }
-    #     except ConnectionRefusedError as e:
-    #         query_result = {
-    #             "status": False,
-    #             "result": str(e)
-    #         }
-    #     except Exception as e:
-    #         query_result = {
-    #             "status": False,
-    #             "result": str(e)
-    #         }
-    #     return query_result
-
+     
     def test_connection(self):
         try:
             self.es.cluster.health()

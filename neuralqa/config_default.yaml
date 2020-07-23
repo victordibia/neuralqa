@@ -15,7 +15,7 @@ ui:
       samples: True # show/hide sample question answer pairs
       passages: True # show/hide passages which are retrieved
       explanations: True # show/hide explanations button
-      allanswers: True # show all answers or just the best answer (based on probability score)
+      allanswers: False # show all answers or just the best answer (based on probability score)
       expander: False
     options:
       stride:
@@ -44,16 +44,14 @@ ui:
         title: Highlight Span
         selected: 250
         options:
-          - name: 150
-            value: 150
-          - name: 250
-            value: 250
           - name: 350
             value: 350
           - name: 450
             value: 450
           - name: 650
             value: 650
+          - name: 850
+            value: 850
     samples:
 
 retriever:
@@ -63,6 +61,8 @@ retriever:
   options:
     - name: Manual
       value: manual
+      type: manual
+
     - name: Case Law
       value: cases
       host: localhost
@@ -70,6 +70,17 @@ retriever:
       username: None
       password: None
       type: elasticsearch
+      fields:
+        body_field: casebody.data.opinions.text
+    - name: Medical
+      value: medical
+      host: localhost
+      port: 9200
+      username: None
+      password: None
+      type: elasticsearch
+      fields:
+        body_field: context
     - name: Supreme Court
       value: supremecourt
       host: localhost
@@ -77,6 +88,8 @@ retriever:
       username: None
       password: None
       type: elasticsearch
+      fields:
+        body_field: casebody
   readtopn: 0
 
 relsnip:
@@ -99,6 +112,12 @@ reader:
     - name: DistilBERT SQUAD2
       value: twmkn9/distilbert-base-uncased-squad2
       type: distilbert
+    - name: BERT SQUAD2
+      value: deepset/bert-base-cased-squad2
+      type: bert
+    # - name: Medical BERT SQUAD2   # example of a model with local files
+    #   value: /Users/victordibia/Downloads/meddistilbert
+    #   type: bert
 
 expander:
   title: Expander
