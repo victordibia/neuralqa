@@ -48,7 +48,7 @@ class BERTReader(Reader):
                 "probability": str(answer_end_softmax_probability + answer_start_softmax_probability)
                 }
 
-    def token_chunker(self, question, context, max_chunk_size=512, stride=2):
+    def token_chunker(self, question, context, max_chunk_size=512, stride=2, max_num_chunks=5):
         # we tokenize question and context once.
         # if question + context > max chunksize, we break it down into multiple chunks of question +
         # subsets of context with some stride overlap
@@ -61,7 +61,13 @@ class BERTReader(Reader):
         chunk_size = max_chunk_size - len(question_tokens) - 1
         # -1 for the 102 end token we append later
         current_pos = 0
+        chunk_count = 0
         while current_pos < len(context_tokens) and current_pos >= 0:
+
+            # we want to cap the number of chunks we create 
+            if max_num_chunks and chunk_count >= max_num_chunks:
+                break
+
             end_point = current_pos + \
                 chunk_size if (current_pos + chunk_size) < len(context_tokens) - \
                 1 else len(context_tokens) - 1
@@ -89,6 +95,8 @@ class BERTReader(Reader):
                  "token_type_ids": token_type_ids
                  })
             current_pos = current_pos + chunk_size - stride + 1
+            chunk_count +=1 
+            
         return chunk_holder
 
     def answer_question(self, question, context, max_chunk_size=512, stride=70):
