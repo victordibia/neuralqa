@@ -5,15 +5,18 @@ import time
 from fastapi import APIRouter
 from typing import Optional
 from neuralqa.server.routemodels import Document, Answer, Explanation
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Handler:
-    def __init__(self, reader_pool, retriever):
+    def __init__(self, reader_pool, retriever_pool):
         router = APIRouter()
         self.router = router
 
-        self._reader_pool = reader_pool
-        self._retriever = retriever
+        self.reader_pool = reader_pool
+        self.retriever_pool = retriever_pool
 
         @router.post("/answers")
         async def get_answers(params: Answer):
@@ -27,64 +30,45 @@ class Handler:
                 [type] -- [description]
             """
 
-            # switch to the selected model
-            self._reader_pool.selected_model = params.reader
+            # print(params)
 
-            included_fields = ["name"]
-            search_query = {
-                "_source": included_fields,
-                "query": {
-                    "multi_match": {
-                        "query":    params.question,
-                        "fields": ["casebody.data.opinions.text", "name"]
-                    }
-                },
-                "highlight": {
-                    "fragment_size": params.highlight_span,
-                    "fields": {
-                        "casebody.data.opinions.text": {"pre_tags": [""], "post_tags": [""]},
-                        "name": {}
-                    }
-                },
-                "size": params.max_documents
-            }
-
+            # switch to the selected model and retriever
+            self.reader_pool.selected_model = params.reader
+            
             answer_holder = []
             response = {}
             start_time = time.time()
 
             # answer question based on provided context
             if (params.retriever == "manual"):
-                answers = self._reader_pool.model.answer_question(
+                answers = self.reader_pool.model.answer_question(
                     params.question, params.context, stride=params.tokenstride)
                 for answer in answers:
                     answer["index"] = 0
                     answer_holder.append(answer)
             # answer question based on retrieved passages from elastic search
             else:
-                query_result = self._retriever.run_query(
-                    params.retriever, search_query)
-                if query_result["status"]:
-                    query_result = query_result["result"]
-                    for i, hit in enumerate(query_result["hits"]["hits"]):
-                        if ("casebody.data.opinions.text" in hit["highlight"]):
-                            # context passage is a concatenation of highlights
-                            if (params.relsnip):
-                                context = " .. ".join(
-                                    hit["highlight"]["casebody.data.opinions.text"])
-                            else:
-                                context = str(hit["_source"])
-                                # print(context)
+                self.retriever_pool.selected_retriever = params.retriever
+                num_fragments = 5
+                query_results = self.retriever_pool.retriever.run_query(params.retriever, params.question,
+                                                                        max_documents=params.max_documents, highlight_span=params.highlight_span,
+                                                                        relsnip=params.relsnip, num_fragments=num_fragments, highlight_tags=False)
+                # print(query_results)
+                if ( query_results["status"]): 
+                    # if relsnip is not enabled, read the entire document ... this is super slow
+                    docs = query_results["highlights"] if params.relsnip else query_results["docs"]
 
-                            answers = self._reader_pool.model.answer_question(
-                                params.question, context, stride=params.tokenstride)
-                            for answer in answers:
-                                answer["index"] = i
-                                answer_holder.append(answer)
+                    for i, doc in enumerate(docs):
+                        doc = doc.replace("\n", " ")
+                        answers = self.reader_pool.model.answer_question(
+                            params.question, doc, stride=params.tokenstride)
+                        for answer in answers:
+                            answer["index"] = i
+                            answer_holder.append(answer)
 
-            # sort answers by probability
-            answer_holder = sorted(
-                answer_holder, key=lambda k: k['probability'], reverse=True)
+                # sort answers by probability
+                answer_holder = sorted(
+                    answer_holder, key=lambda k: k['probability'], reverse=True)
             elapsed_time = time.time() - start_time
             response = {"answers": answer_holder, "took": elapsed_time}
             return response
@@ -97,37 +81,15 @@ class Handler:
                 dictionary -- contains details on elastic search results.
             """
 
-            included_fields = ["name"]
-            opinion_excerpt_length = 500
-
-            # return only included fields + script_field,
-            # limit response to top max_documents matches return highlights
-            search_query = {
-                "_source": included_fields,
-                "query": {
-                    "multi_match": {
-                        "query":    params.question,
-                        "fields": ["casebody.data.opinions.text", "name"]
-                    }
-                },
-                "script_fields": {
-                    "opinion_excerpt": {
-                        "script": "(params['_source']['casebody']['data']['opinions'][0]['text']).substring(0," + str(opinion_excerpt_length) + ")"
-                    }
-                },
-                "highlight": {
-                    "fragment_size": params.highlight_span,
-                    "fields": {
-                        "casebody.data.opinions.text": {},
-                        "name": {}
-                    }
-                },
-                "size": params.max_documents
-            }
-
-            query_result = self._retriever.run_query(
-                params.retriever, search_query)
-            return query_result
+            self.retriever_pool.selected_retriever = params.retriever
+            num_fragments = 5
+            query_results = self.retriever_pool.retriever.run_query(
+                params.retriever, params.question, max_documents=params.max_documents, highlight_span=params.highlight_span, relsnip=params.relsnip, num_fragments=num_fragments)
+            print(query_results)
+            max_doc_size = 1200
+            if not params.relsnip:
+                query_results["highlights"] = [doc[:max_doc_size] + " .." for doc in query_results["docs"]] 
+            return query_results
 
         @router.post("/explain")
         async def get_explanation(params: Explanation):
@@ -137,10 +99,12 @@ class Handler:
                 [dictionary]: [explanation , query, question, ]
             """
 
+            # TODO: Do we need to switch readers here?
+
             context = params.context.replace(
                 "<em>", "").replace("</em>", "")
 
-            gradients, token_words, token_types, answer_text = self._reader_pool.model.explain_model(
+            gradients, token_words, token_types, answer_text = self.reader_pool.model.explain_model(
                 params.question, context)
 
             explanation_result = {"gradients": gradients,

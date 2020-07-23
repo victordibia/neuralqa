@@ -4,6 +4,7 @@ neuralqa/data
 docs/images/extra
 config.yaml
 .vscode
+neuralqa/server/test_query.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

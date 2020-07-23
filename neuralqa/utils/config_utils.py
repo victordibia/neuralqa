@@ -4,6 +4,9 @@ import logging
 import shutil
 
 
+logger = logging.getLogger(__name__)
+
+
 class ConfigParser:
     def __init__(self, config_path):
 
@@ -15,24 +18,24 @@ class ConfigParser:
         if config_path and os.path.exists(config_path):
             self.config = self.load_config(config_path)
             # else:
-            #     logging.info("Supplied config file does not exist. " +
+            #     logger.info("Supplied config file does not exist. " +
             #                  os.path.join(os.getcwd(), config_path))
-            #     logging.info("Creating new config file at " +
+            #     logger.info("Creating new config file at " +
             #                  self.current_config_path)
             #     self.config = self.load_default_config()
         else:
 
             if (config_path and not os.path.exists(config_path)):
-                logging.info("Supplied config file does not exist. " +
-                             os.path.join(os.getcwd(), config_path))
+                logger.info(">> Supplied config file does not exist. " +
+                            os.path.join(os.getcwd(), config_path))
 
             if os.path.exists(self.current_config_path):
-                logging.info("Will use config.yaml file found in current directory " +
-                             self.current_config_path)
+                logger.info(">> Found config.yaml file found in current directory " +
+                            self.current_config_path)
                 self.config = self.load_config(self.current_config_path)
             else:
-                logging.info("Creating new config file at " +
-                             self.current_config_path)
+                logger.info("vCreating new config file at " +
+                            self.current_config_path)
                 shutil.copyfile(self.default_config_path,
                                 self.current_config_path)
                 self.config = self.load_default_config()
