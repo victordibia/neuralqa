@@ -192,9 +192,15 @@ def download_data(data_url, source_name):
     return final_file_path
 
 
-def import_case_data(max_docs=2000):
-    """Download new mexico legal case documents,
-    import the first 2,000 cases.
+def import_sample_data(max_docs=2000):
+    """This method downloads several datasets and builds an 
+    elasticsearch index using the downloaded data. 
+    Caselaw
+    Supreme Court Cases
+    Medical data
+
+    Args:
+        max_docs (int, optional): [description]. Defaults to 2000.
     """
     caselaw_data_paths = [
         ["https://api.case.law/v1/bulk/22411/download/", "newmexico"]
@@ -205,3 +211,29 @@ def import_case_data(max_docs=2000):
 
     import_scotus_files(max_docs=max_docs)
     import_medical_data(max_docs=max_docs)
+
+
+def parse_field_content(field_name, content):
+    """Parse content fields if nested using dot notation, else return content as is.
+    e.g. for acrray content and field_name casebody.data.opinions.text, we return
+    content[casebody][data][opinions][text]. If any nest level is an array we return only the 
+    first instance of this array. e.g. if opinions is an array, we return  
+    content[casebody][data][opinions][0][text]. 
+
+    Args:
+        field_name ([str]): [description]
+        content ([dict]): [description]
+
+    Returns:
+        [str]: content of field
+    """
+    
+    if ("." not in field_name):
+        return content[field_name]
+    else:
+        fields = field_name.split(".")  
+        for field in fields: 
+            content =  content[field]
+            if (isinstance(content, list)):
+                content = content[0]
+        return content

@@ -75,3 +75,23 @@ The code snippet below shows how you can configure parts of the main user interf
  
 
 
+Reader Configuration
+**************************
+
+You can configure the reader models that are available for use with the ``NeuralQA`` api and web interface. Because ``NeuralQA`` uses the HuggingFace api, reader models can be specified using either the path to a hosted HuggingFace model or the path to a local folder on disk contained a trained HuggingFace model.
+
+.. code-block:: yaml
+
+    reader:
+    title: Reader
+    selected: twmkn9/distilbert-base-uncased-squad2  #default selected reader on startup. Should correspond to the reader value
+    options:
+        - name: DistilBERT SQUAD2
+        value: twmkn9/distilbert-base-uncased-squad2
+        type: distilbert
+        - name: BERT SQUAD2
+        value: deepset/bert-base-cased-squad2
+        type: bert
+        - name: Medical BERT SQUAD2
+        value: /Users/user/Downloads/meddistilbert  # example path to a local model on disk  
+        type: bert

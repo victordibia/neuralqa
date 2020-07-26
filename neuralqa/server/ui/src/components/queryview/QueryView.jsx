@@ -43,7 +43,7 @@ class QueryView extends Component {
 
       maxdocuments: this.options.maxdocuments.selected,
       reader: this.options.reader.selected,
-      highlightSpan: this.options.highlightspan.selected,
+      fragmentsize: this.options.fragmentsize.selected,
       chunkStride: this.options.stride.selected,
       retriever: this.options.retriever.selected,
       expander: this.options.expander.selected,
@@ -105,17 +105,18 @@ class QueryView extends Component {
         description:
           "Methods for identifying additional query terms that can improve recall.",
       },
-      {
-        title: "Highlight Span",
-        value: "highlightSpan",
-        description:
-          "Size of each highlight fragment. Retrieved documents are automatically highlighted. ",
-      },
+
       {
         title: "RelSnip",
         value: "relsnip",
         description:
-          "Relevant Snippets (RelSnip) is a method for constructing smaller documents from lengthy documents. (RelSnip) is implemented as follows: For each retrieved document, we apply a highlighter (Lucene Unified Highlighter) which breaks the document into fragments and uses the BM25 algorithm to score each fragment as if they were individual documents in the corpus. Next, we concatenate the top n fragments as a new document which is then processed by the reader.",
+          "Relevant Snippets (RelSnip) is a method for constructing smaller documents from lengthy documents and is implemented as follows. For each retrieved document, we apply a highlighter (Lucene Unified Highlighter) which breaks the document into fragments and uses the BM25 algorithm to score each fragment as if they were individual documents in the corpus. Next, we concatenate the top n (default 5) fragments as a new document which is then processed by the reader.",
+      },
+      {
+        title: "Fragment Size",
+        value: "fragmentsize",
+        description:
+          "The size (number of characters) of each highlight fragment.",
       },
     ];
   }
@@ -148,7 +149,7 @@ class QueryView extends Component {
       max_documents: this.state.maxdocuments,
       context: context || this.state.sampleQA[0].context,
       question: question || this.state.sampleQA[0].context,
-      highlight_span: this.state.highlightSpan,
+      fragment_size: this.state.fragmentsize,
       reader: this.state.reader,
       retriever: this.state.retriever,
       tokenstride: this.state.chunkStride,
@@ -315,8 +316,8 @@ class QueryView extends Component {
       case "stride":
         this.setState({ chunkStride: selectedValue });
         break;
-      case "highlightspan":
-        this.setState({ highlightSpan: selectedValue });
+      case "fragmentsize":
+        this.setState({ fragmentsize: selectedValue });
         break;
       case "retriever":
         this.setState({ retriever: selectedValue });
@@ -599,10 +600,10 @@ class QueryView extends Component {
             <div className="iblock mr10 ">
               <div className="mediumdesc pb7 pt5">
                 {" "}
-                {this.options.highlightspan.title}{" "}
-                <span className="boldtext"> {this.state.highlightSpan} </span>{" "}
+                {this.options.fragmentsize.title}{" "}
+                <span className="boldtext"> {this.state.fragmentsize} </span>{" "}
               </div>
-              {this.getOptionItems("highlightspan", "")}
+              {this.getOptionItems("fragmentsize", "")}
             </div>
           )}
 
@@ -808,7 +809,7 @@ class QueryView extends Component {
                 <span className="boldtext">
                   {" "}
                   {answerList.length} Answer{answerList.length > 1 ? "s" : ""}{" "}
-                  found{" "}
+                  returned{" "}
                 </span>
                 {!this.state.answerIsLoading && (
                   <span className="mediumdesc">
@@ -826,19 +827,17 @@ class QueryView extends Component {
             <div>{answerList}</div>
           </div>
         )}
-
-        {!askedElapsed &&
-          answerList.length === 0 &&
-          !this.state.answerIsLoading && (
-            <div className="p10 orangehighlight">No answers found.</div>
-          )}
+        {/* {  !askedElapsed &&} */}
+        {answerList.length === 0 && !this.state.answerIsLoading && (
+          <div className="p10 orangehighlight">No answers found.</div>
+        )}
 
         {(this.state.showPassagesView && passageList.length) > 0 && (
           <div>
             <div className="mt10 mb10">
               <span className="boldtext">
                 {" "}
-                {this.state.passages["highlights"].length} Documents found.{" "}
+                {this.state.passages["highlights"].length} Documents returned.{" "}
               </span>
               {this.state.passageIsLoading && (
                 <span className="mediumdesc"> Loading passages ... </span>

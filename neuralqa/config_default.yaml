@@ -40,9 +40,9 @@ ui:
             value: 10
           - name: 15
             value: 15
-      highlightspan:
-        title: Highlight Span
-        selected: 250
+      fragmentsize:
+        title: Fragment Size
+        selected: 350
         options:
           - name: 350
             value: 350
@@ -71,7 +71,7 @@ retriever:
       password: None
       type: elasticsearch
       fields:
-        body_field: casebody.data.opinions.text
+        body_field: "casebody.data.opinions.text"
     - name: Medical
       value: medical
       host: localhost
@@ -115,9 +115,6 @@ reader:
     - name: BERT SQUAD2
       value: deepset/bert-base-cased-squad2
       type: bert
-    # - name: Medical BERT SQUAD2   # example of a model with local files
-    #   value: /Users/victordibia/Downloads/meddistilbert
-    #   type: bert
 
 expander:
   title: Expander

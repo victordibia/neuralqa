@@ -66,4 +66,12 @@ The rest api for ``NeuralQA`` is implemented using `FastAPI <https://fastapi.tia
     localhost:port/api/docs
 
 
+Loading Sample Data
+******************************************* 
  
+``NeuralQA`` provides a method to download and import sample data into a local elasticsearch index.
+
+
+.. code-block:: shell
+
+    neuralqa load_sample_data --max-docs 2000
