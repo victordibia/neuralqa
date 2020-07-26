@@ -1,4 +1,5 @@
 from neuralqa.retriever import Retriever
+from neuralqa.utils import parse_field_content
 from elasticsearch import Elasticsearch, ConnectionError
 import logging
 
@@ -61,23 +62,26 @@ class ElasticSearchRetriever(Retriever):
         # else:
         #     search_query["_source"] = {"includes": [self.body_field]}
 
-        try:
-            query_result = self.es.search(
-                index=index_name, body=search_query)
-            # RelSnip: for each document, we concatenate all
-            # fragments in each document and return as the document.
-            highlights = [" ".join(hit["highlight"][self.body_field])
-                          for hit in query_result["hits"]["hits"] if "highlight" in hit]
-            docs = [((hit["_source"][self.body_field]))
-                    for hit in query_result["hits"]["hits"] if hit["_source"]]
-            took = query_result["took"]
-            results = {"took": took,  "highlights": highlights, "docs": docs}
+        # try: 
+        query_result = self.es.search(
+            index=index_name, body=search_query)
+        
+        # RelSnip: for each document, we concatenate all
+        # fragments in each document and return as the document.
+        highlights = [" ".join(hit["highlight"][self.body_field])
+                        for hit in query_result["hits"]["hits"] if "highlight" in hit]
+        docs = [parse_field_content(self.body_field, hit["_source"])
+                for hit in query_result["hits"]["hits"] if "_source" in hit ]
+        took = query_result["took"]
+        results = {"took": took,  "highlights": highlights, "docs": docs}
 
-        except (ConnectionRefusedError, Exception) as e:
-            status = False
-            results["errormsg"] = str(e)
+        # except (ConnectionRefusedError, Exception) as e:
+        #     print(e)
+        #     status = False
+        #     results["errormsg"] = str(e)
 
         results["status"] = status
+        print("query status", status)
         return results
 
      
@@ -88,5 +92,5 @@ class ElasticSearchRetriever(Retriever):
         except ConnectionError:
             return False
         except Exception as e:
-            print('An unknown error occured connecting to ElasticSearch: %s' % e)
+            logger.info('An unknown error occured connecting to ElasticSearch: %s' % e)
             return False
