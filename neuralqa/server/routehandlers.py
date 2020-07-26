@@ -51,7 +51,7 @@ class Handler:
                 self.retriever_pool.selected_retriever = params.retriever
                 num_fragments = 5
                 query_results = self.retriever_pool.retriever.run_query(params.retriever, params.question,
-                                                                        max_documents=params.max_documents, highlight_span=params.highlight_span,
+                                                                        max_documents=params.max_documents, fragment_size=params.fragment_size,
                                                                         relsnip=params.relsnip, num_fragments=num_fragments, highlight_tags=False)
                 # print(query_results)
                 if ( query_results["status"]): 
@@ -84,8 +84,8 @@ class Handler:
             self.retriever_pool.selected_retriever = params.retriever
             num_fragments = 5
             query_results = self.retriever_pool.retriever.run_query(
-                params.retriever, params.question, max_documents=params.max_documents, highlight_span=params.highlight_span, relsnip=params.relsnip, num_fragments=num_fragments)
-            print(query_results)
+                params.retriever, params.question, max_documents=params.max_documents, fragment_size=params.fragment_size, relsnip=params.relsnip, num_fragments=num_fragments)
+            # print(query_results)
             max_doc_size = 1200
             if not params.relsnip:
                 query_results["highlights"] = [doc[:max_doc_size] + " .." for doc in query_results["docs"]] 

@@ -84,7 +84,7 @@ export function sampleConfig() {
           selected: "None",
           title: "Expander",
         },
-        highlightspan: {
+        fragmentsize: {
           options: [
             { name: 150, value: 150 },
             { name: 250, value: 250 },

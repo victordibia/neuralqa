@@ -4,10 +4,7 @@ from elasticsearch import Elasticsearch, ConnectionError
 import logging
 
 
-logging.getLogger("elasticsearch").setLevel(logging.CRITICAL)
 logger = logging.getLogger(__name__)
-
-
 class ElasticSearchRetriever(Retriever):
     def __init__(self, index_type="elasticsearch", host="localhost", port=9200, **kwargs):
         Retriever.__init__(self, index_type)
@@ -30,12 +27,12 @@ class ElasticSearchRetriever(Retriever):
             raise ValueError(
                 "Invalid arguments in ElasticSearchRetriever constructor:{}".format(rejected_keys))
 
-    def run_query(self, index_name, search_query, max_documents=5, highlight_span=100, relsnip=True, num_fragments=5, highlight_tags=True):
+    def run_query(self, index_name, search_query, max_documents=5, fragment_size=100, relsnip=True, num_fragments=5, highlight_tags=True):
 
         tags = {"pre_tags": [""], "post_tags": [
             ""]} if not highlight_tags else {}
         highlight_params = {
-            "fragment_size": highlight_span,
+            "fragment_size": fragment_size,
             "fields": {
                 self.body_field: tags
             },
@@ -80,8 +77,7 @@ class ElasticSearchRetriever(Retriever):
         #     status = False
         #     results["errormsg"] = str(e)
 
-        results["status"] = status
-        print("query status", status)
+        results["status"] = status 
         return results
 
      
