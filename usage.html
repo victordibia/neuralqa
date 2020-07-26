@@ -90,6 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#viewing-the-ui">Viewing the UI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#command-line-options">Command Line Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rest-api-docs">Rest API Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loading-sample-data">Loading Sample Data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
@@ -204,6 +205,13 @@
 <h2>Rest API Docs<a class="headerlink" href="#rest-api-docs" title="Permalink to this headline">¶</a></h2>
 <p>The rest api for <code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code> is implemented using <a class="reference external" href="https://fastapi.tiangolo.com/">FastAPI</a>. This means you do get excellent documentation for free. In your browser, type the following:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>localhost:port/api/docs
+</pre></div>
+</div>
+</div>
+<div class="section" id="loading-sample-data">
+<h2>Loading Sample Data<a class="headerlink" href="#loading-sample-data" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code> provides a method to download and import sample data into a local elasticsearch index.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>neuralqa load_sample_data --max-docs <span class="m">2000</span>
 </pre></div>
 </div>
 </div>

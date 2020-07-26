@@ -88,6 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#ui-configuration">UI Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reader-configuration">Reader Configuration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -222,6 +223,25 @@ You can show/hide sections of the UI e.g. show/hide retrieved passages, show onl
         <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">650</span>
             <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">650</span>
     <span class="nt">samples</span><span class="p">:</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reader-configuration">
+<h2>Reader Configuration<a class="headerlink" href="#reader-configuration" title="Permalink to this headline">¶</a></h2>
+<p>You can configure the reader models that are available for use with the <code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code> api and web interface. Because <code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code> uses the HuggingFace api, reader models can be specified using either the path to a hosted HuggingFace model or the path to a local folder on disk contained a trained HuggingFace model.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">reader</span><span class="p">:</span>
+<span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Reader</span>
+<span class="nt">selected</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">twmkn9/distilbert-base-uncased-squad2</span>  <span class="c1">#default selected reader on startup. Should correspond to the reader value</span>
+<span class="nt">options</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DistilBERT SQUAD2</span>
+    <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">twmkn9/distilbert-base-uncased-squad2</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">distilbert</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BERT SQUAD2</span>
+    <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deepset/bert-base-cased-squad2</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bert</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Medical BERT SQUAD2</span>
+    <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/Users/user/Downloads/meddistilbert</span>  <span class="c1"># example path to a local model on disk</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bert</span>
 </pre></div>
 </div>
 </div>
