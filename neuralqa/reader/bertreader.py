@@ -45,7 +45,7 @@ class BERTReader(Reader):
         return {"answer": answer, "took": elapsed_time,
                 "start_probability": str(answer_start_softmax_probability),
                 "end_probability": str(answer_end_softmax_probability),
-                "probability": str(answer_end_softmax_probability + answer_start_softmax_probability)
+                "probability": str(answer_end_softmax_probability + answer_start_softmax_probability / 2)
                 }
 
     def token_chunker(self, question, context, max_chunk_size=512, stride=2, max_num_chunks=5):
