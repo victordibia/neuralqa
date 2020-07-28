@@ -28,9 +28,9 @@ class MLMExpander(Expander):
             self.model_path, use_fast=True)
         self.model = TFBertForMaskedLM.from_pretrained(
             self.model_path, from_pt=True)
-        logger.info(">> HF Model loaded ")
+        logger.info(">> Loading Spacy NLP model ")
         self.nlp = en_core_web_md.load()
-        logger.info(">> Spacy nlp model loaded ")
+        # logger.info(">> Spacy nlp model loaded ")
 
     def predict_mask(self, sequence, model, tokenizer, top_n=2):
         input = tokenizer.encode(sequence, return_tensors="tf")
@@ -41,26 +41,26 @@ class MLMExpander(Expander):
         probabilities = tf.nn.softmax(mask_token_logits)
         topk = tf.math.top_k(probabilities, top_n)
         top_n_probs, top_n_tokens = topk.values.numpy(), topk.indices.numpy()
-        results = [{"token": tokenizer.decode([top_n_tokens[i]]), "probability": top_n_probs[i]}
+        results = [{"token": tokenizer.decode([top_n_tokens[i]]), "probability": float(top_n_probs[i])}
                    for i in range(len(top_n_probs))]
         # print(results)
         return results
 
-    def expand_query(self, query, top_n=3, threshold=0.09):
+    def expand_query(self, query, top_n=3, threshold=0.2):
         start_time = time.time()
         doc = self.nlp(query)
-        tokens = [str(token) for token in doc]
+        query_tokens = [str(token) for token in doc]
         new_terms = []
         candidate_expansions = []
         for i, token in enumerate(doc):
             if (token.pos_ in self.candidate_pos):
-                temp_doc = tokens.copy()
+                temp_doc = query_tokens.copy()
                 temp_doc[i] = self.tokenizer.mask_token
                 temp_doc = " ".join(temp_doc)
                 pred_tokens = self.predict_mask(
                     temp_doc, self.model, self.tokenizer, top_n=top_n)
                 candidate_expansions.append(
-                    {"token": token, "expansion": pred_tokens, "token_index": i})
+                    {"token": str(token), "expansion": pred_tokens, "token_index": i})
                 new_terms = new_terms + pred_tokens
 
         elapsed_time = time.time() - start_time
@@ -75,6 +75,7 @@ class MLMExpander(Expander):
 
         result = {
             "terms": terms_list,
+            "query": query_tokens,
             "expansions": candidate_expansions,
             "took": elapsed_time
         }
