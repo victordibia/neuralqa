@@ -52,44 +52,43 @@ ui:
             value: 650
           - name: 850
             value: 850
-    samples:
 
 retriever:
   title: Retriever
-  selected: manual
+  selected: "none"
 
   options:
-    - name: Manual
-      value: manual
-      type: manual
+    - name: None
+      value: "none"
+      type: "none"
 
-    - name: Case Law
-      value: cases
-      host: localhost
-      port: 9200
-      username: None
-      password: None
-      type: elasticsearch
-      fields:
-        body_field: "casebody.data.opinions.text"
-    - name: Medical
-      value: medical
-      host: localhost
-      port: 9200
-      username: None
-      password: None
-      type: elasticsearch
-      fields:
-        body_field: context
-    - name: Supreme Court
-      value: supremecourt
-      host: localhost
-      port: 9200
-      username: None
-      password: None
-      type: elasticsearch
-      fields:
-        body_field: casebody
+    # - name: Case Law
+    #   value: cases
+    #   host: localhost
+    #   port: 9200
+    #   username: None
+    #   password: None
+    #   type: elasticsearch
+    #   fields:
+    #     body_field: "casebody.data.opinions.text"
+    # - name: Medical
+    #   value: medical
+    #   host: localhost
+    #   port: 9200
+    #   username: None
+    #   password: None
+    #   type: elasticsearch
+    #   fields:
+    #     body_field: context
+    # - name: Supreme Court
+    #   value: supremecourt
+    #   host: localhost
+    #   port: 9200
+    #   username: None
+    #   password: None
+    #   type: elasticsearch
+    #   fields:
+    #     body_field: casebody
   readtopn: 0
 
 relsnip:
@@ -115,17 +114,20 @@ reader:
     - name: BERT SQUAD2
       value: deepset/bert-base-cased-squad2
       type: bert
+    # - name: Medical BERT SQUAD2
+    #   value: /Users/victordibia/Downloads/meddistilbert
+    #   type: bert
 
 expander:
   title: Expander
-  selected: "None"
+  selected: "none"
   options:
     - name: "None"
       value: "none"
-    # - name: Synonyms
-    #   value: synonyms
-    - name: Masked LM
-      value: maskedlm
+      type: "none"
+    # - name: BERT MaskedLM
+    #   type: maskedlm
+    #   value: bert-base-uncased
 
 # optional selection of samples to show in the UI
 samples:

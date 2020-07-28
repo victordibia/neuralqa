@@ -69,9 +69,9 @@ The rest api for ``NeuralQA`` is implemented using `FastAPI <https://fastapi.tia
 Loading Sample Data
 ******************************************* 
  
-``NeuralQA`` provides a method to download and import sample data into a local elasticsearch index.
+``NeuralQA`` provides a method to download and import sample data (court case documents) into a local elasticsearch index.
 
 
 .. code-block:: shell
 
-    neuralqa load_sample_data --max-docs 2000
+    neuralqa load --max-docs 10000

@@ -69,7 +69,7 @@ class QueryView extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    this.serverBasePath = "http://localhost:5000";
+    // this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
@@ -177,7 +177,7 @@ class QueryView extends Component {
     answers
       .then((data) => {
         if (data) {
-          console.log(data);
+          // console.log(data);
           this.setState({
             answers: data,
             errorStatus: "",
@@ -502,8 +502,7 @@ class QueryView extends Component {
                         onClick={this.clickExplainButton.bind(this)}
                         size="small"
                       >
-                        {" "}
-                        Explain{" "}
+                        Explain
                       </Button>
                     )}
                   </div>
@@ -601,7 +600,7 @@ class QueryView extends Component {
             </div>
           )}
 
-          {this.state.retriever !== "none" && this.state.showExpander && (
+          {this.state.showExpander && (
             <div className=" iblock mr10">
               <div className="mediumdesc pb7 pt5">
                 {" "}
@@ -773,7 +772,8 @@ class QueryView extends Component {
 
         {this.state.expansions && (
           <div className="smalldesc pt5">
-            <span className="boldtext">expansion: </span> {queryExpansionList}
+            <span className="boldtext">suggested expansion terms: </span>{" "}
+            {queryExpansionList}
           </div>
         )}
 
