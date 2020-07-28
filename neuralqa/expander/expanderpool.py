@@ -27,7 +27,11 @@ class ExpanderPool():
         if (selected_expander in self.expander_pool):
             self._selected_expander = selected_expander
         else:
-            default_expander = next(iter(self.expander_pool))
-            logger.info(
-                ">> Expander you are attempting to use %s does not exist in expander pool. Using the following default expander instead %s ", selected_expander, default_expander)
-            self._selected_expander = default_expander
+            if (len(self.expander_pool) > 0):
+                default_expander = next(iter(self.expander_pool))
+                logger.info(
+                    ">> Expander you are attempting to use %s does not exist in expander pool. Using the following default expander instead %s ", selected_expander, default_expander)
+                self._selected_expander = default_expander
+            else:
+                logger.info(
+                    ">> No expander has been specified in config.yaml.")
