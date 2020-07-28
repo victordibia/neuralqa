@@ -11,12 +11,13 @@ logger = logging.getLogger(__name__)
 
 
 class Handler:
-    def __init__(self, reader_pool, retriever_pool):
+    def __init__(self, reader_pool, retriever_pool, expander):
         router = APIRouter()
         self.router = router
 
         self.reader_pool = reader_pool
         self.retriever_pool = retriever_pool
+        self.expander = expander
 
         @router.post("/answers")
         async def get_answers(params: Answer):
@@ -30,11 +31,14 @@ class Handler:
                 [type] -- [description]
             """
 
-            # print(params)
-
+            # if query expansion, get expansion teerms and add to original question
+            if params.expander != None:
+                expanded_query = self.expander.expand_query(params.question)
+                params.question = params.question + " " + " ".join(
+                    [term["token"] for term in expanded_query["terms"]])
             # switch to the selected model and retriever
             self.reader_pool.selected_model = params.reader
-            
+
             answer_holder = []
             response = {}
             start_time = time.time()
@@ -54,7 +58,7 @@ class Handler:
                                                                         max_documents=params.max_documents, fragment_size=params.fragment_size,
                                                                         relsnip=params.relsnip, num_fragments=num_fragments, highlight_tags=False)
                 # print(query_results)
-                if ( query_results["status"]): 
+                if (query_results["status"]):
                     # if relsnip is not enabled, read the entire document ... this is super slow
                     docs = query_results["highlights"] if params.relsnip else query_results["docs"]
 
@@ -70,10 +74,11 @@ class Handler:
                 answer_holder = sorted(
                     answer_holder, key=lambda k: k['probability'], reverse=True)
             elapsed_time = time.time() - start_time
-            response = {"answers": answer_holder, "took": elapsed_time}
+            response = {"answers": answer_holder,
+                        "query": params.question, "took": elapsed_time}
             return response
 
-        @router.post("/documents")
+        @ router.post("/documents")
         async def get_documents(params: Document):
             """Get a list of documents and highlights that match the given search query
 
@@ -88,10 +93,11 @@ class Handler:
             # print(query_results)
             max_doc_size = 1200
             if not params.relsnip:
-                query_results["highlights"] = [doc[:max_doc_size] + " .." for doc in query_results["docs"]] 
+                query_results["highlights"] = [
+                    doc[:max_doc_size] + " .." for doc in query_results["docs"]]
             return query_results
 
-        @router.post("/explain")
+        @ router.post("/explain")
         async def get_explanation(params: Explanation):
             """Return  an explanation for a given model
 
