@@ -42,8 +42,7 @@ setup(
         'transformers',
         'elasticsearch>=7.7.1',
         'pyyaml>=3.13',
-        'spacy',
-        'https://github.com/explosion/spacy-models/releases/download/en_core_web_md-2.3.1/en_core_web_md-2.3.1.tar.gz'
+        'spacy'
     ],
     extras_require={
         'test': ['pytest']

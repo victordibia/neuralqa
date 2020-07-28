@@ -34,7 +34,11 @@ class RetrieverPool():
         if (selected_retriever in self.retriever_pool):
             self._selected_retriever = selected_retriever
         else:
-            default_retriever = next(iter(self.retriever_pool))
-            logger.info(
-                ">> Retriever you are attempting to use (%s) does not exist in retriever pool. Using the following default retriever instead %s ", selected_retriever, default_retriever)
-            self._selected_retriever = default_retriever
+            if (len(self.retriever_pool) > 0):
+                default_retriever = next(iter(self.retriever_pool))
+                logger.info(
+                    ">> Retriever you are attempting to use (%s) does not exist in retriever pool. Using the following default retriever instead %s ", selected_retriever, default_retriever)
+                self._selected_retriever = default_retriever
+            else:
+                logger.info(
+                    ">> No retriever has been specified in config.yaml.")

@@ -106,18 +106,9 @@ Other implementation notes
 - How does NeuralQA handle really long passages? BERT can process input of max size 512 tokes (question + context + special tokens), how does NeuralQA handle longer passages?
   We divide the context into multiple chunks (with some optional striding) and find answers within each chunk. For very very long passages, you can
 
-## Notes on Running/Testing Locally
+## Notes on Running/Locally
 
-- Clone the repo
-- cd neuralqa
-- pip install -r requirements.txt
-- build the ui
-  - cd neuralqa/server/ui
-  - yarn install
-  - yarn build
-- python neuralqa/cli.py test
-  - the command above should load several datasets into your index. Ensure elasticsearch is running!!. Details are in neuralqa/utils/data_utils.py
-- python neuralqa/cli.py ui
-  - this should startup neuralqa and create config.yaml in the current directory. You can stop it with Ctrl + C.
-  - now modify config.yaml .. add a path to your own model folder
-  - restart neuralqa with command above.
+- `pip install neuralqa`
+- `neuralqa load` - optional load sample data into an index running on localhost 9200 with no credentials
+- `neuralqa ui` - this will launch the web interface
+- this will create a default config.yaml in the current folder. You can modify this file and then rerun `neuralqa ui`.

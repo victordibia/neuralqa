@@ -6,7 +6,7 @@ import urllib.request
 import logging
 import lzma
 import json
-import tarfile 
+import tarfile
 import hashlib
 
 
@@ -75,20 +75,8 @@ def create_index_from_json(index_name, file_path, max_docs=None):
                 # logger.info(index_status)
                 if (i > max_docs):
                     break
-    elif extension == ".json":
-        with open(file_path) as f:
-            data = json.load(f)
-            for line in data:
-                try:
-                    index_status = es.index(
-                        index=index_name, id=i, body=line, op_type="create")
-                except Exception as e:
-                    logger.info(
-                        "An error has occurred while creating index " + str(e))
-                    break
-                if (i > max_docs):
-                    break
     logger.info(">> Creating index complete ")
+    os.remove(file_path)
 
 
 def import_scotus_files(max_docs=2000):
@@ -108,7 +96,6 @@ def import_scotus_files(max_docs=2000):
                 index_name, str(max_docs))
     scotus_files = os.listdir(scotus_dir)
 
-    
     es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
     es.indices.create(
@@ -133,36 +120,6 @@ def import_scotus_files(max_docs=2000):
             break
 
     logger.info(">> Index creation complete.")
-
-def import_medical_data(max_docs=2000):
-    covid_data_url = "https://raw.githubusercontent.com/victordibia/test/gh-pages/covid_bioasq.json"
-    data = urllib.request.urlopen(covid_data_url).read()
-    data = json.loads(data) 
-    index_name = "medical"
-
-    print(len(data["data"]))
-
-    es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
-    es.indices.create(
-        index=index_name, body=index_settings, ignore=400)
-
-    seen_docs = set("") 
-    for row in data["data"]: 
-        digest = hashlib.md5(row["paragraphs"][0]["context"].encode('utf-8')).hexdigest()
-        if (digest not in seen_docs):  
-            seen_docs.add(digest)
-            med_doc = {"id":digest, "context":row["paragraphs"][0]["context"]}
-            try:
-                index_status = es.index(
-                        index=index_name, id=digest, body=med_doc)
-            except Exception as e:
-                print(str(e))
-                logger.info(
-                    "An error has occurred while creating index " + str(e))
-                break
-             
-            
-
 
 
 def download_data(data_url, source_name):
@@ -209,8 +166,8 @@ def import_sample_data(max_docs=2000):
         file_path = download_data(data_path[0], data_path[1])
         create_index_from_json("cases", file_path, max_docs=max_docs)
 
-    import_scotus_files(max_docs=max_docs)
-    import_medical_data(max_docs=max_docs)
+    # import_scotus_files(max_docs=max_docs)
+    # import_medical_data(max_docs=max_docs)
 
 
 def parse_field_content(field_name, content):
@@ -227,13 +184,13 @@ def parse_field_content(field_name, content):
     Returns:
         [str]: content of field
     """
-    
+
     if ("." not in field_name):
         return content[field_name]
     else:
-        fields = field_name.split(".")  
-        for field in fields: 
-            content =  content[field]
+        fields = field_name.split(".")
+        for field in fields:
+            content = content[field]
             if (isinstance(content, list)):
                 content = content[0]
         return content

@@ -24,10 +24,15 @@ class ReaderPool():
 
     @selected_model.setter
     def selected_model(self, selected_model):
+
         if (selected_model in self.reader_pool):
             self._selected_model = selected_model
         else:
-            default_model = next(iter(self.reader_pool))
-            logger.info(
-                ">> Model you are attempting to use %s does not exist in model pool. Using the following default model instead %s ", selected_model, default_model)
-            self._selected_model = default_model
+            if (len(self.reader_pool) > 0):
+                default_model = next(iter(self.reader_pool))
+                logger.info(
+                    ">> Model you are attempting to use %s does not exist in model pool. Using the following default model instead %s ", selected_model, default_model)
+                self._selected_model = default_model
+            else:
+                logger.info(
+                    ">> No reader has been specified in config.yaml.")

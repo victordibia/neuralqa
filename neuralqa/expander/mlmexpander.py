@@ -1,9 +1,9 @@
 from neuralqa.expander import Expander
 import logging
 from transformers import AutoTokenizer, TFBertForMaskedLM
-import en_core_web_md
 import tensorflow as tf
 import time
+import spacy
 logger = logging.getLogger(__name__)
 
 
@@ -29,7 +29,16 @@ class MLMExpander(Expander):
         self.model = TFBertForMaskedLM.from_pretrained(
             self.model_path, from_pt=True)
         logger.info(">> Loading Spacy NLP model ")
-        self.nlp = en_core_web_md.load()
+
+        try:
+            self.nlp = spacy.load('en_core_web_md')
+        except OSError:
+            logger.info(
+                "Downloading language model for the spaCy POS tagger (don't worry, this will only happen once)")
+            from spacy.cli import download
+            download('en_core_web_md')
+            self.nlp = spacy.load('en_core_web_md')
+            # self.nlp = en_core_web_md.load()
         # logger.info(">> Spacy nlp model loaded ")
 
     def predict_mask(self, sequence, model, tokenizer, top_n=2):
@@ -48,6 +57,7 @@ class MLMExpander(Expander):
 
     def expand_query(self, query, top_n=3, threshold=0.2):
         start_time = time.time()
+
         doc = self.nlp(query)
         query_tokens = [str(token) for token in doc]
         new_terms = []
