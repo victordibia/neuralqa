@@ -11,13 +11,13 @@ logger = logging.getLogger(__name__)
 
 
 class Handler:
-    def __init__(self, reader_pool, retriever_pool, expander):
+    def __init__(self, reader_pool, retriever_pool, expander_pool):
         router = APIRouter()
         self.router = router
 
         self.reader_pool = reader_pool
         self.retriever_pool = retriever_pool
-        self.expander = expander
+        self.expander_pool = expander_pool
 
         @router.post("/answers")
         async def get_answers(params: Answer):
@@ -31,22 +31,27 @@ class Handler:
                 [type] -- [description]
             """
 
-            # if query expansion, get expansion teerms and add to original question
-            if params.expander != None:
-                expanded_query = self.expander.expand_query(params.question)
-                params.question = params.question + " " + " ".join(
-                    [term["token"] for term in expanded_query["terms"]])
-            # switch to the selected model and retriever
-            self.reader_pool.selected_model = params.reader
+            expanded_query = None
 
             answer_holder = []
             response = {}
             start_time = time.time()
 
+            # switch to selected expander, perform expansion
+            if params.expander != "none":
+                self.expander_pool.selected_expander = params.expander
+                expanded_query = self.expander_pool.expander.expand_query(
+                    params.query)
+                params.query = params.query + " " + \
+                    " ".join([term["token"]
+                              for term in expanded_query["terms"]])
+            # switch to the selected model and retriever
+            self.reader_pool.selected_model = params.reader
+
             # answer question based on provided context
-            if (params.retriever == "manual"):
+            if (params.retriever == "none"):
                 answers = self.reader_pool.model.answer_question(
-                    params.question, params.context, stride=params.tokenstride)
+                    params.query, params.context, stride=params.tokenstride)
                 for answer in answers:
                     answer["index"] = 0
                     answer_holder.append(answer)
@@ -54,7 +59,7 @@ class Handler:
             else:
                 self.retriever_pool.selected_retriever = params.retriever
                 num_fragments = 5
-                query_results = self.retriever_pool.retriever.run_query(params.retriever, params.question,
+                query_results = self.retriever_pool.retriever.run_query(params.retriever, params.query,
                                                                         max_documents=params.max_documents, fragment_size=params.fragment_size,
                                                                         relsnip=params.relsnip, num_fragments=num_fragments, highlight_tags=False)
                 # print(query_results)
@@ -65,7 +70,7 @@ class Handler:
                     for i, doc in enumerate(docs):
                         doc = doc.replace("\n", " ")
                         answers = self.reader_pool.model.answer_question(
-                            params.question, doc, stride=params.tokenstride)
+                            params.query, doc, stride=params.tokenstride)
                         for answer in answers:
                             answer["index"] = i
                             answer_holder.append(answer)
@@ -75,7 +80,7 @@ class Handler:
                     answer_holder, key=lambda k: k['probability'], reverse=True)
             elapsed_time = time.time() - start_time
             response = {"answers": answer_holder,
-                        "query": params.question, "took": elapsed_time}
+                        "query": expanded_query, "took": elapsed_time}
             return response
 
         @ router.post("/documents")
@@ -89,7 +94,7 @@ class Handler:
             self.retriever_pool.selected_retriever = params.retriever
             num_fragments = 5
             query_results = self.retriever_pool.retriever.run_query(
-                params.retriever, params.question, max_documents=params.max_documents, fragment_size=params.fragment_size, relsnip=params.relsnip, num_fragments=num_fragments)
+                params.retriever, params.query, max_documents=params.max_documents, fragment_size=params.fragment_size, relsnip=params.relsnip, num_fragments=num_fragments)
             # print(query_results)
             max_doc_size = 1200
             if not params.relsnip:
@@ -111,7 +116,7 @@ class Handler:
                 "<em>", "").replace("</em>", "")
 
             gradients, token_words, token_types, answer_text = self.reader_pool.model.explain_model(
-                params.question, context)
+                params.query, context)
 
             explanation_result = {"gradients": gradients,
                                   "token_words": token_words,
