@@ -4,7 +4,7 @@ from neuralqa.reader import BERTReader, ReaderPool
 from neuralqa.server.routehandlers import Handler
 from neuralqa.retriever import ElasticSearchRetriever, RetrieverPool
 from neuralqa.utils import ConfigParser
-
+from neuralqa.expander import ExpanderPool
 
 import os
 import logging
@@ -12,7 +12,7 @@ import time
 import uvicorn
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-# from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 
 logger = logging.getLogger(__name__)
@@ -24,18 +24,18 @@ app = FastAPI()
 api = FastAPI(root_path="/api")
 
 
-# origins = [
-#     "http://localhost",
-#     "http://localhost:3000",
-# ]
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+]
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 root_file_path = os.path.dirname(os.path.abspath(__file__))
 static_folder_root = os.path.join(root_file_path, "ui/build")
@@ -56,12 +56,15 @@ async def ui_config():
     config["queryview"]["options"]["retriever"] = app_config.config["retriever"]
     return config
 
-# # Define a Reader Pool
+# # Define a Reader Pool, load into memory
 reader_pool = ReaderPool(app_config.config["reader"])
 
-# # define the search index to be used if any
+# # define the search index, load into memory
 retriever_pool = RetrieverPool(app_config.config["retriever"])
 
-handlers = Handler(reader_pool, retriever_pool)
+# define the expander, load into memory
+expander_pool = ExpanderPool(app_config.config["expander"])
+
+handlers = Handler(reader_pool, retriever_pool, expander_pool)
 # handlers = Handler(None, None)
 api.include_router(handlers.router)

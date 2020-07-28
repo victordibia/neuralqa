@@ -92,11 +92,11 @@ Other implementation notes
     - copy default yaml file to current directory
     - print message for user to modify this file to enable additional config
 
-Release Checklist
+### Release Checklist
 
 - verify latest build of ui without debug flags ... e.g. setting port to loccal port
 - verify version bump
-- copy latest config.yaml to config-default.yaml
+- copy latest config.yaml structure to config-default.yaml
 - remove CORS testing harness for UI
   - remove manual UI pointers to port 5000
   - remove CORS allow rules on backend api

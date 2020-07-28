@@ -6,6 +6,7 @@ import os
 from neuralqa.retriever import RetrieverPool
 import logging
 
+
 @click.group()
 @click.version_option()
 def cli():
@@ -17,12 +18,13 @@ def cli():
 @cli_args.PORT
 @cli_args.WORKERS
 @cli_args.CONFIG_PATH
-def test(host, port, workers, config_path): 
+def test(host, port, workers, config_path):
     import_sample_data()
+
 
 @cli.command()
 @cli_args.MAX_DOCS
-def load_sample_data(max_docs): 
+def load_sample_data(max_docs):
     import_sample_data()
 
 
@@ -32,9 +34,11 @@ def load_sample_data(max_docs):
 @cli_args.WORKERS
 @cli_args.CONFIG_PATH
 def ui(host, port, workers, config_path):
-    logging.getLogger(__name__).setLevel(logging.INFO) 
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.INFO)
+    logging.getLogger(__name__).setLevel(logging.INFO)
     if (config_path):
-        os.environ["NEURALQA_CONFIG_PATH"] = config_path 
+        os.environ["NEURALQA_CONFIG_PATH"] = config_path
     launch_server(host, port, workers)
 
 

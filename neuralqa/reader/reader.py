@@ -15,7 +15,7 @@ class Reader:
         self.load_model(model_name, model_path, model_type)
 
     def load_model(self, model_name, model_path, model_type):
-        logger.info(">> loading HF model " +
+        logger.info(">> Loading HF model " +
                     model_name + " from " + model_path)
         self.type = model_type
         self.name = model_name

@@ -57,6 +57,8 @@ class QueryView extends Component {
       showPassagesView: props.data.views.passages,
       showExpander: true, //props.data.views.expander,
 
+      expansions: null,
+
       // showAdvanced: props.data.views.advanced,
       openAdvancedConfigDrawer: true,
       showSamples: props.data.views.samples,
@@ -67,7 +69,7 @@ class QueryView extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    // this.serverBasePath = "http://localhost:5000";
+    this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
@@ -79,13 +81,13 @@ class QueryView extends Component {
         title: "Retriever",
         value: "retriever",
         description:
-          "A list of search indexes that will be used to retrieve documents that match the search query. If set to manual, the interface will let you provide a document/passage in addition to your question",
+          "A list of search indexes that will be used to retrieve documents that match the search query. If set to None, the interface will let you provide a document/passage in addition to your question",
       },
       {
         title: "Reader",
         value: "reader",
         description:
-          "A Question Answering model that will take in your question and retrieved documentss (or manual passsage) and extract an answer to the question if it exists in the document.",
+          "A Question Answering model that will take in your question and retrieved documents (or provided passsage) and extract an answer to the question if it exists in the document.",
       },
       {
         title: "Token Stride",
@@ -110,7 +112,7 @@ class QueryView extends Component {
         title: "RelSnip",
         value: "relsnip",
         description:
-          "Relevant Snippets (RelSnip) is a method for constructing smaller documents from lengthy documents and is implemented as follows. For each retrieved document, we apply a highlighter (Lucene Unified Highlighter) which breaks the document into fragments and uses the BM25 algorithm to score each fragment as if they were individual documents in the corpus. Next, we concatenate the top n (default 5) fragments as a new document which is then processed by the reader.",
+          "Relevant Snippets (RelSnip) is a method for constructing smaller documents from lengthy documents and is implemented as follows. For each retrieved document, we apply a highlighter (Lucene Unified Highlighter) which breaks the document into fragments and uses the BM25 algorithm to score each fragment as if they were individual documents in the corpus. Next, we concatenate the top n (default 5) fragments as a new document which is then processed by the reader. When Relsnip is set to false, the reader reads the entire document by breaking it into chunks. To maintain decent user experience, we process a maximum of 5 chunks.",
       },
       {
         title: "Fragment Size",
@@ -131,6 +133,7 @@ class QueryView extends Component {
       answers: { took: 0, answers: [] },
       errorStatus: "",
       explanations: {},
+      expansions: null,
     });
   }
   resetExplanations() {
@@ -141,14 +144,14 @@ class QueryView extends Component {
 
   askQuestion() {
     this.resetExplanations();
-    let question = document.getElementById("questioninput").value;
+    let question = document.getElementById("queryinput").value;
     let context = document.getElementById("contextinput")
       ? document.getElementById("contextinput").value
       : null;
     let postData = {
       max_documents: this.state.maxdocuments,
       context: context || this.state.sampleQA[0].context,
-      question: question || this.state.sampleQA[0].context,
+      query: question || this.state.sampleQA[0].question,
       fragment_size: this.state.fragmentsize,
       reader: this.state.reader,
       retriever: this.state.retriever,
@@ -156,7 +159,7 @@ class QueryView extends Component {
       relsnip: this.state.relsnip,
       expander: this.state.expander,
     };
-    if (this.state.retriever !== "manual") {
+    if (this.state.retriever !== "none") {
       this.getPassages(postData);
     }
 
@@ -174,8 +177,12 @@ class QueryView extends Component {
     answers
       .then((data) => {
         if (data) {
-          // console.log(data)
-          this.setState({ answers: data, errorStatus: "" });
+          console.log(data);
+          this.setState({
+            answers: data,
+            errorStatus: "",
+            expansions: data.query,
+          });
           setTimeout(() => {
             this.setState({ answerIsLoading: false });
           }, this.interfaceTimedDelay);
@@ -386,6 +393,18 @@ class QueryView extends Component {
       );
     });
 
+    //Expanded query
+    let queryExpansionList = [];
+    if (this.state.expansions) {
+      queryExpansionList = this.state.expansions.terms.map((data, index) => {
+        return (
+          <div key={"expansionterm" + index} className="smalldesc iblock mr5">
+            {data.token}
+          </div>
+        );
+      });
+    }
+
     // Create a list view for passages
     let passageList = this.state.passages["highlights"].map((data, index) => {
       let dataTitle = data.substring(0, this.documentTitleLength);
@@ -499,7 +518,7 @@ class QueryView extends Component {
         );
       });
 
-    // Create sample qa passages for manual QA
+    // Create sample qa passages for None QA
     let qaSamples = this.state.sampleQA.map((data, index) => {
       return (
         <div
@@ -570,8 +589,8 @@ class QueryView extends Component {
             {this.getOptionItems("stride", "")}
           </div>
 
-          {/* show IR search pipeline config is dataset is not manual  */}
-          {this.state.retriever !== "manual" && (
+          {/* show IR search pipeline config is dataset is not None  */}
+          {this.state.retriever !== "none" && (
             <div className="pl10 borderleftdash iblock mr10 ">
               <div className="mediumdesc pb7 pt5">
                 {" "}
@@ -582,7 +601,7 @@ class QueryView extends Component {
             </div>
           )}
 
-          {this.state.retriever !== "manual" && this.state.showExpander && (
+          {this.state.retriever !== "none" && this.state.showExpander && (
             <div className=" iblock mr10">
               <div className="mediumdesc pb7 pt5">
                 {" "}
@@ -596,7 +615,7 @@ class QueryView extends Component {
             </div>
           )}
 
-          {this.state.retriever !== "manual" && (
+          {this.state.retriever !== "none" && (
             <div className="iblock mr10 ">
               <div className="mediumdesc pb7 pt5">
                 {" "}
@@ -607,7 +626,7 @@ class QueryView extends Component {
             </div>
           )}
 
-          {this.state.retriever !== "manual" && (
+          {this.state.retriever !== "none" && (
             <div className=" iblock mr10">
               <div className="mediumdesc pb7 pt5">
                 {" "}
@@ -713,7 +732,7 @@ class QueryView extends Component {
           }
         </div>
 
-        {this.state.retriever === "manual" && this.state.showSamples && (
+        {this.state.retriever === "none" && this.state.showSamples && (
           <div className=" mb10">
             <div className="smalldesc p5">
               {" "}
@@ -725,11 +744,11 @@ class QueryView extends Component {
         <div className="mt5 mt10 mb10 mediumdesc"> Enter question </div>
         <div className="flex searchbar">
           <div
-            key={"questioninput" + this.state.selectedSampleIndex}
+            key={"queryinput" + this.state.selectedSampleIndex}
             className="flexfull"
           >
             <TextInput
-              id="questioninput"
+              id="queryinput"
               defaultValue={
                 this.state.sampleQA[this.state.selectedSampleIndex].question
               }
@@ -752,9 +771,15 @@ class QueryView extends Component {
           </div>
         </div>
 
+        {this.state.expansions && (
+          <div className="smalldesc pt5">
+            <span className="boldtext">expansion: </span> {queryExpansionList}
+          </div>
+        )}
+
         {/* {this.state.sampleQA[this.state.selectedSampleIndex].context} */}
 
-        {this.state.retriever === "manual" && (
+        {this.state.retriever === "none" && (
           <div
             key={"contexttextarea" + this.state.selectedSampleIndex}
             className="mt10"
@@ -855,7 +880,7 @@ class QueryView extends Component {
 
         {!askedElapsed &&
           passageList.length === 0 &&
-          this.state.retriever !== "manual" &&
+          this.state.retriever !== "none" &&
           !this.state.passageIsLoading && (
             <div className="p10 mt5 orangehighlight">
               Your query did not match any passages. Try a different query.
