@@ -31,7 +31,7 @@ class Handler:
                 [type] -- [description]
             """
 
-            expanded_query = None
+            expanded_query = params.query
 
             answer_holder = []
             response = {}
@@ -40,16 +40,20 @@ class Handler:
             # switch to selected expander, perform expansion
             if params.expander != "none":
                 self.expander_pool.selected_expander = params.expander
-                expanded_query = self.expander_pool.expander.expand_query(
-                    params.query)
-                params.query = params.query + " " + \
-                    " ".join([term["token"]
-                              for term in expanded_query["terms"]])
+                if self.expander_pool.selected_expander:
+                    expanded_query = self.expander_pool.expander.expand_query(
+                        params.query)
+                    params.query = params.query + " " + \
+                        " ".join([term["token"]
+                                  for term in expanded_query["terms"]])
+                    expanded_query["query"] = params.query
+
             # switch to the selected model and retriever
             self.reader_pool.selected_model = params.reader
+            self.retriever_pool.selected_retriever = params.retriever
 
             # answer question based on provided context
-            if (params.retriever == "none"):
+            if (params.retriever == "none" or self.retriever_pool.selected_retriever == None):
                 answers = self.reader_pool.model.answer_question(
                     params.query, params.context, stride=params.tokenstride)
                 for answer in answers:
@@ -57,7 +61,7 @@ class Handler:
                     answer_holder.append(answer)
             # answer question based on retrieved passages from elastic search
             else:
-                self.retriever_pool.selected_retriever = params.retriever
+
                 num_fragments = 5
                 query_results = self.retriever_pool.retriever.run_query(params.retriever, params.query,
                                                                         max_documents=params.max_documents, fragment_size=params.fragment_size,
@@ -91,15 +95,18 @@ class Handler:
                 dictionary -- contains details on elastic search results.
             """
 
-            self.retriever_pool.selected_retriever = params.retriever
             num_fragments = 5
-            query_results = self.retriever_pool.retriever.run_query(
-                params.retriever, params.query, max_documents=params.max_documents, fragment_size=params.fragment_size, relsnip=params.relsnip, num_fragments=num_fragments)
-            # print(query_results)
-            max_doc_size = 1200
-            if not params.relsnip:
-                query_results["highlights"] = [
-                    doc[:max_doc_size] + " .." for doc in query_results["docs"]]
+            query_results = {"docs": [], "highlights": []}
+
+            self.retriever_pool.selected_retriever = params.retriever
+            if self.retriever_pool.selected_retriever:
+                query_results = self.retriever_pool.retriever.run_query(
+                    params.retriever, params.query, max_documents=params.max_documents, fragment_size=params.fragment_size, relsnip=params.relsnip, num_fragments=num_fragments)
+                # print(query_results)
+                max_doc_size = 1200
+                if not params.relsnip:
+                    query_results["highlights"] = [
+                        doc[:max_doc_size] + " .." for doc in query_results["docs"]]
             return query_results
 
         @ router.post("/explain")
