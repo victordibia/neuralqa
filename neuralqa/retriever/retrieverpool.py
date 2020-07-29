@@ -42,3 +42,4 @@ class RetrieverPool():
             else:
                 logger.info(
                     ">> No retriever has been specified in config.yaml.")
+                self._selected_retriever = None
