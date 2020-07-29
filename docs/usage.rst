@@ -31,7 +31,7 @@ Viewing the UI
 Command Line Options
 *********************************
 
-The primary command for ``NeuralQA``  is the `neuralqa ui` .  Use the following command to view the available options.
+The primary command for ``NeuralQA``  is `neuralqa ui`, used to launch the web interface.  Use the following command to view the available options.
 
 .. code-block:: shell
 
@@ -39,24 +39,32 @@ The primary command for ``NeuralQA``  is the `neuralqa ui` .  Use the following 
 
 .. code-block:: shell
 
+    Usage: neuralqa ui [OPTIONS]
+
+    This command launches the web interface for NeuralQA.
+
     Options:
     -h, --host TEXT          The network address to listen on (default:
                             127.0.0.1). Use 0.0.0.0 to bind to all addresses if
                             you want to access the tracking server from other
                             machines.
+
     -p, --port INTEGER       The port to listen on (default: 5000).
     -w, --workers INTEGER    Number of uviicorn worker processes to handle
                             requests (default: 1).
+
     -cp, --config-path TEXT  Path to a yaml file containing config for neuralqa.
                             If none is provided, the default config.yaml is
                             copied to the current directory.
+
     --help                   Show this message and exit.
+
 
     
 
 
 Rest API Docs
-**************************************************
+*****************************************
 
 The rest api for ``NeuralQA`` is implemented using `FastAPI <https://fastapi.tiangolo.com/>`_. This means you do get excellent documentation for free. In your browser, type the following:
 
@@ -66,10 +74,12 @@ The rest api for ``NeuralQA`` is implemented using `FastAPI <https://fastapi.tia
     localhost:port/api/docs
 
 
+
+
 Loading Sample Data
-******************************************* 
+*****************************************
  
-``NeuralQA`` provides a method to download and import sample data (court case documents) into a local elasticsearch index.
+``NeuralQA`` provides a method to download and import sample data (court case documents) into a local elasticsearch index. The command below will import the first 10,000 documents from the `case law dataset <https://case.law/bulk/download/>`_ for new mexico.
 
 
 .. code-block:: shell
