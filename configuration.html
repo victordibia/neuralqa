@@ -89,6 +89,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#ui-configuration">UI Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reader-configuration">Reader Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memory-requirements">Memory Requirements</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
@@ -244,6 +245,10 @@ You can show/hide sections of the UI e.g. show/hide retrieved passages, show onl
     <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bert</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="memory-requirements">
+<h2>Memory Requirements<a class="headerlink" href="#memory-requirements" title="Permalink to this headline">¶</a></h2>
+<p>To enable fast user interaction, <code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code> loads models weights that are specified in <cite>config.yaml</cite> into memory when the application is launched. For example, if 3 Bert base reader models (~425MB each) specified in  <cite>config.yaml</cite>, each of these will be loaded into memory. Similarly all specified query expansion models will also be loaded into memory. Plan to account for these when using <code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code>.</p>
 </div>
 </div>
 

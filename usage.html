@@ -182,21 +182,28 @@
 </div>
 <div class="section" id="command-line-options">
 <h2>Command Line Options<a class="headerlink" href="#command-line-options" title="Permalink to this headline">¶</a></h2>
-<p>The primary command for <code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code>  is the <cite>neuralqa ui</cite> .  Use the following command to view the available options.</p>
+<p>The primary command for <code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code>  is <cite>neuralqa ui</cite>, used to launch the web interface.  Use the following command to view the available options.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>neuralqa ui --help
 </pre></div>
 </div>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Options:
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Usage: neuralqa ui <span class="o">[</span>OPTIONS<span class="o">]</span>
+
+This <span class="nb">command</span> launches the web interface <span class="k">for</span> NeuralQA.
+
+Options:
 -h, --host TEXT          The network address to listen on <span class="o">(</span>default:
                         <span class="m">127</span>.0.0.1<span class="o">)</span>. Use <span class="m">0</span>.0.0.0 to <span class="nb">bind</span> to all addresses <span class="k">if</span>
                         you want to access the tracking server from other
                         machines.
+
 -p, --port INTEGER       The port to listen on <span class="o">(</span>default: <span class="m">5000</span><span class="o">)</span>.
 -w, --workers INTEGER    Number of uviicorn worker processes to handle
                         requests <span class="o">(</span>default: <span class="m">1</span><span class="o">)</span>.
+
 -cp, --config-path TEXT  Path to a yaml file containing config <span class="k">for</span> neuralqa.
                         If none is provided, the default config.yaml is
                         copied to the current directory.
+
 --help                   Show this message and exit.
 </pre></div>
 </div>
@@ -210,7 +217,7 @@
 </div>
 <div class="section" id="loading-sample-data">
 <h2>Loading Sample Data<a class="headerlink" href="#loading-sample-data" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code> provides a method to download and import sample data (court case documents) into a local elasticsearch index.</p>
+<p><code class="docutils literal notranslate"><span class="pre">NeuralQA</span></code> provides a method to download and import sample data (court case documents) into a local elasticsearch index. The command below will import the first 10,000 documents from the <a class="reference external" href="https://case.law/bulk/download/">case law dataset</a> for new mexico.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>neuralqa load --max-docs <span class="m">10000</span>
 </pre></div>
 </div>
