@@ -25,7 +25,7 @@ index_settings = {
     },
     "mappings": {
         "properties": {
-            "casebody": {
+            "casebody.data.opinions.text": {
                 "type": "text",
                 "analyzer": "stop_analyzer"
             },
@@ -51,7 +51,7 @@ def create_index_from_json(index_name, file_path, max_docs=None):
         small default can be used to enable quick testing (e.g: {2000}).
         set this to None to use the entire data file.
     """
-
+    # print("*** maxdocs", max_docs)
     es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
     es.indices.create(
@@ -68,6 +68,7 @@ def create_index_from_json(index_name, file_path, max_docs=None):
                 try:
                     index_status = es.index(
                         index=index_name, id=i, body=line)
+                    # print(index_status)
                 except Exception as e:
                     logger.info(
                         "An error has occurred while creating index " + str(e))
@@ -75,7 +76,7 @@ def create_index_from_json(index_name, file_path, max_docs=None):
                 # logger.info(index_status)
                 if (i > max_docs):
                     break
-    logger.info(">> Creating index complete ")
+    logger.info(">> Creating index complete, delete data file .. ")
     os.remove(file_path)
 
 
@@ -132,7 +133,7 @@ def download_data(data_url, source_name):
     os.makedirs("data", exist_ok=True)
     # download data from caselaw
     zip_file_path = source_name + ".zip"
-    logger.info("Downloading data file for " + source_name)
+    logger.info(">> Downloading data file for " + source_name)
     urllib.request.urlretrieve(data_url, zip_file_path)
     logger.info(">> Downloaded data file " + zip_file_path)
 
@@ -152,9 +153,7 @@ def download_data(data_url, source_name):
 def import_sample_data(max_docs=2000):
     """This method downloads several datasets and builds an 
     elasticsearch index using the downloaded data. 
-    Caselaw
-    Supreme Court Cases
-    Medical data
+    Caselaw 
 
     Args:
         max_docs (int, optional): [description]. Defaults to 2000.
