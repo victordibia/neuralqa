@@ -91,5 +91,4 @@ A paper introducing NeuralQA and its components can be [found here](docs/images/
   author={Victor Dibia},
   year={2020},
 }
-
 ```

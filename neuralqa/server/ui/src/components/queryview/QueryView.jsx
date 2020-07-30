@@ -265,8 +265,9 @@ class QueryView extends Component {
   getExplanation(selectedAnswerId) {
     let self = this;
     let answerData = this.state.answers.answers[selectedAnswerId];
+    // console.log(answerData);
     let postData = {
-      question: answerData.question,
+      query: answerData.question,
       context: answerData.context,
     };
     // console.log(postData);
@@ -395,7 +396,7 @@ class QueryView extends Component {
 
     //Expanded query
     let queryExpansionList = [];
-    if (this.state.expansions) {
+    if (this.state.expansions && this.state.expansions.terms) {
       queryExpansionList = this.state.expansions.terms.map((data, index) => {
         return (
           <div key={"expansionterm" + index} className="smalldesc iblock mr5">
@@ -770,7 +771,7 @@ class QueryView extends Component {
           </div>
         </div>
 
-        {this.state.expansions && (
+        {this.state.expansions && this.state.expansions.terms && (
           <div className="smalldesc pt5">
             <span className="boldtext">suggested expansion terms: </span>{" "}
             {queryExpansionList}

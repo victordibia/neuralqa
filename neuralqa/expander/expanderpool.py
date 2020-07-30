@@ -35,3 +35,4 @@ class ExpanderPool():
             else:
                 logger.info(
                     ">> No expander has been specified in config.yaml.")
+                self._selected_expander = None

@@ -95,3 +95,12 @@ You can configure the reader models that are available for use with the ``Neural
         - name: Medical BERT SQUAD2
         value: /Users/user/Downloads/meddistilbert  # example path to a local model on disk  
         type: bert
+
+
+
+
+
+Memory Requirements
+**************************
+
+To enable fast user interaction, ``NeuralQA`` loads models weights that are specified in `config.yaml` into memory when the application is launched. For example, if 3 Bert base reader models (~425MB each) specified in  `config.yaml`, each of these will be loaded into memory. Similarly all specified query expansion models will also be loaded into memory. Plan to account for these when using ``NeuralQA``.

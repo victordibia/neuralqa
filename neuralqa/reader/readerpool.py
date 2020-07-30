@@ -36,3 +36,4 @@ class ReaderPool():
             else:
                 logger.info(
                     ">> No reader has been specified in config.yaml.")
+                self._selected_model = None
