@@ -142,14 +142,7 @@ export function sampleConfig() {
         expander: {
           title: "Expander",
           selected: "none",
-          options: [
-            { name: "None", value: "none", type: "none" },
-            {
-              name: "Masked LM",
-              type: "maskedlm",
-              value: "distilbert-base-uncased",
-            },
-          ],
+          options: [{ name: "None", value: "none", type: "none" }],
         },
         reader: {
           title: "Reader",
@@ -163,11 +156,6 @@ export function sampleConfig() {
             {
               name: "BERT SQUAD2",
               value: "deepset/bert-base-cased-squad2",
-              type: "bert",
-            },
-            {
-              name: "Medical BERT SQUAD2",
-              value: "/Users/victordibia/Downloads/meddistilbert",
               type: "bert",
             },
           ],
@@ -186,26 +174,6 @@ export function sampleConfig() {
               password: "None",
               type: "elasticsearch",
               fields: { body_field: "casebody.data.opinions.text" },
-            },
-            {
-              name: "Medical",
-              value: "medical",
-              host: "localhost",
-              port: 9200,
-              username: "None",
-              password: "None",
-              type: "elasticsearch",
-              fields: { body_field: "context" },
-            },
-            {
-              name: "Supreme Court",
-              value: "supremecourt",
-              host: "localhost",
-              port: 9200,
-              username: "None",
-              password: "None",
-              type: "elasticsearch",
-              fields: { body_field: "casebody" },
             },
           ],
           readtopn: 0,

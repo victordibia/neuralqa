@@ -26,6 +26,10 @@ def cli():
 @cli_args.MAX_DOCS
 def load(max_docs):
     """This command loads sample data into a local elastic search index."""
+
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.INFO)
+    logging.getLogger(__name__).setLevel(logging.INFO)
     import_sample_data(max_docs=max_docs)
 
 

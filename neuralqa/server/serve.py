@@ -12,7 +12,7 @@ import time
 import uvicorn
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
+# from fastapi.middleware.cors import CORSMiddleware
 
 
 logger = logging.getLogger(__name__)
@@ -24,18 +24,18 @@ app = FastAPI()
 api = FastAPI(root_path="/api")
 
 
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-]
+# origins = [
+#     "http://localhost",
+#     "http://localhost:3000",
+# ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 root_file_path = os.path.dirname(os.path.abspath(__file__))
 static_folder_root = os.path.join(root_file_path, "ui/build")
 
