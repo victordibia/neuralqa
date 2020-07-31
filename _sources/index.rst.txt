@@ -69,10 +69,12 @@ NeuralQA is comprised of several high level modules:
 
 - **Retriever**: For each search query (question), scan an index (elasticsearch), and retrieve a list of candidate matched passages.
 
-- **Document Reader**: For each retrieved passage, a BERT based model predicts a span that contains the answer to the question. In practice, retrieved passages may be lengthy and BERT based models can process a maximum of 512 tokens at a time. NeuralQA handles this in two ways. Lengthy passages are chunked into smaller sections with an configurable stride. Secondly, NeuralQA offers the option of extracting a subset of relevant snippets (RelSnip) which a BERT reader can then scan to find answers. Relevant snippets are portions of the retrieved document that contain exact match results for the search query. 
+- **Reader**: For each retrieved passage, a BERT based model predicts a span that contains the answer to the question. In practice, retrieved passages may be lengthy and BERT based models can process a maximum of 512 tokens at a time. NeuralQA handles this in two ways. Lengthy passages are chunked into smaller sections with a configurable stride. Secondly, NeuralQA offers the option of extracting a subset of relevant snippets (RelSnip) which a BERT reader can then scan to find answers. Relevant snippets are portions of the retrieved document that contain exact match results for the search query.
 
-- **User Interface**: NeuralQA provides a visual user interface for performing queries (manual queries where question and context are provided as well as queries over a search index), viewing results and also sensemaking of results  (reranking of passages based on answer scores, highlighting keyword match, model explanations).  
- 
+- **Expander**: Methods for generating additional (relevant) query terms to improve recall. Currently, we implement Contextual Query Expansion using finetuned Masked Language Models.
+
+- **User Interface**: NeuralQA provides a visual user interface for performing queries (manual queries where question and context are provided as well as queries over a search index), viewing results and also sensemaking of results (reranking of passages based on answer scores, highlighting keyword match, model explanations).
+
 
 Citation
 ********************** 
@@ -80,12 +82,13 @@ A paper introducing NeuralQA and its components can be `found here <https://raw.
 
 .. code-block:: 
 
-  @article{Dibia2020NeuralQA,
-    title={NeuralQA: A Usable Library for Question Answering (Contextual QueryExpansion + BERT) on Large Datasets},
-    author={Victor Dibia},
-    year={2020},
+  @article{dibia2020neuralqa,
+      title={NeuralQA: A Usable Library for Question Answering (Contextual Query Expansion + BERT) on Large Datasets},
+      author={Victor Dibia},
+      year={2020}, 
+      journal={arXiv preprint arXiv:2007.15211} 
   }
-
+ 
  
 .. toctree::
     :maxdepth: 3
