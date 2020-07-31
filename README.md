@@ -14,14 +14,17 @@ Huggingface [Transformers](https://github.com/huggingface/transformers) api.
 
 ## Usage
 
+```shell
+pip3 install neuralqa
+```
+
 Create a folder you would like to use for NeuralQA. Run the following command line interface from within that folder.
 
 ```shell
-pip3 install neuralqa
 neuralqa ui --port 4000
 ```
 
-navigate to [http://localhost:4000/#/](http://localhost:4000/#/). Learn about other command line options in the documentation [here](https://victordibia.github.io/neuralqa/usage.html#command-line-options).
+navigate to [http://localhost:4000/#/](http://localhost:4000/#/) to view the NeuralQA interface. Learn about other command line options in the documentation [here](https://victordibia.github.io/neuralqa/usage.html#command-line-options) or how to [configure](https://victordibia.github.io/neuralqa/configuration.html) NeuralQA to use your own reader models or retriever instances.
 
 > Note: To use NeuralQA with a retriever such as ElasticSearch, follow the [instructions here](https://www.elastic.co/downloads/elasticsearch) to download, install, and launch a local elasticsearch instance and add it to your config.yaml file.
 
@@ -86,9 +89,10 @@ An attempt is being made to better document NeuralQA here - [https://victordibia
 A paper introducing NeuralQA and its components can be [found here](docs/images/neuralqa.pdf).
 
 ```
-@article{Dibia2020NeuralQA,
-  title={NeuralQA: A Usable Library for Question Answering (Contextual QueryExpansion + BERT) on Large Datasets},
-  author={Victor Dibia},
-  year={2020},
+@article{dibia2020neuralqa,
+    title={NeuralQA: A Usable Library for Question Answering (Contextual Query Expansion + BERT) on Large Datasets},
+    author={Victor Dibia},
+    year={2020},
+    journal={arXiv preprint arXiv:2007.15211}
 }
 ```
