@@ -18,7 +18,7 @@ Huggingface [Transformers](https://github.com/huggingface/transformers) api.
 pip3 install neuralqa
 ```
 
-Create a folder you would like to use for NeuralQA. Run the following command line interface from within that folder.
+Create (or navigate to) a folder you would like to use with NeuralQA. Run the following command line instruction within that folder.
 
 ```shell
 neuralqa ui --port 4000
@@ -86,7 +86,7 @@ An attempt is being made to better document NeuralQA here - [https://victordibia
 
 ## Citation
 
-A paper introducing NeuralQA and its components can be [found here](docs/images/neuralqa.pdf).
+A paper introducing NeuralQA and its components can be [found here](https://arxiv.org/abs/2007.15211).
 
 ```
 @article{dibia2020neuralqa,
