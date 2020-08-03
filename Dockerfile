@@ -14,5 +14,7 @@ RUN apt-get update && \
     dpkg -i elasticsearch-7.8.0-amd64.deb && \
     service elasticsearch start && \
     sleep 30 && \
-    neuralqa --host 0.0.0.0 --port 80
+     
+EXPOSE 80
 
+CMD ["neuralqa", "--host", "0.0.0.0", "--port", "80"]
