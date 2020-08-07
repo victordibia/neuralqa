@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/github/license/victordibia/neuralqa)](https://opensource.org/licenses/MIT)
 ![docs](https://github.com/victordibia/neuralqa/workflows/docs/badge.svg?style=flat-square)
 
-> Still in **alpha**, lots of changes anticipated.
+> Still in **alpha**, lots of changes anticipated. View demo on [neuralqa.fastforwardlabs.com](https://neuralqa.fastforwardlabs.com/#/).
 
 <img width="100%" src="https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg">
 
