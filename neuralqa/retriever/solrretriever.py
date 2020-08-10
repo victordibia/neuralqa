@@ -7,8 +7,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class ElasticSearchRetriever(Retriever):
-    def __init__(self, index_type="solr", host="localhost", port=9200, **kwargs):
+class SolrRetriever(Retriever):
+    def __init__(self, index_type="solr", host="localhost", port=8983, protocol="http", ** kwargs):
         Retriever.__init__(self, index_type)
 
         self.username = ""
@@ -16,12 +16,17 @@ class ElasticSearchRetriever(Retriever):
         self.body_field = ""
         self.host = host
         self.port = port
+        self.protocol = protocol
 
         allowed_keys = list(self.__dict__.keys())
         self.__dict__.update((k, v)
                              for k, v in kwargs.items() if k in allowed_keys)
-        self.es = Elasticsearch([{'host': self.host, 'port': self.port}])
-        self.isAvailable = self.es.ping()
+
+        self.base_solr_url = protocol + "://" + \
+            host + ":" + str(port) + "/solr"
+
+        # self.es = Elasticsearch([{'host': self.host, 'port': self.port}])
+        # self.isAvailable = self.es.ping()
 
         rejected_keys = set(kwargs.keys()) - set(allowed_keys)
 
@@ -30,64 +35,43 @@ class ElasticSearchRetriever(Retriever):
                 "Invalid arguments in ElasticSearchRetriever constructor:{}".format(rejected_keys))
 
     def run_query(self, index_name, search_query, max_documents=5, fragment_size=100, relsnip=True, num_fragments=5, highlight_tags=True):
+        query_url = self.base_solr_url + "/" + index_name + "/select"
 
-        # tags = {"pre_tags": [""], "post_tags": [
-        #     ""]} if not highlight_tags else {}
-        # highlight_params = {
-        #     "fragment_size": fragment_size,
-        #     "fields": {
-        #         self.body_field: tags
-        #     },
-        #     "number_of_fragments": num_fragments
-        # }
+        params = {"df": self.body_field, "fl": self.body_field,
+                  "wt": "json", "q": search_query, "rows": max_documents}
 
-        # search_query = {
-        #     "_source": {"includes": [self.body_field]},
-        #     "query": {
-        #         "multi_match": {
-        #             "query":    search_query,
-        #             "fields": [self.body_field]
-        #         }
-        #     },
-        #     "size": max_documents
-        # }
+        hl_params = {"hl": "true", "hl.method": "unified", "hl.snippets": num_fragments,
+                     "hl.fragsize": num_fragments, "hl.usePhraseHighlighter": "true"}
+        if not highlight_tags:
+            hl_params["hl.tags.pre"] = ""
+            hl_params["hl.tags.post"] = ""
 
-        # status = True
-        # results = {}
+        if relsnip:
+            params = {**params, **hl_params}
+        else:
+            params["fl"] = "null"
 
-        # if (relsnip):
-        #     # search_query["_source"] = {"includes": [""]}
-        #     search_query["highlight"] = highlight_params
-        # # else:
-        # #     search_query["_source"] = {"includes": [self.body_field]}
+        response = requests.get(query_url, params=params)
+        highlights = []
+        docs = []
+        results = {}
+        status = False
 
-        # try:
-        #     query_result = self.es.search(
-        #         index=index_name, body=search_query)
-
-        #     # RelSnip: for each document, we concatenate all
-        #     # fragments in each document and return as the document.
-        #     highlights = [" ".join(hit["highlight"][self.body_field])
-        #                   for hit in query_result["hits"]["hits"] if "highlight" in hit]
-        #     docs = [parse_field_content(self.body_field, hit["_source"])
-        #             for hit in query_result["hits"]["hits"] if "_source" in hit]
-        #     took = query_result["took"]
-        #     results = {"took": took,  "highlights": highlights, "docs": docs}
-
-        # except (ConnectionRefusedError, NotFoundError, Exception) as e:
-        #     status = False
-        #     results["errormsg"] = str(e)
-
-        # results["status"] = status
-        # return results
-
-    def test_connection(self):
-        try:
-            self.es.cluster.health()
-            return True
-        except ConnectionError:
-            return False
-        except Exception as e:
-            logger.info(
-                'An unknown error occured connecting to ElasticSearch: %s' % e)
-            return False
+        if (response.status_code == 200):
+            status = True
+            print(response.url, response.status_code)
+            response = response.json()
+            print((response.keys()))
+            highlights = [" ".join(response["highlighting"][key][self.body_field])
+                          for key in response["highlighting"].keys()] if "highlighting" in response else highlights
+            docs = [" ".join(doc[self.body_field])
+                    for doc in response["response"]["docs"]]
+            results = {"took": response["responseHeader"]
+                       ["QTime"],  "highlights": highlights, "docs": docs}
+        else:
+            print("An error has occured",
+                  response.status_code, response.__dict__)
+            status = False
+            results["errormsg"] = str(response.status_code)
+        results["status"] = status
+        return results
