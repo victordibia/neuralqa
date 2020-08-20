@@ -11,6 +11,7 @@ import React, { Component } from "react";
 import { getJSONData, sampleConfig } from "./helperfunctions/HelperFunctions";
 import { Route, HashRouter } from "react-router-dom";
 
+import ExplainView from "./explainview/ExplainView";
 import QueryView from "./queryview/QueryView";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
@@ -84,14 +85,13 @@ class Main extends Component {
             <Header data={this.state.config.header}></Header>
             <main className="container-fluid p10">
               <Route exact path="/" component={mQueryView} />
-              {/* <Route exact path="/train" component={Train} /> */}
+              <Route exact path="/ex" component={ExplainView} />
             </main>
           </div>
         )}
 
         <div id="footer">
-          {" "}
-          <Footer />{" "}
+          <Footer />
         </div>
       </HashRouter>
     );
