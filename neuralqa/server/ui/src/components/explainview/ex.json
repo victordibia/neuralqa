@@ -1,429 +1,705 @@
 {
   "gradients": [
-    0.7776248455047607,
-    0.38133323192596436,
-    0.48339083790779114,
-    1,
-    0.4539879262447357,
-    0.22548764944076538,
-    0.5164992809295654,
-    0.5774037837982178,
-    0.40141040086746216,
-    0.08653242886066437,
-    0.44064000248908997,
-    0.45015114545822144,
-    0.09730635583400726,
-    0.052195802330970764,
-    0.10632430762052536,
-    0.08209719508886337,
-    0.11832377314567566,
-    0.12593641877174377,
-    0.18220967054367065,
-    0.2233753353357315,
-    0.09926066547632217,
-    0.049575187265872955,
-    0.060916103422641754,
-    0.048790816217660904,
-    0.03942907229065895,
-    0.07061359286308289,
-    0.03596897050738335,
-    0.05321967229247093,
-    0.08256886899471283,
-    0.06096402555704117,
-    0.03724627196788788,
-    0.06295284628868103,
-    0.0451999232172966,
-    0.06783893704414368,
-    0.04080445319414139,
-    0.06289420276880264,
-    0.039580825716257095,
-    0.051120515912771225,
-    0.07284322381019592,
-    0.0512305423617363,
-    0.056240055710077286,
-    0.1851978302001953,
-    0.06078462302684784,
-    0.07405948638916016,
-    0.07777304202318192,
-    0.06557750701904297,
-    0.09869322180747986,
-    0.07527283579111099,
-    0.04569379612803459,
-    0.10462980717420578,
-    0.06425819545984268,
-    0.05537234619259834,
-    0.06339292973279953,
-    0.045494312420487404,
-    0.0779174417257309,
-    0.047900572419166565,
-    0.05423511564731598,
-    0.05454472824931145,
-    0.04602175951004028,
-    0.07888582348823547,
-    0.07856237143278122,
-    0.11361107975244522,
-    0.062142692506313324,
-    0.05307862162590027,
-    0.09184946119785309,
-    0.06071153283119202,
-    0.047539265205462776,
-    0.07517793029546738,
-    0.06382691115140915,
-    0.1007850244641304,
-    0.07376563549041748,
-    0.03218425065279007,
-    0.04783618822693825,
-    0.05158140882849693,
-    0.03697739914059639,
-    0.08481936901807785,
-    0.0867309495806694,
-    0.06060311198234558,
-    0.042602624744176865,
-    0.056840211153030396,
-    0.061877720057964325,
-    0.04903039708733559,
-    0.04995288699865341,
-    0.0645037516951561,
-    0.13170984387397766,
-    0.2707226872444153,
-    0.3593485653400421,
-    0.20046250522136688,
-    0.5591771006584167,
-    0.6059507727622986,
-    0.22130289673805237,
-    0.2113974243402481,
-    0.22913868725299835,
-    0.3722268342971802,
-    0.3713294267654419,
-    0.3717332184314728,
-    0.1604176014661789,
-    0.15185075998306274,
-    0.08072193711996078,
-    0.15385915338993073,
-    0.050815146416425705,
-    0.16720716655254364,
-    0.14042356610298157,
-    0.1549566388130188,
-    0.16938267648220062,
-    0.11007369309663773,
-    0.1169217936694622,
-    0.10463482141494751,
-    0.10229527950286865,
-    0.47511065006256104,
-    0.48005545139312744,
-    0.3730916678905487,
-    0.25223031640052795,
-    0.18487240374088287,
-    0.3077234923839569,
-    0.24925142526626587,
-    0.11481975018978119,
-    0.12900996208190918,
-    0.16723985970020294,
-    0.08052156865596771,
-    0.05996045097708702,
-    0.046615198254585266,
-    0.07966282963752747,
-    0.09778237342834473,
-    0.1369015872478485,
-    0.10977763682603836,
-    0.14516030251979828,
-    0.07196349650621414,
-    0.09799710661172867,
-    0.05541238188743591,
-    0.05443686246871948,
-    0.06119624525308609,
-    0.11526162922382355,
-    0.07573361694812775,
-    0.0900123193860054,
-    0.08903013169765472,
-    0.07160915434360504,
-    0.05608944594860077,
-    0.05668414756655693,
-    0.13379955291748047
-  ],
-  "token_words": [
-    "what",
-    "is",
-    "the",
-    "goal",
-    "of",
-    "the",
-    "fourth",
-    "amendment",
-    "?",
-    "the",
-    "fourth",
-    "amendment",
-    "of",
-    "the",
-    "u",
-    ".",
-    "s",
-    ".",
-    "constitution",
-    "provides",
-    "that",
-    "the",
-    "right",
-    "of",
-    "the",
-    "people",
-    "to",
-    "be",
-    "secure",
-    "in",
-    "their",
-    "persons",
-    ",",
-    "houses",
-    ",",
-    "papers",
-    ",",
-    "and",
-    "effects",
-    ",",
-    "against",
-    "unreasonable",
-    "searches",
-    "and",
-    "seizures",
-    ",",
-    "shall",
-    "not",
-    "be",
-    "violated",
-    ",",
-    "and",
-    "no",
-    "warrants",
-    "shall",
-    "issue",
-    ",",
-    "but",
-    "upon",
-    "probable",
-    "cause",
-    ",",
-    "supported",
-    "by",
-    "oath",
-    "or",
-    "affirmation",
-    ",",
-    "and",
-    "particularly",
-    "describing",
-    "the",
-    "place",
-    "to",
-    "be",
-    "searched",
-    ",",
-    "and",
-    "the",
-    "persons",
-    "or",
-    "things",
-    "to",
-    "be",
-    "seized",
-    ".",
-    "'",
-    "the",
-    "ultimate",
-    "goal",
-    "of",
-    "this",
-    "provision",
-    "is",
-    "to",
-    "protect",
-    "people",
-    "’",
-    "s",
-    "right",
-    "to",
-    "privacy",
-    "and",
-    "freedom",
-    "from",
-    "unreasonable",
-    "intrusions",
-    "by",
-    "the",
-    "government",
-    ".",
-    "however",
-    ",",
-    "the",
-    "fourth",
-    "amendment",
-    "does",
-    "not",
-    "guarantee",
-    "protection",
-    "from",
-    "all",
-    "searches",
-    "and",
-    "seizures",
-    ",",
-    "but",
-    "only",
-    "those",
-    "done",
-    "by",
-    "the",
-    "government",
-    "and",
-    "deemed",
-    "unreasonable",
-    "under",
-    "the",
-    "law",
-    "."
-  ],
-  "token_types": [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1
+    {
+      "gradient": 0.7776244878768921,
+      "token": "what",
+      "token_type": 0
+    },
+    {
+      "gradient": 0.3813329041004181,
+      "token": "is",
+      "token_type": 0
+    },
+    {
+      "gradient": 0.4833911657333374,
+      "token": "the",
+      "token_type": 0
+    },
+    {
+      "gradient": 1,
+      "token": "goal",
+      "token_type": 0
+    },
+    {
+      "gradient": 0.4539879858493805,
+      "token": "of",
+      "token_type": 0
+    },
+    {
+      "gradient": 0.2254873514175415,
+      "token": "the",
+      "token_type": 0
+    },
+    {
+      "gradient": 0.5164986252784729,
+      "token": "fourth",
+      "token_type": 0
+    },
+    {
+      "gradient": 0.577403724193573,
+      "token": "amendment",
+      "token_type": 0
+    },
+    {
+      "gradient": 0.4014101028442383,
+      "token": "?",
+      "token_type": 0
+    },
+    {
+      "gradient": 0.08653245866298676,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.4406398832798004,
+      "token": "fourth",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.4501516819000244,
+      "token": "amendment",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.09730638563632965,
+      "token": "of",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05219580605626106,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.10632430016994476,
+      "token": "u",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.08209715783596039,
+      "token": ".",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.11832378804683685,
+      "token": "s",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.12593649327754974,
+      "token": ".",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.18220987915992737,
+      "token": "constitution",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.2233753353357315,
+      "token": "provides",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.09926070272922516,
+      "token": "that",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.04957512393593788,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06091616675257683,
+      "token": "right",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0487910620868206,
+      "token": "of",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.03942923620343208,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07061353325843811,
+      "token": "people",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.035968974232673645,
+      "token": "to",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05321967601776123,
+      "token": "be",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.08256877958774567,
+      "token": "secure",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06096402183175087,
+      "token": "in",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0372462272644043,
+      "token": "their",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06295276433229446,
+      "token": "persons",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.04519972205162048,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06783878803253174,
+      "token": "houses",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.040804315358400345,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06289402395486832,
+      "token": "papers",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.03958067297935486,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05112042650580406,
+      "token": "and",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07284298539161682,
+      "token": "effects",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05123045668005943,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05624000355601311,
+      "token": "against",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.1851975917816162,
+      "token": "unreasonable",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06078457459807396,
+      "token": "searches",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07405952364206314,
+      "token": "and",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07777296006679535,
+      "token": "seizures",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0655774474143982,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.09869317710399628,
+      "token": "shall",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07527285069227219,
+      "token": "not",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0456937812268734,
+      "token": "be",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.10462962836027145,
+      "token": "violated",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06425818055868149,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05537235736846924,
+      "token": "and",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0633930191397667,
+      "token": "no",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.04549432918429375,
+      "token": "warrants",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0779174342751503,
+      "token": "shall",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.047900501638650894,
+      "token": "issue",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05423515662550926,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.054544754326343536,
+      "token": "but",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.04602174833416939,
+      "token": "upon",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07888579368591309,
+      "token": "probable",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07856228202581406,
+      "token": "cause",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.11361091583967209,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.062142688781023026,
+      "token": "supported",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05307861790060997,
+      "token": "by",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.09184946864843369,
+      "token": "oath",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.060711491852998734,
+      "token": "or",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.047539242853720985,
+      "token": "affirmation",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07517780363559723,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06382681429386139,
+      "token": "and",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.10078483819961548,
+      "token": "particularly",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07376561313867569,
+      "token": "describing",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.03218426927924156,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.04783613234758377,
+      "token": "place",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.051581379026174545,
+      "token": "to",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.03697739914059639,
+      "token": "be",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.08481930196285248,
+      "token": "searched",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0867309644818306,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06060314550995827,
+      "token": "and",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.042602699249982834,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.056840281933546066,
+      "token": "persons",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.061877764761447906,
+      "token": "or",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.04903039708733559,
+      "token": "things",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.04995288327336311,
+      "token": "to",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06450371444225311,
+      "token": "be",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.1317097693681717,
+      "token": "seized",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.27072301506996155,
+      "token": ".",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.3593496084213257,
+      "token": "'",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.20046266913414001,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.5591774582862854,
+      "token": "ultimate",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.6059514284133911,
+      "token": "goal",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.22130441665649414,
+      "token": "of",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.21139739453792572,
+      "token": "this",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.22913874685764313,
+      "token": "provision",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.3722269535064697,
+      "token": "is",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.37132930755615234,
+      "token": "to",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.3717334270477295,
+      "token": "protect",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.16041798889636993,
+      "token": "people",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.1518508344888687,
+      "token": "’",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0807218924164772,
+      "token": "s",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.15385906398296356,
+      "token": "right",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.050815142691135406,
+      "token": "to",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.16720698773860931,
+      "token": "privacy",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.14042364060878754,
+      "token": "and",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.15495635569095612,
+      "token": "freedom",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.16938212513923645,
+      "token": "from",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.11007372289896011,
+      "token": "unreasonable",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.11692224815487862,
+      "token": "intrusions",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.10463482141494751,
+      "token": "by",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.10229557752609253,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.4751121699810028,
+      "token": "government",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.480056494474411,
+      "token": ".",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.37309250235557556,
+      "token": "however",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.2522304356098175,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.1848718523979187,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.3077230453491211,
+      "token": "fourth",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.2492513805627823,
+      "token": "amendment",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.11481970548629761,
+      "token": "does",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.12900979816913605,
+      "token": "not",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.16723977029323578,
+      "token": "guarantee",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.08052156865596771,
+      "token": "protection",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0599604956805706,
+      "token": "from",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0466151125729084,
+      "token": "all",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0796627625823021,
+      "token": "searches",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.09778217226266861,
+      "token": "and",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.13690105080604553,
+      "token": "seizures",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.1097775250673294,
+      "token": ",",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.14515969157218933,
+      "token": "but",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07196320593357086,
+      "token": "only",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.09799671918153763,
+      "token": "those",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05541221424937248,
+      "token": "done",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.054436687380075455,
+      "token": "by",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.06119629368185997,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.11526178568601608,
+      "token": "government",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07573369145393372,
+      "token": "and",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.09001221507787704,
+      "token": "deemed",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.0890301913022995,
+      "token": "unreasonable",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.07160922139883041,
+      "token": "under",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05608946084976196,
+      "token": "the",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.05668415129184723,
+      "token": "law",
+      "token_type": 1
+    },
+    {
+      "gradient": 0.13379965722560883,
+      "token": ".",
+      "token_type": 1
+    }
   ],
   "answer": "to protect people ’ s right to privacy and freedom from unreasonable intrusions by the government"
 }
