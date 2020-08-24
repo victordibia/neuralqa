@@ -22,6 +22,7 @@ import {
   postJSONData,
   abbreviateString,
 } from "../helperfunctions/HelperFunctions";
+import ExplainView from "../explainview/ExplainView";
 import "./queryview.css";
 
 class QueryView extends Component {
@@ -50,6 +51,7 @@ class QueryView extends Component {
       relsnip: this.options.relsnip.selected,
 
       sampleQA: this.options.samples,
+      selectedExplanation: 0,
       selectedSampleIndex: 0,
       explanations: {},
       showAdvancedView: false,
@@ -65,11 +67,12 @@ class QueryView extends Component {
       showAllAnswers: props.data.views.allanswers,
       showIntro: props.data.views.intro,
       showInfoModal: false,
+      showExplainerModal: false,
     };
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    // this.serverBasePath = "http://localhost:5000";
+    this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
@@ -298,10 +301,19 @@ class QueryView extends Component {
       });
   }
 
+  closeExplainerModal() {
+    this.setState({
+      showExplainerModal: false,
+    });
+  }
+
   clickExplainButton(e) {
-    // console.log(e.target.getAttribute("id"));
     let selectedAnswerId = e.target.getAttribute("id");
     this.getExplanation(selectedAnswerId);
+    this.setState({
+      showExplainerModal: true,
+      selectedExplanation: selectedAnswerId,
+    });
   }
 
   updateConfigSelectParams(e) {
@@ -449,28 +461,6 @@ class QueryView extends Component {
         this.state.showAllAnswers ? this.state.answers.answers.length : 1
       )
       .map((data, index) => {
-        let explanationsList = [];
-        let currentExplanation = this.state.explanations[index];
-        if (currentExplanation) {
-          explanationsList = currentExplanation.token_words.map(
-            (xdata, xindex) => {
-              return (
-                <span
-                  style={{
-                    backgroundColor:
-                      "rgba(0, 98, 255, " +
-                      currentExplanation.gradients[xindex] +
-                      ")",
-                  }}
-                  className="explanationspan"
-                  key={"expspan" + index + "" + xindex}
-                >
-                  {xdata} &nbsp;
-                </span>
-              );
-            }
-          );
-        }
         return (
           <div
             className={
@@ -491,7 +481,7 @@ class QueryView extends Component {
                   <span className="answerquote">&#8220;</span> {data.answer}{" "}
                   <span className="pt10 answerquote">&#8221;</span>{" "}
                 </div>
-                {!currentExplanation && (
+                {
                   <div>
                     <div
                       className="p10 mt10 mb10 contextrow lightgreyhighlight"
@@ -507,17 +497,12 @@ class QueryView extends Component {
                       </Button>
                     )}
                   </div>
-                )}
+                }
               </div>
-
-              {currentExplanation && (
-                <div className="mt10 ">{explanationsList}</div>
-              )}
             </div>
           </div>
         );
       });
-
     // Create sample qa passages for None QA
     let qaSamples = this.state.sampleQA.map((data, index) => {
       return (
@@ -649,6 +634,7 @@ class QueryView extends Component {
           open={this.state.showInfoModal}
           modalHeading={"Description of advanced options"}
           passiveModal={true}
+          size={"lg"}
           aria-label={"Info Modal"}
           modalAriaLabel={"Info Modal"}
           onRequestClose={this.clickInfo.bind(this)}
@@ -657,6 +643,28 @@ class QueryView extends Component {
         >
           {infoBox}
         </Modal>
+
+        <Modal
+          open={this.state.showExplainerModal}
+          modalHeading={"Model Explanation"}
+          passiveModal={true}
+          size={"lg"}
+          aria-label={"Explaination Modal"}
+          modalAriaLabel={"Explanation Modal"}
+          onRequestClose={this.closeExplainerModal.bind(this)}
+          hasScrollingContent={true}
+          // secondaryButtonText={"Cancel"}
+        >
+          {Object.keys(this.state.explanations).length > 0 && (
+            <ExplainView
+              explanationData={
+                this.state.explanations[this.state.selectedExplanation]
+              }
+              selectedExplanation={this.state.selectedExplanation}
+            ></ExplainView>
+          )}
+        </Modal>
+
         {this.state.showIntro && (
           <div className="clearfix mynotif positionrelative  mt10 h100 lh10  lightbluehightlight maxh16  mb10">
             {this.props.data.views.advanced && (

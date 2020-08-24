@@ -12,7 +12,37 @@
 }
 
 .barrect {
-  stroke: white;
-  stroke-width: 2px;
-  fill: #0062ff;
+  stroke-width: 1px;
+  stroke: rgb(212, 212, 212);
+  /* fill: #0062ff; */
+}
+.viztabcontent {
+  background-color: rgb(235, 235, 235);
+}
+
+.expview {
+  min-height: 450px;
+  /* border: 2px solid black; */
+}
+
+.brushbox {
+  /* border: 1px solid green; */
+  width: 100%;
+}
+.graphsvgbox {
+  /* border: 1px solid green; */
+}
+.graphsvgpath {
+  /* transform: rotate(90deg); */
+  fill: #686868;
+  stroke: #070707;
+}
+.brushhandle {
+  position: absolute;
+  width: 100px;
+  height: 100%;
+  background-color: #b4b4b48e;
+  border: 1px solid white;
+  border-radius: 2px;
+  cursor: grab;
 }
