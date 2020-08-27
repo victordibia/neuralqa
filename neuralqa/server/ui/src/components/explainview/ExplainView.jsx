@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Tabs, Tab } from "carbon-components-react";
 import "./explainview.css";
-import { VegaLite, Vega } from "react-vega";
+import { VegaLite } from "react-vega";
+import { None } from "vega";
 
 class ExplainView extends Component {
   constructor(props) {
@@ -13,6 +14,14 @@ class ExplainView extends Component {
     this.state = {
       data: this.data,
     };
+
+    this.brushHeight = 60;
+
+    this.signalListeners = { hover: this.handleHover.bind(this) };
+  }
+
+  handleHover(...args) {
+    console.log("bingo", args);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -35,8 +44,14 @@ class ExplainView extends Component {
   componentDidMount() {}
 
   render() {
+    this.data.gradients.forEach((each, i) => {
+      each["tokenid"] = each.token + "-" + i;
+    });
+
+    console.log(this.data.gradients.slice(0, 15));
+
     const brushEncX = {
-      field: "token",
+      field: "tokenid",
       type: "ordinal",
       sort: null,
       axis: null,
@@ -62,11 +77,21 @@ class ExplainView extends Component {
     const spec = {
       description: "A simple bar chart with embedded data.",
       data: { values: this.data.gradients },
-      // transform: [{ calculate: "datum.token", as: "gradval" }],
+      // transform: [{ calculate: "datum.token", as: "tokenid" }],
       autosize: {
         type: "fit-x",
         contains: "padding",
       },
+      signals: [
+        {
+          name: "hover",
+          value: {},
+          on: [
+            { events: "rect:mouseover", update: "datum" },
+            { events: "rect:mouseout", update: "{}" },
+          ],
+        },
+      ],
       background: "transparent",
       config: chartConfig,
       vconcat: [
@@ -76,14 +101,20 @@ class ExplainView extends Component {
           mark: { type: "bar", tooltip: { content: "data" } },
           encoding: {
             x: {
-              field: "token",
+              field: "tokenid",
               type: "ordinal",
+              selection: {
+                // "highlight": {"type": "single", "empty": "none", "on": "mouseover"},
+                select: { type: "multi" },
+                barSelection: { fields: ["token"], on: "click", type: "multi" },
+              },
               scale: { domain: { selection: "brush" } },
               axis: {
                 title: "",
                 labelAlign: "top",
-                labelExpr: "'`   ' +datum.label",
+                labelExpr: "'- ' + split(datum.label,'-')[0] ",
                 zindex: 1,
+                ticks: None,
               },
               sort: null,
             },
@@ -96,7 +127,7 @@ class ExplainView extends Component {
         //brush view
         {
           width: "container",
-          height: 60,
+          height: this.brushHeight,
           mark: "bar",
           selection: {
             brush: {
@@ -111,6 +142,21 @@ class ExplainView extends Component {
             color: { value: "#666" },
           },
         },
+        // {
+        //   width: "container",
+        //   height: this.brushHeight,
+        //   mark: "bar",
+        //   encoding: {
+        //     x: {
+        //       field: "tokenid",
+        //       type: "ordinal",
+        //       sort: null,
+        //       // axis: null,
+        //     },
+        //     y: brushEncY,
+        //     color: { value: "#666" },
+        //   },
+        // },
       ],
     };
 
@@ -162,8 +208,13 @@ class ExplainView extends Component {
               </div>
 
               {/* <div id="d3brush" className="d3brush"></div> */}
-              <div className="w100">
-                <VegaLite className="w100" actions={false} spec={spec} />
+              <div className="w100 ">
+                <VegaLite
+                  className="w100 "
+                  actions={false}
+                  spec={spec}
+                  signalListeners={this.signalListeners}
+                />
               </div>
             </div>
           </Tab>
