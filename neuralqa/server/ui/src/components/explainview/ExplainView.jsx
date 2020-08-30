@@ -17,7 +17,8 @@ class ExplainView extends Component {
 
     this.brushHeight = 60;
 
-    this.signalListeners = { hover: this.handleHover.bind(this) };
+    this.handleHover = this.handleHover.bind(this);
+    this.handlers = { hover: this.handleHover };
   }
 
   handleHover(...args) {
@@ -48,7 +49,7 @@ class ExplainView extends Component {
       each["tokenid"] = each.token + "-" + i;
     });
 
-    console.log(this.data.gradients.slice(0, 15));
+    // console.log(this.data.gradients.slice(0, 15));
 
     const brushEncX = {
       field: "tokenid",
@@ -82,16 +83,6 @@ class ExplainView extends Component {
         type: "fit-x",
         contains: "padding",
       },
-      signals: [
-        {
-          name: "hover",
-          value: {},
-          on: [
-            { events: "rect:mouseover", update: "datum" },
-            { events: "rect:mouseout", update: "{}" },
-          ],
-        },
-      ],
       background: "transparent",
       config: chartConfig,
       vconcat: [
@@ -99,15 +90,15 @@ class ExplainView extends Component {
         {
           width: "container",
           mark: { type: "bar", tooltip: { content: "data" } },
+          transform: [
+            {
+              filter: { selection: "brush" },
+            },
+          ],
           encoding: {
             x: {
               field: "tokenid",
               type: "ordinal",
-              selection: {
-                // "highlight": {"type": "single", "empty": "none", "on": "mouseover"},
-                select: { type: "multi" },
-                barSelection: { fields: ["token"], on: "click", type: "multi" },
-              },
               scale: { domain: { selection: "brush" } },
               axis: {
                 title: "",
@@ -175,9 +166,14 @@ class ExplainView extends Component {
     });
 
     const answerText = (
-      <div className="pb10 mediumdesc boldtext">
-        <span className="answerquote">&#8220;</span> {this.state.data.answer}{" "}
-        <span className="pt10 answerquote">&#8221;</span>{" "}
+      <div>
+        <div className="lhmedium mediumdesc mb10">
+          {this.state.data.question}
+        </div>
+        <div className="pb10 mediumdesc boldtext">
+          <span className="answerquote">&#8220;</span> {this.state.data.answer}{" "}
+          <span className="pt10 answerquote">&#8221;</span>{" "}
+        </div>
       </div>
     );
 
@@ -213,7 +209,7 @@ class ExplainView extends Component {
                   className="w100 "
                   actions={false}
                   spec={spec}
-                  signalListeners={this.signalListeners}
+                  // signalListeners={this.handlers}
                 />
               </div>
             </div>
