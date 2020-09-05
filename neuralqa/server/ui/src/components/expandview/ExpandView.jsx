@@ -17,7 +17,13 @@ class ExpandView extends Component {
     };
   }
 
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.data !== prevProps.data) {
+      console.log("things have changed");
+      this.removeAllLines();
+      this.drawLines();
+    }
+  }
 
   updateGraph(data) {}
 
@@ -78,8 +84,11 @@ class ExpandView extends Component {
 
     this.blueColor = "#0062ff";
     this.greyColor = "#c4c3c3";
+    this.drawLines();
+  }
 
-    for (const ex of this.data.expansions) {
+  drawLines() {
+    for (const ex of this.props.data.expansions) {
       if (ex.expansion) {
         for (let i = 0; i < ex.expansion.length; i++) {
           const startId = "term" + ex.token_index;
@@ -97,7 +106,7 @@ class ExpandView extends Component {
   }
 
   render() {
-    const expansionTermsList = this.data.expansions.map(
+    const expansionTermsList = this.props.data.expansions.map(
       (expansionData, index) => {
         const terms = (expansionData.expansion || []).map((data, index) => {
           return (

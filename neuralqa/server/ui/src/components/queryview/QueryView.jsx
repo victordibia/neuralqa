@@ -320,7 +320,7 @@ class QueryView extends Component {
           console.log(data);
           // let explanationHolder = this.state.explanations;
           // explanationHolder[selectedAnswerId] = data;
-          this.setState({ expansion: data });
+          this.setState({ expansions: data });
           // console.log(data);
           // setTimeout(() => {
           //   this.setState({ answerIsLoading: false });
