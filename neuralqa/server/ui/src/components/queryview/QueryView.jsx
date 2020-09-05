@@ -666,8 +666,6 @@ class QueryView extends Component {
           )}
         </Modal>
 
-        <ExpandView></ExpandView>
-
         {this.state.showIntro && (
           <div className="clearfix mynotif positionrelative  mt10 h100 lh10  lightbluehightlight maxh16  mb10">
             {this.props.data.views.advanced && (
@@ -783,9 +781,10 @@ class QueryView extends Component {
         </div>
 
         {this.state.expansions && this.state.expansions.terms && (
-          <div className="smalldesc pt5">
+          <div className=" pt5">
             <span className="boldtext">suggested expansion terms: </span>{" "}
             {queryExpansionList}
+            <ExpandView data={this.state.expansions}></ExpandView>
           </div>
         )}
 

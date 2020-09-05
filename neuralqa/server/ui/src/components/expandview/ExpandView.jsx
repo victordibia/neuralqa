@@ -6,8 +6,11 @@ import { LeaderLine, animOptions } from "../helperfunctions/HelperFunctions";
 class ExpandView extends Component {
   constructor(props) {
     super(props);
+
     this.data = require("./ex.json");
-    this.data = this.data || props.data;
+    this.data = props.data || this.data;
+
+    console.log(this.data);
 
     this.state = {
       data: this.data,
@@ -19,7 +22,7 @@ class ExpandView extends Component {
   updateGraph(data) {}
 
   drawLeaderLine(startElement, endElement, startAnchor, endAnchor) {
-    let lineColor = "grey";
+    let lineColor = "#c4c3c3";
     let lineWidth = 1;
     let plugType = "disc";
 
@@ -31,7 +34,8 @@ class ExpandView extends Component {
         startPlug: plugType,
         endPlug: plugType,
         startPlugColor: lineColor,
-        path: "magnet",
+        endSocketGravity: 400,
+        path: "arc",
         size: lineWidth,
         hide: true,
         // dash: { gap: 2, animation: params.endId === "latent" ? this.state.isTraining : false }
@@ -69,6 +73,8 @@ class ExpandView extends Component {
     this.lineHolder = [];
     this.topAnchor = { x: "50%", y: 0 };
     this.bottomAnchor = { x: "50%", y: "100%" };
+    this.leftAnchor = { x: "0%", y: "50%" };
+    this.rightAnchor = { x: "100%", y: "50%" };
 
     for (const ex of this.data.expansions) {
       if (ex.expansion) {
@@ -77,12 +83,7 @@ class ExpandView extends Component {
           const endId = "subterm" + ex.token_index + i;
           const startEl = this.getElement("id", startId);
           const endEl = this.getElement("id", endId);
-          this.drawLeaderLine(
-            startEl,
-            endEl,
-            this.bottomAnchor,
-            this.topAnchor
-          );
+          this.drawLeaderLine(startEl, endEl, this.leftAnchor, this.leftAnchor);
         }
       }
     }
@@ -93,58 +94,71 @@ class ExpandView extends Component {
   }
 
   render() {
-    console.log(this.data);
-    const expansionTermsList = this.data.expansions.map((data, index) => {
-      return (
-        <div
-          key={"termrow" + index}
-          id={"term" + index}
-          className="iblock  h100 termcontainer "
-        >
-          <div className="smalldesc underline pb3">
-            {data.pos}{" "}
-            {data.named_entity !== "" ? "| " + data.named_entity : ""}
-          </div>
-          <div className="termbox">{data.token}</div>
-          {/* <div>{subTerms}</div> */}
-        </div>
-      );
-    });
-
-    const subTermsList = this.data.expansions
-      .filter((data) => {
-        if (data.expansion) {
-          return true;
-        }
-        return false;
-      })
-      .map((expansionData, termIndex) => {
-        const terms = expansionData.expansion.map((data, index) => {
+    const expansionTermsList = this.data.expansions.map(
+      (expansionData, index) => {
+        const terms = (expansionData.expansion || []).map((data, index) => {
           return (
             <div
               key={"subterms" + index}
               id={"subterm" + expansionData.token_index + "" + index}
-              className="iblock p5 subtermbox"
+              className="ml10  h100 p5 subtermbox"
             >
               {data.token}
             </div>
           );
         });
         return (
-          <div key={"subtermrow" + termIndex} className="iblock h100">
-            <div className="border subtermgroupbox">{terms}</div>
+          <div key={"termrow" + index} className="iblock  h100 termcontainer ">
+            <div className="smalldesc underline pb3">
+              {expansionData.pos}{" "}
+              {expansionData.named_entity !== ""
+                ? "| " + expansionData.named_entity
+                : ""}
+            </div>
+
+            <div id={"term" + index} className="termbox mt10  ">
+              {expansionData.token}
+            </div>
+            <div className="">{terms}</div>
           </div>
         );
-      });
+      }
+    );
+
+    // const subTermsList = this.data.expansions
+    //   .filter((data) => {
+    //     if (data.expansion) {
+    //       return true;
+    //     }
+    //     return false;
+    //   })
+    //   .map((expansionData, termIndex) => {
+    //     const terms = expansionData.expansion.map((data, index) => {
+    //       return (
+    //         <div
+    //           key={"subterms" + index}
+    //           id={"subterm" + expansionData.token_index + "" + index}
+    //           className="iblock p5 subtermbox"
+    //         >
+    //           {data.token}
+    //         </div>
+    //       );
+    //     });
+    //     return (
+    //       <div key={"subtermrow" + termIndex} className="iblock h100">
+    //         <div className="border subtermgroupbox">{terms}</div>
+    //       </div>
+    //     );
+    //   });
 
     return (
-      <div className="expandview border p10">
-        <div className="pb5 mb5 mediumdesc lhmedium">
+      <div className="expandview  p10">
+        <div className="pb5 mb5 mediumdesc underline lhmedium">
           The visualization below indicates how the expansion terms were
           generated.
         </div>
         <div>{expansionTermsList}</div>
-        <div className="mt10">{subTermsList}</div>
+        {/* <div className="mt10">{subTermsList}</div> */}
       </div>
     );
   }

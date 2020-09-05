@@ -4,14 +4,17 @@
   margin: 5px 5px 0px 0px;
 }
 .termbox {
-  padding-top: 6px;
+  padding: 6px;
+  text-align: center;
+  background-color: rgb(211, 211, 211);
 }
 .subtermbox {
-  background-color: rgb(238, 238, 238);
-  margin: 3px 0px 3px 3px;
+  background-color: rgb(233, 233, 233);
+  margin: 3px 0px 0px 0px;
+  border: 1px solid #c4c3c3;
 }
 .subtermgroupbox {
   padding-right: 3px;
-  border: 1px solid rgb(238, 238, 238);
+  border: 1px solid rgb(243, 243, 243);
   margin-right: 5px;
 }
