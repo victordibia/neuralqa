@@ -23,6 +23,7 @@ import {
   abbreviateString,
 } from "../helperfunctions/HelperFunctions";
 import ExplainView from "../explainview/ExplainView";
+import ExpandView from "../expandview/ExpandView";
 import "./queryview.css";
 
 class QueryView extends Component {
@@ -180,7 +181,7 @@ class QueryView extends Component {
     answers
       .then((data) => {
         if (data) {
-          // console.log(data);
+          console.log(data.query);
           this.setState({
             answers: data,
             errorStatus: "",
@@ -664,6 +665,8 @@ class QueryView extends Component {
             ></ExplainView>
           )}
         </Modal>
+
+        <ExpandView></ExpandView>
 
         {this.state.showIntro && (
           <div className="clearfix mynotif positionrelative  mt10 h100 lh10  lightbluehightlight maxh16  mb10">

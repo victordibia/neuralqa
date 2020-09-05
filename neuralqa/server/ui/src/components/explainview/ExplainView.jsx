@@ -16,7 +16,7 @@ class ExplainView extends Component {
     };
 
     this.brushHeight = 60;
-
+    this.mainViewHeight = 150;
     this.handleHover = this.handleHover.bind(this);
     this.handlers = { hover: this.handleHover };
   }
@@ -89,6 +89,7 @@ class ExplainView extends Component {
         //main view
         {
           width: "container",
+          height: this.mainViewHeight,
           mark: { type: "bar", tooltip: { content: "data" } },
           transform: [
             {
@@ -112,7 +113,6 @@ class ExplainView extends Component {
             y: mainEncY,
             color: barColor,
             opacity: { field: "gradient", type: "quantitative", legend: false },
-            // tooltip: { field: "gradient", type: "quantitative" },
           },
         },
         //brush view
@@ -209,7 +209,8 @@ class ExplainView extends Component {
                   className="w100 "
                   actions={false}
                   spec={spec}
-                  // signalListeners={this.handlers}
+                  renderer={"svg"}
+                  signalListeners={this.handlers}
                 />
               </div>
             </div>

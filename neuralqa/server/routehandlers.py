@@ -31,7 +31,7 @@ class Handler:
                 [type] -- [description]
             """
 
-            expanded_query = params.query
+            expanded_query = {"query": params.query}
 
             answer_holder = []
             response = {}
@@ -46,7 +46,7 @@ class Handler:
                     params.query = params.query + " " + \
                         " ".join([term["token"]
                                   for term in expanded_query["terms"]])
-                    expanded_query["query"] = params.query
+                    # expanded_query["query"] = params.query
 
             # switch to the selected model and retriever
             self.reader_pool.selected_model = params.reader
@@ -122,12 +122,11 @@ class Handler:
             context = params.context.replace(
                 "<em>", "").replace("</em>", "")
 
-            gradients, token_words, token_types, answer_text = self.reader_pool.model.explain_model(
+            gradients, answer_text, question = self.reader_pool.model.explain_model(
                 params.query, context)
 
             explanation_result = {"gradients": gradients,
-                                  "token_words": token_words,
-                                  "token_types": token_types,
-                                  "answer": answer_text
+                                  "answer": answer_text,
+                                  "question": question
                                   }
             return explanation_result
