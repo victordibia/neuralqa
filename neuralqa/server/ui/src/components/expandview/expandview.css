@@ -2,6 +2,7 @@
   background-color: rgb(238, 238, 238);
   padding: 7px;
   margin: 5px 5px 0px 0px;
+  vertical-align: top;
 }
 .termbox {
   padding: 6px;
@@ -11,10 +12,13 @@
 .subtermbox {
   background-color: rgb(233, 233, 233);
   margin: 3px 0px 0px 0px;
-  border: 1px solid #c4c3c3;
+  border: 1px solid #0062ff;
 }
 .subtermgroupbox {
   padding-right: 3px;
   border: 1px solid rgb(243, 243, 243);
   margin-right: 5px;
+}
+.expandview {
+  border: 1px solid #c4c3c3;
 }

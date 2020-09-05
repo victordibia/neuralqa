@@ -1,9 +1,21 @@
 {
   "terms": [
-    { "token": "personal", "probability": 0.2398897111415863 },
-    { "token": "word", "probability": 0.04981723055243492 },
-    { "token": "ii", "probability": 0.11301881819963455 },
-    { "token": "macintosh", "probability": 0.09222493320703506 }
+    {
+      "token": "personal",
+      "probability": 0.2398897111415863
+    },
+    {
+      "token": "word",
+      "probability": 0.04981723055243492
+    },
+    {
+      "token": "ii",
+      "probability": 0.11301881819963455
+    },
+    {
+      "token": "macintosh",
+      "probability": 0.09222493320703506
+    }
   ],
   "query": [
     "Steve",
@@ -48,9 +60,18 @@
     {
       "token": "apple",
       "expansion": [
-        { "token": "apple", "probability": 0.29380887746810913 },
-        { "token": "personal", "probability": 0.2398897111415863 },
-        { "token": "word", "probability": 0.04981723055243492 }
+        {
+          "token": "apple",
+          "probability": 0.29380887746810913
+        },
+        {
+          "token": "personal",
+          "probability": 0.2398897111415863
+        },
+        {
+          "token": "word",
+          "probability": 0.04981723055243492
+        }
       ],
       "token_index": 4,
       "pos": "NOUN",
@@ -59,9 +80,18 @@
     {
       "token": "computer",
       "expansion": [
-        { "token": ",", "probability": 0.4731844961643219 },
-        { "token": "ii", "probability": 0.11301881819963455 },
-        { "token": "macintosh", "probability": 0.09222493320703506 }
+        {
+          "token": ",",
+          "probability": 0.4731844961643219
+        },
+        {
+          "token": "ii",
+          "probability": 0.11301881819963455
+        },
+        {
+          "token": "macintosh",
+          "probability": 0.09222493320703506
+        }
       ],
       "token_index": 5,
       "pos": "NOUN",
@@ -84,14 +114,23 @@
     {
       "token": "year",
       "expansion": [
-        { "token": "?", "probability": 0.7166592478752136 },
-        { "token": ".", "probability": 0.18741711974143982 },
-        { "token": ";", "probability": 0.06785053759813309 }
+        {
+          "token": "?",
+          "probability": 0.7166592478752136
+        },
+        {
+          "token": ".",
+          "probability": 0.18741711974143982
+        },
+        {
+          "token": ";",
+          "probability": 0.06785053759813309
+        }
       ],
       "token_index": 8,
       "pos": "NOUN",
       "named_entity": ""
     }
   ],
-  "took": 0.532944917678833
+  "took": 0.6806609630584717
 }

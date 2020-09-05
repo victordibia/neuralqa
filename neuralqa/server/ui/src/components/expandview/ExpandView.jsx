@@ -22,8 +22,8 @@ class ExpandView extends Component {
   updateGraph(data) {}
 
   drawLeaderLine(startElement, endElement, startAnchor, endAnchor) {
-    let lineColor = "#c4c3c3";
-    let lineWidth = 1;
+    let lineColor = this.blueColor;
+    let lineWidth = 1.5;
     let plugType = "disc";
 
     let line = new LeaderLine(
@@ -76,9 +76,12 @@ class ExpandView extends Component {
     this.leftAnchor = { x: "0%", y: "50%" };
     this.rightAnchor = { x: "100%", y: "50%" };
 
+    this.blueColor = "#0062ff";
+    this.greyColor = "#c4c3c3";
+
     for (const ex of this.data.expansions) {
       if (ex.expansion) {
-        for (const [i, v] of ex.expansion.entries()) {
+        for (let i = 0; i < ex.expansion.length; i++) {
           const startId = "term" + ex.token_index;
           const endId = "subterm" + ex.token_index + i;
           const startEl = this.getElement("id", startId);
@@ -108,7 +111,7 @@ class ExpandView extends Component {
           );
         });
         return (
-          <div key={"termrow" + index} className="iblock  h100 termcontainer ">
+          <div key={"termrow" + index} className="iblock h100 termcontainer ">
             <div className="smalldesc underline pb3">
               {expansionData.pos}{" "}
               {expansionData.named_entity !== ""
@@ -116,7 +119,15 @@ class ExpandView extends Component {
                 : ""}
             </div>
 
-            <div id={"term" + index} className="termbox mt10  ">
+            <div
+              id={"term" + index}
+              className="termbox mt10"
+              style={{
+                color: terms.length > 0 ? "white" : "",
+                backgroundColor:
+                  terms.length > 0 ? this.blueColor : this.greyColor,
+              }}
+            >
               {expansionData.token}
             </div>
             <div className="">{terms}</div>
@@ -152,12 +163,12 @@ class ExpandView extends Component {
     //   });
 
     return (
-      <div className="expandview  p10">
+      <div className="expandview  mt10 p10">
         <div className="pb5 mb5 mediumdesc underline lhmedium">
           The visualization below indicates how the expansion terms were
           generated.
         </div>
-        <div>{expansionTermsList}</div>
+        <div className="">{expansionTermsList}</div>
         {/* <div className="mt10">{subTermsList}</div> */}
       </div>
     );

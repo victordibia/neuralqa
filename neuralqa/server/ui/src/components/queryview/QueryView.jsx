@@ -77,6 +77,7 @@ class QueryView extends Component {
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
+    this.expandEndpoint = "/api/expand";
     this.interfaceTimedDelay = 400;
     this.maxStatusElasped = 6; // Remove error/status msgs after maxStatusElasped secs
     this.documentTitleLength = 150; // Number of characters to display as the title of the snippets
@@ -181,7 +182,7 @@ class QueryView extends Component {
     answers
       .then((data) => {
         if (data) {
-          console.log(data.query);
+          // console.log(data.query);
           this.setState({
             answers: data,
             errorStatus: "",
@@ -302,6 +303,40 @@ class QueryView extends Component {
       });
   }
 
+  getExpansion() {
+    let self = this;
+    let query = document.getElementById("queryinput").value;
+    let postData = {
+      query: query,
+      expander: this.state.expander,
+    };
+    // this.setState({ answerIsLoading: true });
+    let expandUrl = this.serverBasePath + this.expandEndpoint;
+
+    let expansion = postJSONData(expandUrl, postData);
+    expansion
+      .then((data) => {
+        if (data) {
+          console.log(data);
+          // let explanationHolder = this.state.explanations;
+          // explanationHolder[selectedAnswerId] = data;
+          this.setState({ expansion: data });
+          // console.log(data);
+          // setTimeout(() => {
+          //   this.setState({ answerIsLoading: false });
+          // }, this.interfaceTimedDelay);
+        }
+      })
+      .catch(function (err) {
+        console.log("Fetch Error :-S", err);
+        // self.setState({
+        //   answerIsLoading: false,
+        //   errorStatus:
+        //     "Failed to fetch explainations. Explaination server may need to be restarted.",
+        // });
+      });
+  }
+
   closeExplainerModal() {
     this.setState({
       showExplainerModal: false,
@@ -315,6 +350,10 @@ class QueryView extends Component {
       showExplainerModal: true,
       selectedExplanation: selectedAnswerId,
     });
+  }
+
+  expandButtonClick(e) {
+    this.getExpansion();
   }
 
   updateConfigSelectParams(e) {
@@ -665,6 +704,7 @@ class QueryView extends Component {
             ></ExplainView>
           )}
         </Modal>
+        {/* <ExpandView data={this.state.expansions}></ExpandView> */}
 
         {this.state.showIntro && (
           <div className="clearfix mynotif positionrelative  mt10 h100 lh10  lightbluehightlight maxh16  mb10">
@@ -770,6 +810,14 @@ class QueryView extends Component {
 
           <div>
             {" "}
+            <Button
+              className="mr2"
+              onClick={this.expandButtonClick.bind(this)}
+              size="field"
+            >
+              {" "}
+              Expand
+            </Button>
             <Button
               onClick={this.askQuestionButtonClick.bind(this)}
               size="field"
