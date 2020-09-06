@@ -22,6 +22,7 @@ class ExpandView extends Component {
       console.log("things have changed");
       this.removeAllLines();
       this.drawLines();
+      // console.log(this.lineHolder.length, " num lines");
     }
   }
 
@@ -30,7 +31,8 @@ class ExpandView extends Component {
   drawLeaderLine(startElement, endElement, startAnchor, endAnchor) {
     let lineColor = this.blueColor;
     let lineWidth = 1.5;
-    let plugType = "disc";
+    let plugType = "square";
+    let endPlugType = "arrow2";
 
     let line = new LeaderLine(
       LeaderLine.pointAnchor(startElement, startAnchor),
@@ -38,14 +40,12 @@ class ExpandView extends Component {
       {
         color: lineColor,
         startPlug: plugType,
-        endPlug: plugType,
+        endPlug: endPlugType,
         startPlugColor: lineColor,
         endSocketGravity: 400,
         path: "arc",
         size: lineWidth,
         hide: true,
-        // dash: { gap: 2, animation: params.endId === "latent" ? this.state.isTraining : false }
-        // dash: { gap: 3 },
       }
     );
     // document.querySelector('.leader-line').style.zIndex = -100
@@ -53,8 +53,6 @@ class ExpandView extends Component {
     line.show("draw", animOptions);
     this.lineHolder.push({
       line: line,
-      startId: startElement,
-      endId: endElement,
     });
   }
 

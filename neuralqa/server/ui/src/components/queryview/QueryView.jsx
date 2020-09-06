@@ -186,7 +186,7 @@ class QueryView extends Component {
           this.setState({
             answers: data,
             errorStatus: "",
-            expansions: data.query,
+            // expansions: data.query,
           });
           setTimeout(() => {
             this.setState({ answerIsLoading: false });
@@ -304,7 +304,6 @@ class QueryView extends Component {
   }
 
   getExpansion() {
-    let self = this;
     let query = document.getElementById("queryinput").value;
     let postData = {
       query: query,
@@ -317,7 +316,6 @@ class QueryView extends Component {
     expansion
       .then((data) => {
         if (data) {
-          console.log(data);
           // let explanationHolder = this.state.explanations;
           // explanationHolder[selectedAnswerId] = data;
           this.setState({ expansions: data });
@@ -527,6 +525,12 @@ class QueryView extends Component {
                       className="p10 mt10 mb10 contextrow lightgreyhighlight"
                       dangerouslySetInnerHTML={{ __html: data.context }}
                     />
+                    {this.state.explanations[index] && (
+                      <ExplainView
+                        explanationData={this.state.explanations[index]}
+                        selectedExplanation={this.state.selectedExplanation}
+                      ></ExplainView>
+                    )}
                     {this.state.showExplanationsView && (
                       <Button
                         id={index}
@@ -684,7 +688,7 @@ class QueryView extends Component {
           {infoBox}
         </Modal>
 
-        <Modal
+        {/* <Modal
           open={this.state.showExplainerModal}
           modalHeading={"Model Explanation"}
           passiveModal={true}
@@ -694,16 +698,16 @@ class QueryView extends Component {
           onRequestClose={this.closeExplainerModal.bind(this)}
           hasScrollingContent={true}
           // secondaryButtonText={"Cancel"}
-        >
-          {Object.keys(this.state.explanations).length > 0 && (
-            <ExplainView
-              explanationData={
-                this.state.explanations[this.state.selectedExplanation]
-              }
-              selectedExplanation={this.state.selectedExplanation}
-            ></ExplainView>
-          )}
-        </Modal>
+        > */}
+        {/* {Object.keys(this.state.explanations).length > 0 && (
+          <ExplainView
+            explanationData={
+              this.state.explanations[this.state.selectedExplanation]
+            }
+            selectedExplanation={this.state.selectedExplanation}
+          ></ExplainView>
+        )} */}
+        {/* </Modal> */}
         {/* <ExpandView data={this.state.expansions}></ExpandView> */}
 
         {this.state.showIntro && (
@@ -810,14 +814,16 @@ class QueryView extends Component {
 
           <div>
             {" "}
-            <Button
-              className="mr2"
-              onClick={this.expandButtonClick.bind(this)}
-              size="field"
-            >
-              {" "}
-              Expand
-            </Button>
+            {this.state.expander !== "none" && (
+              <Button
+                className="mr2"
+                onClick={this.expandButtonClick.bind(this)}
+                size="field"
+              >
+                {" "}
+                Expand
+              </Button>
+            )}
             <Button
               onClick={this.askQuestionButtonClick.bind(this)}
               size="field"
@@ -829,7 +835,7 @@ class QueryView extends Component {
         </div>
 
         {this.state.expansions && this.state.expansions.terms && (
-          <div className=" pt5">
+          <div className=" pt10">
             <span className="boldtext">suggested expansion terms: </span>{" "}
             {queryExpansionList}
             <ExpandView data={this.state.expansions}></ExpandView>

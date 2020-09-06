@@ -32,7 +32,7 @@ class ExplainView extends Component {
       prevProps.explanationData &&
       prevProps.explanationData.answer !== this.state.data.answer
     ) {
-      console.log("updating .. ", this.data);
+      // console.log("updating .. ", this.data);
       this.updateGraph(this.data.gradients);
       this.setState({
         data: prevProps.explanationData,
@@ -178,13 +178,13 @@ class ExplainView extends Component {
     );
 
     return (
-      <div className="expview p10">
-        <div className="pb5 mb5   mediumdesc lhmedium">
+      <div className="expview mb10">
+        {/* <div className="pb5 mb5   mediumdesc lhmedium">
           The visualization below indicates how each word in the query and
           context contributes to the model's selection of an answer span.
-        </div>
+        </div> */}
 
-        <Tabs type="default" selected={1}>
+        <Tabs type="default" selected={0}>
           <Tab id="tab-2" label="Density">
             {answerText}
             <div className="viztabcontent p10">
@@ -210,7 +210,6 @@ class ExplainView extends Component {
                   actions={false}
                   spec={spec}
                   renderer={"svg"}
-                  signalListeners={this.handlers}
                 />
               </div>
             </div>

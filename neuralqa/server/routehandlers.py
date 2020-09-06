@@ -31,21 +31,9 @@ class Handler:
                 [type] -- [description]
             """
 
-            expanded_query = {"query": params.query}
-
             answer_holder = []
             response = {}
             start_time = time.time()
-
-            # switch to selected expander, perform expansion
-            if params.expander != "none":
-                self.expander_pool.selected_expander = params.expander
-                if self.expander_pool.selected_expander:
-                    expanded_query = self.expander_pool.expander.expand_query(
-                        params.query)
-                    params.query = params.query + " " + \
-                        " ".join([term["token"]
-                                  for term in expanded_query["terms"]])
 
             # switch to the selected model and retriever
             self.reader_pool.selected_model = params.reader
@@ -83,7 +71,7 @@ class Handler:
                     answer_holder, key=lambda k: k['probability'], reverse=True)
             elapsed_time = time.time() - start_time
             response = {"answers": answer_holder,
-                        "query": expanded_query, "took": elapsed_time}
+                        "took": elapsed_time}
             return response
 
         @router.post("/documents")
