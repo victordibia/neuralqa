@@ -323,6 +323,17 @@ class QueryView extends Component {
           // setTimeout(() => {
           //   this.setState({ answerIsLoading: false });
           // }, this.interfaceTimedDelay);
+          let terms = " ";
+          for (const ex of data.expansions) {
+            if (ex.expansion) {
+              for (const row of ex.expansion) {
+                terms = terms + row.token + " ";
+              }
+            }
+          }
+
+          let query = document.getElementById("queryinput");
+          query.value = query.value + terms;
         }
       })
       .catch(function (err) {
@@ -814,7 +825,7 @@ class QueryView extends Component {
 
           <div>
             {" "}
-            {this.state.expander !== "none" && (
+            {this.state.expander !== "none" && this.state.retriever !== "none" && (
               <Button
                 className="mr2"
                 onClick={this.expandButtonClick.bind(this)}
