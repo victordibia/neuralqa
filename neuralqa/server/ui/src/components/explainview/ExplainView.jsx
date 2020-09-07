@@ -165,17 +165,17 @@ class ExplainView extends Component {
       );
     });
 
-    const answerText = (
-      <div>
-        <div className="lhmedium mediumdesc mb10">
-          {this.state.data.question}
-        </div>
-        <div className="pb10 mediumdesc boldtext">
-          <span className="answerquote">&#8220;</span> {this.state.data.answer}{" "}
-          <span className="pt10 answerquote">&#8221;</span>{" "}
-        </div>
-      </div>
-    );
+    // const answerText = (
+    //   <div>
+    //     <div className="lhmedium mediumdesc mb10">
+    //       {this.state.data.question}
+    //     </div>
+    //     <div className="pb10 mediumdesc boldtext">
+    //       <span className="answerquote">&#8220;</span> {this.state.data.answer}{" "}
+    //       <span className="pt10 answerquote">&#8221;</span>{" "}
+    //     </div>
+    //   </div>
+    // );
 
     return (
       <div className="expview mb10">
@@ -184,9 +184,9 @@ class ExplainView extends Component {
           context contributes to the model's selection of an answer span.
         </div> */}
 
-        <Tabs type="default" selected={0}>
+        <Tabs type="default" selected={1}>
           <Tab id="tab-2" label="Density">
-            {answerText}
+            {/* {answerText} */}
             <div className="viztabcontent p10">
               <div className="smalldesc mb10">
                 * Darker words indicate larger impact on answer span selection.
@@ -197,7 +197,7 @@ class ExplainView extends Component {
             </div>
           </Tab>
           <Tab id="tab-2" label="Bar">
-            {answerText}
+            {/* {answerText} */}
             <div className="viztabcontent p10">
               <div className="smalldesc mb10">
                 * Darker bars indicate larger impact on answer span selection.
