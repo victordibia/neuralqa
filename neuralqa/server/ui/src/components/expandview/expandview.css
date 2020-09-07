@@ -14,6 +14,10 @@
   margin: 3px 0px 0px 0px;
   border: 1px solid #0062ff;
 }
+.subtermbox:hover {
+  background-color: rgb(199, 199, 199);
+  /* color: white; */
+}
 .subtermgroupbox {
   padding-right: 3px;
   border: 1px solid rgb(243, 243, 243);

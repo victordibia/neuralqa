@@ -10,24 +10,29 @@ class ExpandView extends Component {
     this.data = require("./ex.json");
     this.data = props.data || this.data;
 
-    console.log(this.props);
+    // console.log(this.props);
 
     this.state = {
       data: this.data,
     };
+    this.blueColor = "#0062ff";
+    this.greyColor = "#c4c3c3";
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.data !== prevProps.data) {
-      console.log("things have changed");
       this.removeAllLines();
       this.drawLines();
       // console.log(this.lineHolder.length, " num lines");
     }
     if (this.props.viewChanged !== prevProps.viewChanged) {
-      console.log("view changed .. expand");
       this.redrawAllLines();
     }
+  }
+
+  clickTerm(e) {
+    // console.log(e.target.innerHTML);
+    this.props.addQueryTerm(e.target.innerHTML);
   }
 
   updateGraph(data) {}
@@ -84,8 +89,6 @@ class ExpandView extends Component {
     this.leftAnchor = { x: "0%", y: "50%" };
     this.rightAnchor = { x: "100%", y: "50%" };
 
-    this.blueColor = "#0062ff";
-    this.greyColor = "#c4c3c3";
     this.drawLines();
   }
 
@@ -115,12 +118,15 @@ class ExpandView extends Component {
             <div
               key={"subterms" + index}
               id={"subterm" + expansionData.token_index + "" + index}
-              className="ml10  h100 p5 subtermbox"
+              className="ml10  h100 p5 subtermbox clickable"
+              onClick={this.clickTerm.bind(this)}
             >
               {data.token}
             </div>
           );
         });
+        const boxColor = terms.length > 0 ? this.blueColor : this.greyColor;
+
         return (
           <div key={"termrow" + index} className="iblock h100 termcontainer ">
             <div className="smalldesc underline pb3">
@@ -145,8 +151,7 @@ class ExpandView extends Component {
               className="termbox mt10"
               style={{
                 color: terms.length > 0 ? "white" : "",
-                backgroundColor:
-                  terms.length > 0 ? this.blueColor : this.greyColor,
+                backgroundColor: boxColor,
               }}
             >
               {expansionData.token}
