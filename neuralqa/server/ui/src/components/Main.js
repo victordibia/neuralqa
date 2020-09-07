@@ -54,7 +54,7 @@ class Main extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    this.serverBasePath = "http://localhost:5000";
+    // this.serverBasePath = "http://localhost:5000";
     this.configEndpoint = "/api/config";
   }
 

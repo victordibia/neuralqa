@@ -30,7 +30,7 @@
 .tooltip {
   position: relative;
   display: inline-block;
-  /* cursor: pointer; */
+  cursor: default;
 }
 
 .tooltip .tooltiptext {

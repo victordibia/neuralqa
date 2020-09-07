@@ -79,7 +79,9 @@
 .lhmedium {
   line-height: 1rem;
 }
-
+.lhsmall {
+  line-height: 0.8rem;
+}
 .smalldesc {
   font-size: 0.72em;
 }
@@ -307,7 +309,7 @@
 .opacity0 {
   opacity: 0;
 }
-.transition3s {
+.transitiono3s {
   transition: opacity 0.3s ease-in-out;
   -moz-transition: opacity 0.3s ease-in-out;
   -webkit-transition: opacity 0.3s ease-in-out;

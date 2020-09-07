@@ -132,23 +132,29 @@ class ExpandView extends Component {
             <div className="smalldesc underline pb3">
               <div className="tooltip iblock mr5">
                 {expansionData.pos}
-                <span className="tooltiptext lhmedium">
-                  {expansionData.pos_desc}
+                <span className="tooltiptext">
+                  <div className="underline boldtext pb3 mb5">
+                    Part&nbsp;of&nbsp;Speech
+                  </div>
+                  <div> {expansionData.pos_desc}</div>
                 </span>
               </div>
               <div className="tooltip iblock">
                 {expansionData.named_entity !== ""
                   ? "| " + expansionData.named_entity
                   : ""}
-                <span className="tooltiptext  lhmedium">
-                  {expansionData.ent_desc}
+                <span className="tooltiptext ">
+                  <div className="underline boldtext pb3 mb5">
+                    Named&nbsp;Entity
+                  </div>
+                  <div> {expansionData.ent_desc}</div>
                 </span>
               </div>
             </div>
 
             <div
               id={"term" + index}
-              className="termbox mt10"
+              className={"termbox mt10 " + (terms.length > 0 ? "mb5" : "")}
               style={{
                 color: terms.length > 0 ? "white" : "",
                 backgroundColor: boxColor,

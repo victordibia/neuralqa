@@ -73,7 +73,7 @@ class QueryView extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    this.serverBasePath = "http://localhost:5000";
+    // this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
@@ -186,7 +186,7 @@ class QueryView extends Component {
           this.setState({
             answers: data,
             errorStatus: "",
-            // expansions: data.query,
+            expansions: null,
           });
           setTimeout(() => {
             this.setState({ answerIsLoading: false });
@@ -852,7 +852,7 @@ class QueryView extends Component {
                 size="field"
               >
                 {" "}
-                Expand
+                Expand Query?
               </Button>
             )}
             <Button
