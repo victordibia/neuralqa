@@ -37,8 +37,8 @@ class QueryView extends Component {
     this.state = {
       apptitle: props.data.intro.title,
       appsubtitle: props.data.intro.subtitle,
-      passages: { took: 0, highlights: [] },
-      answers: { took: 0, answers: [] },
+      passages: { took: 0, highlights: null },
+      answers: { took: 0, answers: null },
       passageIsLoading: false,
       answerIsLoading: false,
       errorStatus: "",
@@ -134,8 +134,8 @@ class QueryView extends Component {
 
   resetAnswer() {
     this.setState({
-      passages: { took: 0, highlights: [] },
-      answers: { took: 0, answers: [] },
+      passages: { took: 0, highlights: null },
+      answers: { took: 0, answers: null },
       errorStatus: "",
       explanations: {},
       expansions: null,
@@ -269,7 +269,8 @@ class QueryView extends Component {
 
   getExplanation(selectedAnswerId) {
     let self = this;
-    let answerData = this.state.answers.answers[selectedAnswerId];
+    const answers = this.state.answers.answers || [];
+    let answerData = answers[selectedAnswerId];
     // console.log(answerData);
     let postData = {
       query: answerData.question,
@@ -323,17 +324,16 @@ class QueryView extends Component {
           // setTimeout(() => {
           //   this.setState({ answerIsLoading: false });
           // }, this.interfaceTimedDelay);
-          let terms = " ";
-          for (const ex of data.expansions) {
-            if (ex.expansion) {
-              for (const row of ex.expansion) {
-                terms = terms + row.token + " ";
-              }
-            }
-          }
+          // let terms = " ";
+          // for (const ex of data.expansions) {
+          //   if (ex.expansion) {
+          //     for (const row of ex.expansion) {
+          //       terms = terms + row.token + " ";
+          //     }
+          //   }
+          // }
 
-          let query = document.getElementById("queryinput");
-          query.value = query.value + terms;
+          // query.value = query.value + terms;
         }
       })
       .catch(function (err) {
@@ -433,9 +433,30 @@ class QueryView extends Component {
     this.setState({ showAdvancedView: !this.state.showAdvancedView });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {}
+  addQueryTerm(term) {
+    let query = document.getElementById("queryinput");
+    query.style.opacity = "0";
+
+    setTimeout(() => {
+      query.value = query.value + " " + term;
+      query.style.opacity = "1";
+    }, 400);
+    //
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // if (
+    //   prevState.openAdvancedConfigDrawer !==
+    //     this.state.openAdvancedConfigDrawer ||
+    //   prevState.showAdvancedView !== this.state.showAdvancedView
+    // ) {
+    //   console.log("view changed");
+    //   this;
+    // }
+  }
 
   render() {
+    const answers = this.state.answers.answers || [];
     let loadingStatus =
       this.state.passageIsLoading || this.state.answerIsLoading;
 
@@ -468,7 +489,8 @@ class QueryView extends Component {
     }
 
     // Create a list view for passages
-    let passageList = this.state.passages["highlights"].map((data, index) => {
+    const documents = this.state.passages["highlights"] || [];
+    let documentList = documents.map((data, index) => {
       let dataTitle = data.substring(0, this.documentTitleLength);
       // if (data.highlight["name"] !== undefined) {
       //   for (let title of data.highlight["name"]) {
@@ -504,11 +526,8 @@ class QueryView extends Component {
     });
 
     // Create list view for answers
-    let answerList = this.state.answers.answers
-      .slice(
-        0,
-        this.state.showAllAnswers ? this.state.answers.answers.length : 1
-      )
+    let answerList = answers
+      .slice(0, this.state.showAllAnswers ? answers.length : 1)
       .map((data, index) => {
         return (
           <div
@@ -809,7 +828,7 @@ class QueryView extends Component {
         <div className="flex searchbar">
           <div
             key={"queryinput" + this.state.selectedSampleIndex}
-            className="flexfull"
+            className="flexfull "
           >
             <TextInput
               id="queryinput"
@@ -819,13 +838,14 @@ class QueryView extends Component {
               hideLabel={true}
               labelText="Hi there"
               onKeyDown={this.inputKeyPress.bind(this)}
+              className="transitiono3s"
               placeholder="Enter question. e.g. Which cases cite dwayne vs the united states."
             ></TextInput>
           </div>
 
           <div>
             {" "}
-            {this.state.expander !== "none" && this.state.retriever !== "none" && (
+            {this.state.expander !== "none" && (
               <Button
                 className="mr2"
                 onClick={this.expandButtonClick.bind(this)}
@@ -847,9 +867,17 @@ class QueryView extends Component {
 
         {this.state.expansions && this.state.expansions.terms && (
           <div className=" pt10">
-            <span className="boldtext">suggested expansion terms: </span>{" "}
+            <span className="boldtext">Suggested expansion terms: </span>{" "}
             {queryExpansionList}
-            <ExpandView data={this.state.expansions}></ExpandView>
+            <ExpandView
+              data={this.state.expansions}
+              viewChanged={
+                this.state.openAdvancedConfigDrawer +
+                "" +
+                this.state.showAdvancedView
+              }
+              addQueryTerm={this.addQueryTerm.bind(this)}
+            ></ExpandView>
           </div>
         )}
 
@@ -929,16 +957,18 @@ class QueryView extends Component {
           </div>
         )}
         {/* {  !askedElapsed &&} */}
-        {answerList.length === 0 && !this.state.answerIsLoading && (
-          <div className="p10 orangehighlight">No answers found.</div>
-        )}
+        {this.state.answers.answers &&
+          this.state.answers.answers.length === 0 &&
+          !this.state.answerIsLoading && (
+            <div className="p10 orangehighlight">No answers found.</div>
+          )}
 
-        {(this.state.showPassagesView && passageList.length) > 0 && (
+        {(this.state.showPassagesView && documentList.length) > 0 && (
           <div>
             <div className="mt10 mb10">
               <span className="boldtext">
                 {" "}
-                {this.state.passages["highlights"].length} Documents returned.{" "}
+                {documents.length} Documents returned.{" "}
               </span>
               {this.state.passageIsLoading && (
                 <span className="mediumdesc"> Loading passages ... </span>
@@ -950,12 +980,13 @@ class QueryView extends Component {
                 </span>
               )}
             </div>
-            <div className="passagebox  mt10">{passageList}</div>
+            <div className="passagebox  mt10">{documentList}</div>
           </div>
         )}
 
         {!askedElapsed &&
-          passageList.length === 0 &&
+          this.state.passages.highlights &&
+          this.state.passages.highlights.length === 0 &&
           this.state.retriever !== "none" &&
           !this.state.passageIsLoading && (
             <div className="p10 mt5 orangehighlight">
