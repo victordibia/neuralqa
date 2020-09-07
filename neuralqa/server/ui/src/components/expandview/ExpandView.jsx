@@ -10,7 +10,7 @@ class ExpandView extends Component {
     this.data = require("./ex.json");
     this.data = props.data || this.data;
 
-    console.log(this.data);
+    console.log(this.props);
 
     this.state = {
       data: this.data,
@@ -23,6 +23,10 @@ class ExpandView extends Component {
       this.removeAllLines();
       this.drawLines();
       // console.log(this.lineHolder.length, " num lines");
+    }
+    if (this.props.viewChanged !== prevProps.viewChanged) {
+      console.log("view changed .. expand");
+      this.redrawAllLines();
     }
   }
 
@@ -120,10 +124,20 @@ class ExpandView extends Component {
         return (
           <div key={"termrow" + index} className="iblock h100 termcontainer ">
             <div className="smalldesc underline pb3">
-              {expansionData.pos}{" "}
-              {expansionData.named_entity !== ""
-                ? "| " + expansionData.named_entity
-                : ""}
+              <div className="tooltip iblock mr5">
+                {expansionData.pos}
+                <span className="tooltiptext lhmedium">
+                  {expansionData.pos_desc}
+                </span>
+              </div>
+              <div className="tooltip iblock">
+                {expansionData.named_entity !== ""
+                  ? "| " + expansionData.named_entity
+                  : ""}
+                <span className="tooltiptext  lhmedium">
+                  {expansionData.ent_desc}
+                </span>
+              </div>
             </div>
 
             <div

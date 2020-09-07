@@ -22,3 +22,32 @@
 .expandview {
   border: 1px solid #c4c3c3;
 }
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  /* cursor: pointer; */
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  padding: 5px;
+  /* width: 120px; */
+  background-color: rgb(114, 114, 114);
+  color: #fff;
+  text-align: center;
+  /* border-radius: 6px; */
+  /* padding: 5px 0; */
+  /* border: 1px solid black; */
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 140%;
+  left: 0%;
+  /* margin-left: -60px; */
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
