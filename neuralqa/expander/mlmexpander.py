@@ -78,7 +78,7 @@ class MLMExpander(Expander):
                     temp_doc, self.model, self.tokenizer, top_n=top_n)
                 new_terms = new_terms + pred_tokens
             candidate_expansions.append(
-                {"token": str(token), "expansion": pred_tokens, "token_index": i, "pos": token.pos_, "named_entity": token.ent_type_})
+                {"token": str(token), "expansion": pred_tokens, "token_index": i, "pos": token.pos_, "pos_desc": spacy.explain(token.pos_), "named_entity": token.ent_type_, "ent_desc": spacy.explain(token.ent_type_)})
 
         elapsed_time = time.time() - start_time
 
