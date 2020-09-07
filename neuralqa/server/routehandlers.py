@@ -4,7 +4,7 @@ from neuralqa.utils import ConfigParser
 import time
 from fastapi import APIRouter
 from typing import Optional
-from neuralqa.server.routemodels import Document, Answer, Explanation
+from neuralqa.server.routemodels import Document, Answer, Explanation, Expansion
 import logging
 
 logger = logging.getLogger(__name__)
@@ -31,22 +31,9 @@ class Handler:
                 [type] -- [description]
             """
 
-            expanded_query = params.query
-
             answer_holder = []
             response = {}
             start_time = time.time()
-
-            # switch to selected expander, perform expansion
-            if params.expander != "none":
-                self.expander_pool.selected_expander = params.expander
-                if self.expander_pool.selected_expander:
-                    expanded_query = self.expander_pool.expander.expand_query(
-                        params.query)
-                    params.query = params.query + " " + \
-                        " ".join([term["token"]
-                                  for term in expanded_query["terms"]])
-                    expanded_query["query"] = params.query
 
             # switch to the selected model and retriever
             self.reader_pool.selected_model = params.reader
@@ -84,10 +71,10 @@ class Handler:
                     answer_holder, key=lambda k: k['probability'], reverse=True)
             elapsed_time = time.time() - start_time
             response = {"answers": answer_holder,
-                        "query": expanded_query, "took": elapsed_time}
+                        "took": elapsed_time}
             return response
 
-        @ router.post("/documents")
+        @router.post("/documents")
         async def get_documents(params: Document):
             """Get a list of documents and highlights that match the given search query
 
@@ -109,7 +96,7 @@ class Handler:
                         doc[:max_doc_size] + " .." for doc in query_results["docs"]]
             return query_results
 
-        @ router.post("/explain")
+        @router.post("/explain")
         async def get_explanation(params: Explanation):
             """Return  an explanation for a given model
 
@@ -122,12 +109,29 @@ class Handler:
             context = params.context.replace(
                 "<em>", "").replace("</em>", "")
 
-            gradients, token_words, token_types, answer_text = self.reader_pool.model.explain_model(
+            gradients, answer_text, question = self.reader_pool.model.explain_model(
                 params.query, context)
 
             explanation_result = {"gradients": gradients,
-                                  "token_words": token_words,
-                                  "token_types": token_types,
-                                  "answer": answer_text
+                                  "answer": answer_text,
+                                  "question": question
                                   }
             return explanation_result
+
+        @router.post("/expand")
+        async def get_expansion(params: Expansion):
+            """Return  an expansion for a given query
+
+            Returns:
+                [dictionary]: [expansion]
+            """
+
+            expanded_query = {"query": None}
+            # switch to selected expander, perform expansion
+            if params.expander != "none":
+                self.expander_pool.selected_expander = params.expander
+                if self.expander_pool.selected_expander:
+                    expanded_query = self.expander_pool.expander.expand_query(
+                        params.query)
+
+            return expanded_query

@@ -1,0 +1,115 @@
+{
+  "terms": [
+    { "token": "personal", "probability": 0.2398897111415863 },
+    { "token": "word", "probability": 0.04981723055243492 },
+    { "token": "ii", "probability": 0.11301881819963455 },
+    { "token": "macintosh", "probability": 0.09222493320703506 }
+  ],
+  "query": [
+    "Steve",
+    "jobs",
+    "created",
+    "the",
+    "apple",
+    "computer",
+    "in",
+    "which",
+    "year"
+  ],
+  "expansions": [
+    {
+      "token": "Steve",
+      "expansion": null,
+      "token_index": 0,
+      "pos": "PROPN",
+      "pos_desc": "proper noun",
+      "named_entity": "PERSON",
+      "ent_desc": "People, including fictional"
+    },
+    {
+      "token": "jobs",
+      "expansion": null,
+      "token_index": 1,
+      "pos": "NOUN",
+      "pos_desc": "noun",
+      "named_entity": "PERSON",
+      "ent_desc": "People, including fictional"
+    },
+    {
+      "token": "created",
+      "expansion": null,
+      "token_index": 2,
+      "pos": "VERB",
+      "pos_desc": "verb",
+      "named_entity": "",
+      "ent_desc": null
+    },
+    {
+      "token": "the",
+      "expansion": null,
+      "token_index": 3,
+      "pos": "DET",
+      "pos_desc": "determiner",
+      "named_entity": "",
+      "ent_desc": null
+    },
+    {
+      "token": "apple",
+      "expansion": [
+        { "token": "apple", "probability": 0.29380887746810913 },
+        { "token": "personal", "probability": 0.2398897111415863 },
+        { "token": "word", "probability": 0.04981723055243492 }
+      ],
+      "token_index": 4,
+      "pos": "NOUN",
+      "pos_desc": "noun",
+      "named_entity": "",
+      "ent_desc": null
+    },
+    {
+      "token": "computer",
+      "expansion": [
+        { "token": ",", "probability": 0.4731844961643219 },
+        { "token": "ii", "probability": 0.11301881819963455 },
+        { "token": "macintosh", "probability": 0.09222493320703506 }
+      ],
+      "token_index": 5,
+      "pos": "NOUN",
+      "pos_desc": "noun",
+      "named_entity": "",
+      "ent_desc": null
+    },
+    {
+      "token": "in",
+      "expansion": null,
+      "token_index": 6,
+      "pos": "ADP",
+      "pos_desc": "adposition",
+      "named_entity": "",
+      "ent_desc": null
+    },
+    {
+      "token": "which",
+      "expansion": null,
+      "token_index": 7,
+      "pos": "DET",
+      "pos_desc": "determiner",
+      "named_entity": "",
+      "ent_desc": null
+    },
+    {
+      "token": "year",
+      "expansion": [
+        { "token": "?", "probability": 0.7166592478752136 },
+        { "token": ".", "probability": 0.18741711974143982 },
+        { "token": ";", "probability": 0.06785053759813309 }
+      ],
+      "token_index": 8,
+      "pos": "NOUN",
+      "pos_desc": "noun",
+      "named_entity": "",
+      "ent_desc": null
+    }
+  ],
+  "took": 0.5484719276428223
+}

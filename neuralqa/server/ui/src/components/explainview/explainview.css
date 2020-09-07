@@ -1,0 +1,45 @@
+.explanationspan {
+  /* border: 1px solid green; */
+  padding: 2px;
+  display: inline;
+  /* line-height: 1.5em; */
+}
+
+.barviz {
+  /* border: 2px solid green; */
+  /* background: green; */
+  overflow: scroll;
+}
+
+.barrect {
+  stroke-width: 1px;
+  stroke: rgb(212, 212, 212);
+  /* fill: #0062ff; */
+}
+.viztabcontent {
+  background-color: rgb(235, 235, 235);
+}
+
+.brushbox {
+  /* border: 1px solid green; */
+  width: 100%;
+}
+
+.graphsvgpath {
+  /* transform: rotate(90deg); */
+  fill: #686868;
+  stroke: #070707;
+}
+.brushhandle {
+  position: absolute;
+  height: 100%;
+  background-color: #b4b4b48e;
+  border: 1px solid white;
+  border-radius: 2px;
+  cursor: grab;
+}
+
+.d3brush {
+  height: 100px;
+  border: 1px solid black;
+}

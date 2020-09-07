@@ -9,13 +9,18 @@
     "carbon-components": "^10.10.2",
     "carbon-components-react": "^7.10.2",
     "carbon-icons": "^7.0.7",
+    "d3": "^5.16.0",
     "history": "^4.10.1",
     "md5": "^2.2.1",
     "node-sass": "^4.13.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0"
+    "react-scripts": "^3.4.3",
+    "react-vega": "^7.4.1",
+    "vega": "^5.14.0",
+    "vega-lib": "^4.4.0",
+    "vega-lite": "^4.14.1"
   },
   "scripts": {
     "start": "react-scripts start",

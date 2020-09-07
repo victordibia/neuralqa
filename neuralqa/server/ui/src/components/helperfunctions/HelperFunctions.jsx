@@ -182,3 +182,6 @@ export function sampleConfig() {
     },
   };
 }
+
+export const LeaderLine = window.LeaderLine;
+export const animOptions = { duration: 800, timing: "ease" };

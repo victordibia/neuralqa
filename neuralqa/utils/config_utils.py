@@ -34,7 +34,7 @@ class ConfigParser:
                             self.current_config_path)
                 self.config = self.load_config(self.current_config_path)
             else:
-                logger.info("vCreating new config file at " +
+                logger.info(">> Creating new config file at " +
                             self.current_config_path)
                 shutil.copyfile(self.default_config_path,
                                 self.current_config_path)

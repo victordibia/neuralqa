@@ -55,23 +55,30 @@ class MLMExpander(Expander):
         # print(results)
         return results
 
-    def expand_query(self, query, top_n=3, threshold=0.2):
+    def expand_query(self, query, top_n=3, threshold=0):
         start_time = time.time()
 
         doc = self.nlp(query)
         query_tokens = [str(token) for token in doc]
         new_terms = []
         candidate_expansions = []
+        # print([chunk.text for chunk in doc.noun_chunks], "\n =========")
+        # print([ent.text for ent in doc.ents], "\n =========")
+        # for token in doc:
+        #     print(token, "=>", token.ent_type_)
+
         for i, token in enumerate(doc):
-            if (token.pos_ in self.candidate_pos):
+            # only expand if pos is not in our candidate list and it is not a named entity type
+            pred_tokens = None
+            if (token.pos_ in self.candidate_pos and not token.ent_type_):
                 temp_doc = query_tokens.copy()
                 temp_doc[i] = self.tokenizer.mask_token
                 temp_doc = " ".join(temp_doc)
                 pred_tokens = self.predict_mask(
                     temp_doc, self.model, self.tokenizer, top_n=top_n)
-                candidate_expansions.append(
-                    {"token": str(token), "expansion": pred_tokens, "token_index": i})
                 new_terms = new_terms + pred_tokens
+            candidate_expansions.append(
+                {"token": str(token), "expansion": pred_tokens, "token_index": i, "pos": token.pos_, "pos_desc": spacy.explain(token.pos_), "named_entity": token.ent_type_, "ent_desc": spacy.explain(token.ent_type_)})
 
         elapsed_time = time.time() - start_time
 

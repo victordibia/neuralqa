@@ -64,7 +64,7 @@ class BERTReader(Reader):
         chunk_count = 0
         while current_pos < len(context_tokens) and current_pos >= 0:
 
-            # we want to cap the number of chunks we create 
+            # we want to cap the number of chunks we create
             if max_num_chunks and chunk_count >= max_num_chunks:
                 break
 
@@ -95,8 +95,8 @@ class BERTReader(Reader):
                  "token_type_ids": token_type_ids
                  })
             current_pos = current_pos + chunk_size - stride + 1
-            chunk_count +=1 
-            
+            chunk_count += 1
+
         return chunk_holder
 
     def answer_question(self, question, context, max_chunk_size=512, stride=70):
@@ -157,9 +157,11 @@ class BERTReader(Reader):
                         conn = conn / j
                 token_holder.append(token)
                 token_type_holder.append(token_type)
-                gradient_holder.append(conn)
+                # gradient_holder.append(conn)
+                gradient_holder.append(
+                    {"gradient": conn, "token": token, "token_type": token_type})
             i += 1
-        return gradient_holder, token_holder, token_type_holder
+        return gradient_holder
 
     def get_gradient(self, question, context):
         """Return gradient of input (question) wrt to model output span prediction
@@ -228,9 +230,9 @@ class BERTReader(Reader):
                 token_ids[answer_start:answer_end],  skip_special_tokens=True)
 
             # clean up gradients and words
-            gradients, token_words, token_types = self.clean_tokens(
+            gradients = self.clean_tokens(
                 gradients, token_words, token_types)
-            return gradients, token_words, token_types, answer_text
+            return gradients, answer_text, question
 
     def explain_model(self, question, context, explain_method="gradient"):
         if explain_method == "gradient":

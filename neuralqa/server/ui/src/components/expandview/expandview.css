@@ -1,0 +1,57 @@
+.termcontainer {
+  background-color: rgb(238, 238, 238);
+  padding: 7px;
+  margin: 5px 5px 0px 0px;
+  vertical-align: top;
+}
+.termbox {
+  padding: 6px;
+  text-align: center;
+  background-color: rgb(211, 211, 211);
+}
+.subtermbox {
+  background-color: rgb(233, 233, 233);
+  margin: 3px 0px 0px 0px;
+  border: 1px solid #0062ff;
+}
+.subtermbox:hover {
+  background-color: rgb(199, 199, 199);
+  /* color: white; */
+}
+.subtermgroupbox {
+  padding-right: 3px;
+  border: 1px solid rgb(243, 243, 243);
+  margin-right: 5px;
+}
+.expandview {
+  border: 1px solid #c4c3c3;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  padding: 5px;
+  /* width: 120px; */
+  background-color: rgb(114, 114, 114);
+  color: #fff;
+  text-align: center;
+  /* border-radius: 6px; */
+  /* padding: 5px 0; */
+  /* border: 1px solid black; */
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 140%;
+  left: 0%;
+  /* margin-left: -60px; */
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
