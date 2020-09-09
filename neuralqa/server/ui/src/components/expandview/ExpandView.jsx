@@ -111,62 +111,71 @@ class ExpandView extends Component {
   }
 
   render() {
-    const expansionTermsList = this.props.data.expansions.map(
-      (expansionData, index) => {
-        const terms = (expansionData.expansion || []).map((data, index) => {
-          return (
-            <div
-              key={"subterms" + index}
-              id={"subterm" + expansionData.token_index + "" + index}
-              className="ml10  h100 p5 subtermbox clickable"
-              onClick={this.clickTerm.bind(this)}
-            >
-              {data.token}
-            </div>
-          );
-        });
-        const boxColor = terms.length > 0 ? this.blueColor : this.greyColor;
-
+    let suggestedTermList = [];
+    const data = this.props.data;
+    if (data.expansions && data.terms) {
+      suggestedTermList = data.terms.map((data, index) => {
         return (
-          <div key={"termrow" + index} className="iblock h100 termcontainer ">
-            <div className="smalldesc underline pb3">
-              <div className="tooltip iblock mr5">
-                {expansionData.pos}
-                <span className="tooltiptext">
-                  <div className="underline boldtext pb3 mb5">
-                    Part&nbsp;of&nbsp;Speech
-                  </div>
-                  <div> {expansionData.pos_desc}</div>
-                </span>
-              </div>
-              <div className="tooltip iblock">
-                {expansionData.named_entity !== ""
-                  ? "| " + expansionData.named_entity
-                  : ""}
-                <span className="tooltiptext ">
-                  <div className="underline boldtext pb3 mb5">
-                    Named&nbsp;Entity
-                  </div>
-                  <div> {expansionData.ent_desc}</div>
-                </span>
-              </div>
-            </div>
-
-            <div
-              id={"term" + index}
-              className={"termbox mt10 " + (terms.length > 0 ? "mb5" : "")}
-              style={{
-                color: terms.length > 0 ? "white" : "",
-                backgroundColor: boxColor,
-              }}
-            >
-              {expansionData.token}
-            </div>
-            <div className="">{terms}</div>
+          <div key={"expansionterm" + index} className="smalldesc iblock mr5">
+            {data.token}
           </div>
         );
-      }
-    );
+      });
+    }
+    const expansionTermsList = data.expansions.map((expansionData, index) => {
+      const terms = (expansionData.expansion || []).map((data, index) => {
+        return (
+          <div
+            key={"subterms" + index}
+            id={"subterm" + expansionData.token_index + "" + index}
+            className="ml10  h100 p5 subtermbox clickable"
+            onClick={this.clickTerm.bind(this)}
+          >
+            {data.token}
+          </div>
+        );
+      });
+      const boxColor = terms.length > 0 ? this.blueColor : this.greyColor;
+
+      return (
+        <div key={"termrow" + index} className="iblock h100 termcontainer ">
+          <div className="smalldesc lhsmall underline pb3">
+            <div className="tooltip iblock mr5">
+              {expansionData.pos}
+              <span className="tooltiptext">
+                <div className="underline boldtext pb3 mb5">
+                  PART&nbsp;OF&nbsp;SPEECH
+                </div>
+                <div> {(expansionData.pos_desc || "").toUpperCase()}</div>
+              </span>
+            </div>
+            <div className="tooltip iblock">
+              {expansionData.named_entity !== ""
+                ? "| " + expansionData.named_entity
+                : ""}
+              <span className="tooltiptext ">
+                <div className="underline boldtext  pb3 mb5">
+                  NAMED&nbsp;ENTITY
+                </div>
+                <div> {(expansionData.ent_desc || "").toUpperCase()}</div>
+              </span>
+            </div>
+          </div>
+
+          <div
+            id={"term" + index}
+            className={"termbox mt10 " + (terms.length > 0 ? "mb5" : "")}
+            style={{
+              color: terms.length > 0 ? "white" : "",
+              backgroundColor: boxColor,
+            }}
+          >
+            {expansionData.token}
+          </div>
+          <div className="">{terms}</div>
+        </div>
+      );
+    });
 
     // const subTermsList = this.data.expansions
     //   .filter((data) => {
@@ -195,13 +204,33 @@ class ExpandView extends Component {
     //   });
 
     return (
-      <div className="expandview  mt10 p10">
-        <div className="pb5 mb5 mediumdesc underline lhmedium">
-          The visualization below indicates how the expansion terms were
-          generated.
+      <div className=" ">
+        <div className=" mb10">
+          <span className="boldtext">
+            {" "}
+            {suggestedTermList.length} Suggested Expansion Terms{" "}
+          </span>
+          <span className="mediumdesc">
+            {" "}
+            {this.props.data.took.toFixed(3)} seconds
+          </span>
+          .
         </div>
-        <div className="">{expansionTermsList}</div>
-        {/* <div className="mt10">{subTermsList}</div> */}
+        <div className="expandview p10 expandview">
+          {/* <span className="boldtext"> suggested terms: </span>
+          <span className="mediumdesc"> {suggestedTermList} </span> */}
+
+          <div className="smalldesc pb5 lhsmall ">
+            {" "}
+            The visualization below indicates how the expansion terms were
+            generated. Click any of the expansion candidate terms below to
+            append it to your query.
+            <br></br>
+            *Note that contextual query expansion works best when the model is
+            trained on the target (open-domain) dataset.
+          </div>
+          <div className="">{expansionTermsList}</div>
+        </div>
       </div>
     );
   }
