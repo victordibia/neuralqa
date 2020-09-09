@@ -73,7 +73,7 @@ class QueryView extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    // this.serverBasePath = "http://localhost:5000";
+    this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
@@ -110,7 +110,7 @@ class QueryView extends Component {
         title: "Expander",
         value: "expander",
         description:
-          "Methods for identifying additional query terms that can improve recall.",
+          "Contextual Query Expansion (see <a target='_blank' href='https://arxiv.org/abs/2007.15211' > https://arxiv.org/abs/2007.15211</a>) for identifying additional query terms that can improve recall.",
       },
 
       {
@@ -471,22 +471,13 @@ class QueryView extends Component {
             <span className="boldtext"> {data.title}</span>{" "}
             {this.state[data.value] + ""}
           </div>
-          <div className=" infodescdesc"> {data.description}</div>
+          <div
+            className=" infodescdesc"
+            dangerouslySetInnerHTML={{ __html: data.description }}
+          />
         </div>
       );
     });
-
-    //Expanded query
-    let queryExpansionList = [];
-    if (this.state.expansions && this.state.expansions.terms) {
-      queryExpansionList = this.state.expansions.terms.map((data, index) => {
-        return (
-          <div key={"expansionterm" + index} className="smalldesc iblock mr5">
-            {data.token}
-          </div>
-        );
-      });
-    }
 
     // Create a list view for passages
     const documents = this.state.passages["highlights"] || [];
@@ -561,15 +552,16 @@ class QueryView extends Component {
                         selectedExplanation={this.state.selectedExplanation}
                       ></ExplainView>
                     )}
-                    {this.state.showExplanationsView && (
-                      <Button
-                        id={index}
-                        onClick={this.clickExplainButton.bind(this)}
-                        size="small"
-                      >
-                        Explain
-                      </Button>
-                    )}
+                    {this.state.showExplanationsView &&
+                      !this.state.explanations[index] && (
+                        <Button
+                          id={index}
+                          onClick={this.clickExplainButton.bind(this)}
+                          size="small"
+                        >
+                          Explain
+                        </Button>
+                      )}
                   </div>
                 }
               </div>
@@ -825,10 +817,11 @@ class QueryView extends Component {
           </div>
         )}
         <div className="mt5 mt10 mb10 mediumdesc"> Enter question </div>
-        <div className="flex searchbar">
+        <div className="flex flexwrap searchbar">
           <div
+            // style={{ minWidth: "250px" }}
             key={"queryinput" + this.state.selectedSampleIndex}
-            className="flexfull "
+            className="flex80 flexwrapitem"
           >
             <TextInput
               id="queryinput"
@@ -843,11 +836,11 @@ class QueryView extends Component {
             ></TextInput>
           </div>
 
-          <div>
+          <div className="flexwrapitem  ">
             {" "}
             {this.state.expander !== "none" && (
               <Button
-                className="mr2"
+                className="mr2 flex80"
                 onClick={this.expandButtonClick.bind(this)}
                 size="field"
               >
@@ -867,8 +860,6 @@ class QueryView extends Component {
 
         {this.state.expansions && this.state.expansions.terms && (
           <div className=" pt10">
-            <span className="boldtext">Suggested expansion terms: </span>{" "}
-            {queryExpansionList}
             <ExpandView
               data={this.state.expansions}
               viewChanged={
