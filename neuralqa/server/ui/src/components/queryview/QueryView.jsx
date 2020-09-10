@@ -528,14 +528,14 @@ class QueryView extends Component {
             key={"answerrow" + index}
           >
             <div className="answerrowtitletag mr10"> A{data.index} </div>
-            <div className="flexfull mediumdesc lhmedium">
+            <div className="flexfull">
               <div>
                 <div className="smalldesc pt5">
                   Time: {data.took.toFixed(3)}s |{" "}
                   {(data.probability * 1).toFixed(4)}
                   {/* | Total Probability {(data.probability * 1).toFixed(4)} [  {((data.start_probability * 1) / 2).toFixed(4)} | {((data.end_probability * 1) / 2).toFixed(4)} ] */}
                 </div>
-                <div className="boldtext">
+                <div className="boldtext pt5">
                   {" "}
                   <span className="answerquote">&#8220;</span> {data.answer}{" "}
                   <span className="pt10 answerquote">&#8221;</span>{" "}
@@ -543,7 +543,7 @@ class QueryView extends Component {
                 {
                   <div>
                     <div
-                      className="p10 mt10 mb10 contextrow lightgreyhighlight"
+                      className="p10 mt10 mb10  mediumdesc lhmedium contextrow lightgreyhighlight"
                       dangerouslySetInnerHTML={{ __html: data.context }}
                     />
                     {this.state.explanations[index] && (

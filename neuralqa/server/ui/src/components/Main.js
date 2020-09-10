@@ -12,6 +12,7 @@ import { getJSONData, sampleConfig } from "./helperfunctions/HelperFunctions";
 import { Route, HashRouter } from "react-router-dom";
 
 import ExplainView from "./explainview/ExplainView";
+import TestView from "./testview/TestView";
 import QueryView from "./queryview/QueryView";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
@@ -54,7 +55,7 @@ class Main extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    // this.serverBasePath = "http://localhost:5000";
+    this.serverBasePath = "http://localhost:5000";
     this.configEndpoint = "/api/config";
   }
 
@@ -85,7 +86,7 @@ class Main extends Component {
             <Header data={this.state.config.header}></Header>
             <main className="container-fluid p10">
               <Route exact path="/" component={mQueryView} />
-              <Route exact path="/ex" component={ExplainView} />
+              <Route exact path="/ex" component={TestView} />
             </main>
           </div>
         )}
