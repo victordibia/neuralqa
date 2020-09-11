@@ -16,11 +16,7 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.3",
-    "react-vega": "^7.4.1",
-    "vega": "^5.14.0",
-    "vega-lib": "^4.4.0",
-    "vega-lite": "^4.14.1"
+    "react-scripts": "^3.4.3"
   },
   "scripts": {
     "start": "react-scripts start",
