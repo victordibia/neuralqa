@@ -8,6 +8,13 @@
 
 .barviz {
   /* border: 1px solid pink; */
+  background-image: repeating-linear-gradient(
+    180deg,
+    #ccc 29.5px,
+    #ccc 30px,
+    transparent 30px,
+    transparent 55px
+  );
 }
 
 .barvizcontent {
@@ -16,8 +23,8 @@
 }
 
 .strokedbarrect {
-  stroke-width: 1px;
-  stroke: rgba(44, 44, 44, 0.199);
+  /* stroke-width: 1px;
+  stroke: rgba(44, 44, 44, 0.199); */
 }
 
 .textlabel {
@@ -29,6 +36,21 @@
   /* stroke: grey; */
   fill: black;
   stroke-width: 1px;
+  pointer-events: none;
+}
+
+.tooltiptext {
+  font-weight: bold;
+  border: 1px solid black;
+  pointer-events: none;
+  font-size: 1.2em;
+  text-anchor: start;
+}
+
+.tooltiprect {
+  height: 1.7em;
+  fill: white;
+  opacity: 0.65;
 }
 
 .textinvisible {

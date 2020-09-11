@@ -16,11 +16,15 @@ class BarViz extends Component {
     this.barColor = "#0062ff";
     this.inactiveColor = "rgba(85, 85, 85, 0.586)";
     this.initialBrushPercentage = 35 / this.grads.length;
+
+    // window.addEventListener("resize", handleResize);
   }
 
   getLabel(d, i) {
     return i + "*.*" + d.token + " *.* (" + d.gradient.toFixed(2) + ")";
   }
+
+  componentWillUnmount() {}
 
   componentDidUpdate(prevProps, prevState) {}
 
@@ -41,14 +45,6 @@ class BarViz extends Component {
       .domain([0, d3.max(data, (d) => d.gradient)])
       .nice()
       .range([this.chartHeight, 0]);
-
-    this.yAxis = d3
-      .axisRight(this.yScale)
-      .tickSize(this.chartWidth)
-      .tickFormat((interval, i) => {
-        return "";
-        // return i % 2 === 0 ? " " : interval;
-      });
   }
 
   createSVGBox = (selector, height) => {
@@ -120,26 +116,30 @@ class BarViz extends Component {
 
     function brushStarted() {
       // console.log("brush started");
-      d3.select("div.barviz").selectAll("text").attr("class", "textinvisible");
+      d3.select("div.barviz")
+        .selectAll("text.textlabel")
+        .attr("class", "textinvisible textlabel");
     }
     function brushEnded() {
-      d3.select("div.barviz").selectAll("text").attr("class", "textlabel");
+      d3.select("div.barviz")
+        .selectAll("text.textlabel")
+        .attr("class", "textlabel");
       const extentX = d3.event.selection;
       // console.log("brush ended", extentX);
       if (extentX) {
-        const selected = x
-          .domain()
-          .filter(
-            (d) =>
-              extentX[0] - x.bandwidth() + 1e-2 <= x(d) &&
-              x(d) <= extentX[1] - 1e-2
-          );
+        // const selected = x
+        //   .domain()
+        //   .filter(
+        //     (d) =>
+        //       extentX[0] - x.bandwidth() + 1e-2 <= x(d) &&
+        //       x(d) <= extentX[1] - 1e-2
+        //   );
 
         updateScalePostBrush(extentX);
 
         const svg = d3.select("div.barviz");
         svg
-          .selectAll("text")
+          .selectAll("text.textlabel")
           .data(data)
           .attr("x", (d, i) => {
             return (
@@ -189,55 +189,44 @@ class BarViz extends Component {
       const x = self.xScale;
       const y = self.yScale;
       const svg = d3.select("div.barviz");
-      // console.log(x.bandwidth());
       svg
-        .selectAll("rect")
+        .selectAll("rect.mainbars")
         .data(data)
         .join("rect")
         .attr("x", (d, i) => x(self.getLabel(d, i)))
         .attr("y", (d) => y(d.gradient))
         .attr("height", (d) => y(0) - y(d.gradient))
         .attr("width", x.bandwidth());
-
-      // svg
-      //   .selectAll("text")
-      //   .data(data)
-      //   .attr("x", (d, i) => {
-      //     return x(self.getLabel(d, i)) + x.bandwidth() / 2;
-      //   })
-      //   .attr("y", (d) => {
-      //     return y.range()[0];
-      //   });
     }
+  }
+
+  createToolTip(svg) {
+    // create tooltip
+    let tooltip = svg
+      .append("g")
+      .attr("class", "tooltiptext")
+      .style("display", "none");
+
+    tooltip.append("rect").attr("class", "tooltiprect");
+
+    tooltip.append("text").attr("x", 10).attr("dy", "1.2em");
+    // .style("text-anchor", "middle");
+
+    return tooltip;
   }
 
   drawGraph(data) {
     let self = this;
-    // data = data.slice(0, 85);
     this.setupScalesAxes(data);
     const x = this.xScale;
     const y = this.yScale;
 
     const svg = this.createSVGBox("div.barviz", this.chartHeight);
-
-    function customYAxis(g) {
-      g.call(self.yAxis);
-      g.select(".domain").remove();
-      g.selectAll(".tick line")
-        .attr("stroke", "rgba(172, 172, 172, 0.74)")
-        .attr("stroke-dasharray", "2,2");
-      // .attr("transform", "translate(10,0)");
-      g.selectAll(".tick text").attr("x", 0).attr("y", 0);
-    }
-
-    // this.createBarRects(svg, this.xScale, this.yScale, data, "mainbars", true);
     const bar = svg.selectAll("g").data(data).join("g");
-
-    svg.append("g").call(customYAxis);
 
     bar
       .append("rect")
-      .attr("class", "strokedbarrect")
+      .attr("class", "strokedbarrect mainbars")
       .attr(
         "fill",
         (d) =>
@@ -246,7 +235,35 @@ class BarViz extends Component {
           ")"
       )
       .attr("width", x.bandwidth())
-      .attr("height", (d) => y(0) - y(d.gradient));
+      .attr("height", (d) => y(0) - y(d.gradient))
+      .on("mouseover", function () {
+        tooltip.style("display", null);
+        d3.select(this).attr("fill", "lightgrey");
+      })
+      .on("mouseout", function (d) {
+        tooltip.style("display", "none");
+        d3.select(this).attr(
+          "fill",
+          "rgba(0, 98, 255, " +
+            (d.gradient > 0.5 ? 1 : 0.5 + 0.5 * d.gradient) +
+            ")"
+        );
+      })
+      .on("mousemove", function (d) {
+        var xPosition = d3.mouse(this)[0] + 10;
+        var yPosition = d3.mouse(this)[1] - 20;
+        tooltip.attr(
+          "transform",
+          "translate(" + xPosition + "," + yPosition + ")"
+        );
+        tooltip.select("text").text(d.token);
+        tooltip
+          .select("rect")
+          .attr(
+            "width",
+            tooltip.select("text").node().getComputedTextLength() + 20
+          );
+      });
 
     bar
       .append("text")
@@ -255,14 +272,14 @@ class BarViz extends Component {
         return x(self.getLabel(d, i));
       })
       .attr("y", (d) => y(d.gradient))
-      .attr("class", "textlabel ")
+      .attr("class", "textlabel")
       .text((d) => d.token);
+
+    let tooltip = this.createToolTip(svg);
   }
 
   componentDidMount() {
     let barvizElement = document.getElementById("barviz");
-
-    // this.minChartWidth = 800; // barvizElement.offsetWidth;
     barvizElement.style.width = this.minChartWidth + "px";
 
     this.drawGraph(this.grads);

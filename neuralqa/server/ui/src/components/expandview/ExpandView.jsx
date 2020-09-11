@@ -6,9 +6,7 @@ import { LeaderLine, animOptions } from "../helperfunctions/HelperFunctions";
 class ExpandView extends Component {
   constructor(props) {
     super(props);
-
-    this.data = require("./ex.json");
-    this.data = props.data || this.data;
+    this.data = props.data;
 
     // console.log(this.props);
 
