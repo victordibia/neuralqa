@@ -1,0 +1,28 @@
+.d3brush {
+  /* border: 1px solid black; */
+}
+
+.yticktext {
+  border: 1px solid green;
+}
+
+.barviz {
+  /* border: 1px solid pink; */
+}
+
+.barvizcontent {
+  background-color: rgb(235, 235, 235);
+  padding: 10px 10px 8px 10px;
+}
+
+.strokedbarrect {
+  stroke-width: 1px;
+  stroke: rgba(44, 44, 44, 0.199);
+}
+
+.textlabel {
+  text-anchor: end;
+  /* transform: rotate(20deg); */
+  writing-mode: vertical-rl;
+  cursor: default;
+}

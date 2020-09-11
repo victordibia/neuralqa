@@ -11,12 +11,13 @@ import React, { Component } from "react";
 import { getJSONData, sampleConfig } from "./helperfunctions/HelperFunctions";
 import { Route, HashRouter } from "react-router-dom";
 
-import ExplainView from "./explainview/ExplainView";
-import TestView from "./testview/TestView";
 import QueryView from "./queryview/QueryView";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import { createBrowserHistory } from "history";
+import BarViz from "./barviz/BarViz";
+import TestView from "./testview/TestView";
+// import TestView from "./testview/TestView";
 
 const history = createBrowserHistory({
   basename: "", // The base URL of the app (see below)

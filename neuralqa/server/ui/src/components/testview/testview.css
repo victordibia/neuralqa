@@ -1,3 +1,12 @@
 .d3brush {
-  border: 1px solid black;
+  /* border: 1px solid black; */
+}
+
+.yticktext {
+  border: 1px solid green;
+  background-color: rgba(85, 85, 85, 0.986);
+}
+
+.barviz {
+  overflow: hidden;
 }
