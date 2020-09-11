@@ -6,10 +6,7 @@ class BarViz extends Component {
   constructor(props) {
     super(props);
 
-    this.data = require("./ex.json");
-    this.data = this.data || props.data;
-
-    this.grads = this.data.gradients;
+    this.grads = props.data.gradients;
 
     // this.minChartWidth = 900;
     this.minChartHeight = 250;
@@ -18,7 +15,7 @@ class BarViz extends Component {
     this.brushHeight = 60;
     this.barColor = "#0062ff";
     this.inactiveColor = "rgba(85, 85, 85, 0.586)";
-    this.initialBrushPercentage = 0.25;
+    this.initialBrushPercentage = 35 / this.grads.length;
   }
 
   getLabel(d, i) {
@@ -110,9 +107,9 @@ class BarViz extends Component {
         [this.chartMargin.left, 0.5],
         [this.chartWidth - this.chartMargin.right, this.brushHeight],
       ])
-      .on("brush", brushed);
-    // .on("end", (a)=>{
-    // });
+      .on("brush", brushed)
+      .on("start", brushStarted)
+      .on("end", brushEnded);
 
     const defaultSelection = [
       x.range()[0],
@@ -120,6 +117,40 @@ class BarViz extends Component {
     ];
 
     svg.append("g").call(brush).call(brush.move, defaultSelection);
+
+    function brushStarted() {
+      // console.log("brush started");
+      d3.select("div.barviz").selectAll("text").attr("class", "textinvisible");
+    }
+    function brushEnded() {
+      d3.select("div.barviz").selectAll("text").attr("class", "textlabel");
+      const extentX = d3.event.selection;
+      // console.log("brush ended", extentX);
+      if (extentX) {
+        const selected = x
+          .domain()
+          .filter(
+            (d) =>
+              extentX[0] - x.bandwidth() + 1e-2 <= x(d) &&
+              x(d) <= extentX[1] - 1e-2
+          );
+
+        updateScalePostBrush(extentX);
+
+        const svg = d3.select("div.barviz");
+        svg
+          .selectAll("text")
+          .data(data)
+          .attr("x", (d, i) => {
+            return (
+              self.xScale(self.getLabel(d, i)) + self.xScale.bandwidth() / 2
+            );
+          })
+          .attr("y", (d) => {
+            return self.yScale.range()[0];
+          });
+      }
+    }
 
     function brushed() {
       const extentX = d3.event.selection;
@@ -140,6 +171,11 @@ class BarViz extends Component {
             : self.inactiveColor;
         });
 
+      updateScalePostBrush(extentX);
+      update(self.grads);
+    }
+
+    function updateScalePostBrush(extentX) {
       let originalRange = mainXZoom.range();
       mainXZoom.domain(extentX);
 
@@ -147,7 +183,6 @@ class BarViz extends Component {
       self.xScale
         .range([mainXZoom(originalRange[0]), mainXZoom(originalRange[1])])
         .paddingInner(0.1);
-      update(self.grads);
     }
 
     function update(data) {
@@ -164,15 +199,15 @@ class BarViz extends Component {
         .attr("height", (d) => y(0) - y(d.gradient))
         .attr("width", x.bandwidth());
 
-      svg
-        .selectAll("text")
-        .data(data)
-        .attr("x", (d, i) => {
-          return x(self.getLabel(d, i)) + x.bandwidth() / 2;
-        })
-        .attr("y", (d) => {
-          return y.range()[0];
-        });
+      // svg
+      //   .selectAll("text")
+      //   .data(data)
+      //   .attr("x", (d, i) => {
+      //     return x(self.getLabel(d, i)) + x.bandwidth() / 2;
+      //   })
+      //   .attr("y", (d) => {
+      //     return y.range()[0];
+      //   });
     }
   }
 
@@ -185,8 +220,20 @@ class BarViz extends Component {
 
     const svg = this.createSVGBox("div.barviz", this.chartHeight);
 
+    function customYAxis(g) {
+      g.call(self.yAxis);
+      g.select(".domain").remove();
+      g.selectAll(".tick line")
+        .attr("stroke", "rgba(172, 172, 172, 0.74)")
+        .attr("stroke-dasharray", "2,2");
+      // .attr("transform", "translate(10,0)");
+      g.selectAll(".tick text").attr("x", 0).attr("y", 0);
+    }
+
     // this.createBarRects(svg, this.xScale, this.yScale, data, "mainbars", true);
     const bar = svg.selectAll("g").data(data).join("g");
+
+    svg.append("g").call(customYAxis);
 
     bar
       .append("rect")
@@ -203,24 +250,13 @@ class BarViz extends Component {
 
     bar
       .append("text")
-      .attr("fill", "white")
+      // .attr("fill", "white")
       .attr("x", (d, i) => {
         return x(self.getLabel(d, i));
       })
       .attr("y", (d) => y(d.gradient))
-      .attr("class", "textlabel")
+      .attr("class", "textlabel ")
       .text((d) => d.token);
-
-    function customYAxis(g) {
-      g.call(self.yAxis);
-      g.select(".domain").remove();
-      g.selectAll(".tick line")
-        .attr("stroke", "rgba(172, 172, 172, 0.74)")
-        .attr("stroke-dasharray", "2,2");
-      // .attr("transform", "translate(10,0)");
-      g.selectAll(".tick text").attr("x", 0).attr("y", 0);
-    }
-    svg.append("g").call(customYAxis);
   }
 
   componentDidMount() {
@@ -229,8 +265,8 @@ class BarViz extends Component {
     // this.minChartWidth = 800; // barvizElement.offsetWidth;
     barvizElement.style.width = this.minChartWidth + "px";
 
-    this.drawGraph(this.data.gradients);
-    this.drawBrushGraph(this.data.gradients);
+    this.drawGraph(this.grads);
+    this.drawBrushGraph(this.grads);
   }
 
   render() {

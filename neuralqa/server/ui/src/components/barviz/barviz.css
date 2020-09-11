@@ -25,4 +25,12 @@
   /* transform: rotate(20deg); */
   writing-mode: vertical-rl;
   cursor: default;
+  text-shadow: 0.5px 0.5px 1px white;
+  /* stroke: grey; */
+  fill: black;
+  stroke-width: 1px;
+}
+
+.textinvisible {
+  visibility: hidden;
 }

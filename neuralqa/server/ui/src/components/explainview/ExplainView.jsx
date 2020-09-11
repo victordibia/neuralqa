@@ -7,22 +7,10 @@ class ExplainView extends Component {
   constructor(props) {
     super(props);
 
-    this.data = require("./ex.json");
-    this.data = this.data || props.data;
-
+    // console.log(props);
     this.state = {
-      data: this.data,
       minCharWidth: null,
     };
-
-    // this.minChartWidth = 1600;
-    this.minChartHeight = 210;
-    this.barWidth = 20;
-    this.brushWidth = 150;
-
-    this.numTicks = 40;
-    this.xTicks = 7;
-    this.brushHeight = 60;
   }
 
   getLabel(d, i) {
@@ -52,7 +40,7 @@ class ExplainView extends Component {
     });
   }
   render() {
-    const denseViz = this.data.gradients.map((xdata, xindex) => {
+    const denseViz = this.props.data.gradients.map((xdata, xindex) => {
       return (
         <span
           style={{
@@ -89,7 +77,7 @@ class ExplainView extends Component {
               {this.state.minCharWidth && (
                 <BarViz
                   minChartWidth={this.state.minCharWidth}
-                  data={this.props}
+                  data={this.props.data}
                 ></BarViz>
               )}
             </div>

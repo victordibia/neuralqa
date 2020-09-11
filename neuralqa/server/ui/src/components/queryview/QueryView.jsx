@@ -548,8 +548,7 @@ class QueryView extends Component {
                     />
                     {this.state.explanations[index] && (
                       <ExplainView
-                        explanationData={this.state.explanations[index]}
-                        selectedExplanation={this.state.selectedExplanation}
+                        data={this.state.explanations[index]}
                       ></ExplainView>
                     )}
                     {this.state.showExplanationsView &&
