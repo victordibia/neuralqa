@@ -128,3 +128,26 @@
   border: 1px solid white;
   padding: 0px 5px 0px 5px;
 }
+
+.exptermbox {
+  margin-top: 5px;
+}
+
+.exptermboxdata {
+  padding: 10px;
+  border-left: 1px solid lightgrey;
+  border-top: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
+}
+.termboxclose {
+  border: 1px solid lightgrey;
+  padding: 10px;
+  cursor: pointer;
+}
+.termboxclose:hover {
+  background-color: lightgrey;
+}
+.selectedtermslabel {
+  background-color: lightgrey;
+  padding: 9px;
+}

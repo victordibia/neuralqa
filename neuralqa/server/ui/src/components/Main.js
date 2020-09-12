@@ -11,11 +11,12 @@ import React, { Component } from "react";
 import { getJSONData, sampleConfig } from "./helperfunctions/HelperFunctions";
 import { Route, HashRouter } from "react-router-dom";
 
-import ExplainView from "./explainview/ExplainView";
 import QueryView from "./queryview/QueryView";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import { createBrowserHistory } from "history";
+import TestView from "./testview/TestView";
+// import TestView from "./testview/TestView";
 
 const history = createBrowserHistory({
   basename: "", // The base URL of the app (see below)
@@ -85,7 +86,7 @@ class Main extends Component {
             <Header data={this.state.config.header}></Header>
             <main className="container-fluid p10">
               <Route exact path="/" component={mQueryView} />
-              <Route exact path="/ex" component={ExplainView} />
+              <Route exact path="/ex" component={TestView} />
             </main>
           </div>
         )}

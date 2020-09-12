@@ -61,6 +61,7 @@ class QueryView extends Component {
       showExpander: true, //props.data.views.expander,
 
       expansions: null,
+      expansionterms: new Set([]),
 
       // showAdvanced: props.data.views.advanced,
       openAdvancedConfigDrawer: true,
@@ -110,7 +111,7 @@ class QueryView extends Component {
         title: "Expander",
         value: "expander",
         description:
-          "Methods for identifying additional query terms that can improve recall.",
+          "Contextual Query Expansion (see <a target='_blank' href='https://arxiv.org/abs/2007.15211' > https://arxiv.org/abs/2007.15211</a>) for identifying additional query terms that can improve recall.",
       },
 
       {
@@ -139,6 +140,7 @@ class QueryView extends Component {
       errorStatus: "",
       explanations: {},
       expansions: null,
+      expansionterms: new Set([]),
     });
   }
   resetExplanations() {
@@ -153,6 +155,7 @@ class QueryView extends Component {
     let context = document.getElementById("contextinput")
       ? document.getElementById("contextinput").value
       : null;
+
     let postData = {
       max_documents: this.state.maxdocuments,
       context: context || this.state.sampleQA[0].context,
@@ -162,8 +165,9 @@ class QueryView extends Component {
       retriever: this.state.retriever,
       tokenstride: this.state.chunkStride,
       relsnip: this.state.relsnip,
-      expander: this.state.expander,
+      expansionterms: Array.from(this.state.expansionterms),
     };
+    // console.log(postData);
     if (this.state.retriever !== "none") {
       this.getPassages(postData);
     }
@@ -434,14 +438,27 @@ class QueryView extends Component {
   }
 
   addQueryTerm(term) {
-    let query = document.getElementById("queryinput");
-    query.style.opacity = "0";
+    let query = document.getElementById("exptermslistbox");
+    let terms = this.state.expansionterms;
+    if (query && !terms.has(term)) {
+      query.style.opacity = "0";
+      setTimeout(() => {
+        query.value = query.value + " " + term;
+        query.style.opacity = "1";
+      }, 400);
+    }
 
-    setTimeout(() => {
-      query.value = query.value + " " + term;
-      query.style.opacity = "1";
-    }, 400);
+    terms.add(term);
+    this.setState({ expansionterms: terms });
+
     //
+  }
+
+  removeTermClick(e) {
+    const terms = this.state.expansionterms;
+    // console.log(terms, e.target.getAttribute("termvalue"));
+    terms.delete(e.target.getAttribute("termvalue"));
+    this.setState({ expansionterms: terms });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -471,22 +488,13 @@ class QueryView extends Component {
             <span className="boldtext"> {data.title}</span>{" "}
             {this.state[data.value] + ""}
           </div>
-          <div className=" infodescdesc"> {data.description}</div>
+          <div
+            className=" infodescdesc"
+            dangerouslySetInnerHTML={{ __html: data.description }}
+          />
         </div>
       );
     });
-
-    //Expanded query
-    let queryExpansionList = [];
-    if (this.state.expansions && this.state.expansions.terms) {
-      queryExpansionList = this.state.expansions.terms.map((data, index) => {
-        return (
-          <div key={"expansionterm" + index} className="smalldesc iblock mr5">
-            {data.token}
-          </div>
-        );
-      });
-    }
 
     // Create a list view for passages
     const documents = this.state.passages["highlights"] || [];
@@ -537,14 +545,14 @@ class QueryView extends Component {
             key={"answerrow" + index}
           >
             <div className="answerrowtitletag mr10"> A{data.index} </div>
-            <div className="flexfull mediumdesc lhmedium">
+            <div className="flexfull">
               <div>
                 <div className="smalldesc pt5">
                   Time: {data.took.toFixed(3)}s |{" "}
                   {(data.probability * 1).toFixed(4)}
                   {/* | Total Probability {(data.probability * 1).toFixed(4)} [  {((data.start_probability * 1) / 2).toFixed(4)} | {((data.end_probability * 1) / 2).toFixed(4)} ] */}
                 </div>
-                <div className="boldtext">
+                <div className="boldtext pt5">
                   {" "}
                   <span className="answerquote">&#8220;</span> {data.answer}{" "}
                   <span className="pt10 answerquote">&#8221;</span>{" "}
@@ -552,24 +560,24 @@ class QueryView extends Component {
                 {
                   <div>
                     <div
-                      className="p10 mt10 mb10 contextrow lightgreyhighlight"
+                      className="p10 mt10 mb10  mediumdesc lhmedium contextrow lightgreyhighlight"
                       dangerouslySetInnerHTML={{ __html: data.context }}
                     />
                     {this.state.explanations[index] && (
                       <ExplainView
-                        explanationData={this.state.explanations[index]}
-                        selectedExplanation={this.state.selectedExplanation}
+                        data={this.state.explanations[index]}
                       ></ExplainView>
                     )}
-                    {this.state.showExplanationsView && (
-                      <Button
-                        id={index}
-                        onClick={this.clickExplainButton.bind(this)}
-                        size="small"
-                      >
-                        Explain
-                      </Button>
-                    )}
+                    {this.state.showExplanationsView &&
+                      !this.state.explanations[index] && (
+                        <Button
+                          id={index}
+                          onClick={this.clickExplainButton.bind(this)}
+                          size="small"
+                        >
+                          Explain
+                        </Button>
+                      )}
                   </div>
                 }
               </div>
@@ -702,6 +710,23 @@ class QueryView extends Component {
       </div>
     );
 
+    const expansionTermsList = Array.from(this.state.expansionterms).map(
+      (data, index) => {
+        return (
+          <div key={"expterms" + index} className="exptermbox iblock mr5">
+            <div className="iblock exptermboxdata unclickable">{data}</div>
+            <div
+              onClick={this.removeTermClick.bind(this)}
+              termvalue={data}
+              className="iblock termboxclose"
+            >
+              x
+            </div>
+          </div>
+        );
+      }
+    );
+
     return (
       <div>
         <Modal
@@ -825,10 +850,11 @@ class QueryView extends Component {
           </div>
         )}
         <div className="mt5 mt10 mb10 mediumdesc"> Enter question </div>
-        <div className="flex searchbar">
+        <div className="flex flexwrap searchbar">
           <div
+            // style={{ minWidth: "250px" }}
             key={"queryinput" + this.state.selectedSampleIndex}
-            className="flexfull "
+            className="flex80 flexwrapitem"
           >
             <TextInput
               id="queryinput"
@@ -838,16 +864,16 @@ class QueryView extends Component {
               hideLabel={true}
               labelText="Hi there"
               onKeyDown={this.inputKeyPress.bind(this)}
-              className="transitiono3s"
+              className=""
               placeholder="Enter question. e.g. Which cases cite dwayne vs the united states."
             ></TextInput>
           </div>
 
-          <div>
+          <div className="flexwrapitem  ">
             {" "}
             {this.state.expander !== "none" && (
               <Button
-                className="mr2"
+                className="mr2 flex80"
                 onClick={this.expandButtonClick.bind(this)}
                 size="field"
               >
@@ -865,16 +891,25 @@ class QueryView extends Component {
           </div>
         </div>
 
+        {this.state.expansionterms.size > 0 && (
+          <div id="exptermslistbox" className="mt5 transitiono3s">
+            <span className="boldtext selectedtermslabel unclickable">
+              {" "}
+              Selected Expansion Terms:{" "}
+            </span>
+            {expansionTermsList}
+          </div>
+        )}
+
         {this.state.expansions && this.state.expansions.terms && (
           <div className=" pt10">
-            <span className="boldtext">Suggested expansion terms: </span>{" "}
-            {queryExpansionList}
             <ExpandView
               data={this.state.expansions}
               viewChanged={
                 this.state.openAdvancedConfigDrawer +
                 "" +
-                this.state.showAdvancedView
+                this.state.showAdvancedView +
+                this.state.expansionterms.size
               }
               addQueryTerm={this.addQueryTerm.bind(this)}
             ></ExpandView>

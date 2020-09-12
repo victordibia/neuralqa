@@ -1,0 +1,58 @@
+.d3brush {
+  /* border: 1px solid black; */
+}
+
+.yticktext {
+  border: 1px solid green;
+}
+
+.barviz {
+  /* border: 1px solid pink; */
+  background-image: repeating-linear-gradient(
+    180deg,
+    #ccc 29.5px,
+    #ccc 30px,
+    transparent 30px,
+    transparent 55px
+  );
+}
+
+.barvizcontent {
+  background-color: rgb(235, 235, 235);
+  padding: 10px 10px 8px 10px;
+}
+
+.strokedbarrect {
+  /* stroke-width: 1px;
+  stroke: rgba(44, 44, 44, 0.199); */
+}
+
+.textlabel {
+  text-anchor: end;
+  /* transform: rotate(20deg); */
+  writing-mode: vertical-rl;
+  cursor: default;
+  text-shadow: 0.5px 0.5px 1px white;
+  /* stroke: grey; */
+  fill: black;
+  stroke-width: 1px;
+  pointer-events: none;
+}
+
+.tooltiptext {
+  font-weight: bold;
+  border: 1px solid black;
+  pointer-events: none;
+  font-size: 1.2em;
+  text-anchor: start;
+}
+
+.tooltiprect {
+  height: 1.7em;
+  fill: white;
+  opacity: 0.65;
+}
+
+.textinvisible {
+  visibility: hidden;
+}

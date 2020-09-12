@@ -23,6 +23,7 @@ class Answer(BaseModel):
     reader: str = None
     relsnip: bool = True
     expander: Optional[str] = None
+    expansionterms: Optional[list] = None
     retriever: Optional[str] = "manual"
 
 
