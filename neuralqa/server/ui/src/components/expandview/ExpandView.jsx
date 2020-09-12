@@ -165,7 +165,9 @@ class ExpandView extends Component {
 
           <div
             id={"term" + index}
-            className={"termbox mt10 " + (terms.length > 0 ? "mb5" : "")}
+            className={
+              "termbox mt10 unclickable " + (terms.length > 0 ? "mb5" : "")
+            }
             style={{
               color: terms.length > 0 ? "white" : "",
               backgroundColor: boxColor,
