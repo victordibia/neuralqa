@@ -114,7 +114,10 @@ class ExpandView extends Component {
     if (data.expansions && data.terms) {
       suggestedTermList = data.terms.map((data, index) => {
         return (
-          <div key={"expansionterm" + index} className="smalldesc iblock mr5">
+          <div
+            key={"expansionterm" + index}
+            className="smalldesc unclickable iblock mr5"
+          >
             {data.token}
           </div>
         );
