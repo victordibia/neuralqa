@@ -15,7 +15,6 @@ import QueryView from "./queryview/QueryView";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import { createBrowserHistory } from "history";
-// import BarViz from "./barviz/BarViz";
 import TestView from "./testview/TestView";
 // import TestView from "./testview/TestView";
 
@@ -56,7 +55,7 @@ class Main extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    this.serverBasePath = "http://localhost:5000";
+    // this.serverBasePath = "http://localhost:5000";
     this.configEndpoint = "/api/config";
   }
 

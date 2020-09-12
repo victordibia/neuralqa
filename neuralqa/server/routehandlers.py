@@ -39,6 +39,7 @@ class Handler:
             self.reader_pool.selected_model = params.reader
             self.retriever_pool.selected_retriever = params.retriever
 
+            # print(params.query + " ".join(params.expansionterms))
             # answer question based on provided context
             if (params.retriever == "none" or self.retriever_pool.selected_retriever == None):
                 answers = self.reader_pool.model.answer_question(
@@ -47,10 +48,13 @@ class Handler:
                     answer["index"] = 0
                     answer_holder.append(answer)
             # answer question based on retrieved passages from elastic search
-            else:
 
+            else:
+                # add query expansion terms to query if any
+                retriever_query = params.query + \
+                    " ".join(params.expansionterms)
                 num_fragments = 5
-                query_results = self.retriever_pool.retriever.run_query(params.retriever, params.query,
+                query_results = self.retriever_pool.retriever.run_query(params.retriever, retriever_query,
                                                                         max_documents=params.max_documents, fragment_size=params.fragment_size,
                                                                         relsnip=params.relsnip, num_fragments=num_fragments, highlight_tags=False)
                 # print(query_results)

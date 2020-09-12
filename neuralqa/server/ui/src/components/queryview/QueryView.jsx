@@ -74,7 +74,7 @@ class QueryView extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    this.serverBasePath = "http://localhost:5000";
+    // this.serverBasePath = "http://localhost:5000";
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
@@ -140,6 +140,7 @@ class QueryView extends Component {
       errorStatus: "",
       explanations: {},
       expansions: null,
+      expansionterms: new Set([]),
     });
   }
   resetExplanations() {

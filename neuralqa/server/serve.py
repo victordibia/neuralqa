@@ -45,7 +45,7 @@ app.mount("/", StaticFiles(directory=static_folder_root, html=True),
 
 
 @api.get('/config')
-async def ui_config():
+async def get_config():
     config = app_config.config["ui"]
     # show only listed models to ui
     config["queryview"]["options"]["relsnip"] = app_config.config["relsnip"]

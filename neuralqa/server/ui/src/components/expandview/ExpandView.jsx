@@ -220,15 +220,18 @@ class ExpandView extends Component {
           <div className="smalldesc pt5 lhsmall ">
             {" "}
             Click any of the expansion candidate terms below to append it to
-            your query
+            your query.
           </div>
           <div className="">{expansionTermsList}</div>
           <div className="smalldesc pt5 lhsmall ">
             {" "}
             The visualization above indicates how the expansion terms were
-            generated. .<br></br>
+            generated.<br></br>
             *Note that contextual query expansion works best when the model is
-            trained on the target (open-domain) dataset.
+            trained on the target (open-domain) dataset. To minimize the
+            potential for altering the meaning of the sentence, only NOUNS,
+            ADJECTIVES, and ADVERBS are expanded. Named entities are not
+            expanded.
           </div>
         </div>
       </div>
