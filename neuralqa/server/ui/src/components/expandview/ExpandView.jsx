@@ -217,14 +217,16 @@ class ExpandView extends Component {
         <div className="expandview p10 expandview">
           {/* <span className="boldtext"> suggested terms: </span>
           <span className="mediumdesc"> {suggestedTermList} </span> */}
-
+          <div className="smalldesc pt5 lhsmall ">
+            {" "}
+            Click any of the expansion candidate terms below to append it to
+            your query
+          </div>
           <div className="">{expansionTermsList}</div>
           <div className="smalldesc pt5 lhsmall ">
             {" "}
             The visualization above indicates how the expansion terms were
-            generated. Click any of the expansion candidate terms below to
-            append it to your query.
-            <br></br>
+            generated. .<br></br>
             *Note that contextual query expansion works best when the model is
             trained on the target (open-domain) dataset.
           </div>

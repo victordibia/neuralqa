@@ -15,7 +15,7 @@ import QueryView from "./queryview/QueryView";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import { createBrowserHistory } from "history";
-import BarViz from "./barviz/BarViz";
+// import BarViz from "./barviz/BarViz";
 import TestView from "./testview/TestView";
 // import TestView from "./testview/TestView";
 

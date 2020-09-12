@@ -61,6 +61,7 @@ class QueryView extends Component {
       showExpander: true, //props.data.views.expander,
 
       expansions: null,
+      expansionterms: new Set([]),
 
       // showAdvanced: props.data.views.advanced,
       openAdvancedConfigDrawer: true,
@@ -153,6 +154,7 @@ class QueryView extends Component {
     let context = document.getElementById("contextinput")
       ? document.getElementById("contextinput").value
       : null;
+
     let postData = {
       max_documents: this.state.maxdocuments,
       context: context || this.state.sampleQA[0].context,
@@ -162,8 +164,9 @@ class QueryView extends Component {
       retriever: this.state.retriever,
       tokenstride: this.state.chunkStride,
       relsnip: this.state.relsnip,
-      expander: this.state.expander,
+      expansionterms: Array.from(this.state.expansionterms),
     };
+    // console.log(postData);
     if (this.state.retriever !== "none") {
       this.getPassages(postData);
     }
@@ -434,14 +437,27 @@ class QueryView extends Component {
   }
 
   addQueryTerm(term) {
-    let query = document.getElementById("queryinput");
-    query.style.opacity = "0";
+    let query = document.getElementById("exptermslistbox");
+    let terms = this.state.expansionterms;
+    if (query && !terms.has(term)) {
+      query.style.opacity = "0";
+      setTimeout(() => {
+        query.value = query.value + " " + term;
+        query.style.opacity = "1";
+      }, 400);
+    }
 
-    setTimeout(() => {
-      query.value = query.value + " " + term;
-      query.style.opacity = "1";
-    }, 400);
+    terms.add(term);
+    this.setState({ expansionterms: terms });
+
     //
+  }
+
+  removeTermClick(e) {
+    const terms = this.state.expansionterms;
+    // console.log(terms, e.target.getAttribute("termvalue"));
+    terms.delete(e.target.getAttribute("termvalue"));
+    this.setState({ expansionterms: terms });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -693,6 +709,23 @@ class QueryView extends Component {
       </div>
     );
 
+    const expansionTermsList = Array.from(this.state.expansionterms).map(
+      (data, index) => {
+        return (
+          <div key={"expterms" + index} className="exptermbox iblock mr5">
+            <div className="iblock exptermboxdata unclickable">{data}</div>
+            <div
+              onClick={this.removeTermClick.bind(this)}
+              termvalue={data}
+              className="iblock termboxclose"
+            >
+              x
+            </div>
+          </div>
+        );
+      }
+    );
+
     return (
       <div>
         <Modal
@@ -830,7 +863,7 @@ class QueryView extends Component {
               hideLabel={true}
               labelText="Hi there"
               onKeyDown={this.inputKeyPress.bind(this)}
-              className="transitiono3s"
+              className=""
               placeholder="Enter question. e.g. Which cases cite dwayne vs the united states."
             ></TextInput>
           </div>
@@ -857,6 +890,16 @@ class QueryView extends Component {
           </div>
         </div>
 
+        {this.state.expansionterms.size > 0 && (
+          <div id="exptermslistbox" className="mt5 transitiono3s">
+            <span className="boldtext selectedtermslabel unclickable">
+              {" "}
+              Selected Expansion Terms:{" "}
+            </span>
+            {expansionTermsList}
+          </div>
+        )}
+
         {this.state.expansions && this.state.expansions.terms && (
           <div className=" pt10">
             <ExpandView
@@ -864,7 +907,8 @@ class QueryView extends Component {
               viewChanged={
                 this.state.openAdvancedConfigDrawer +
                 "" +
-                this.state.showAdvancedView
+                this.state.showAdvancedView +
+                this.state.expansionterms.size
               }
               addQueryTerm={this.addQueryTerm.bind(this)}
             ></ExpandView>
