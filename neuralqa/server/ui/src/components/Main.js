@@ -55,7 +55,7 @@ class Main extends Component {
 
     this.serverBasePath =
       window.location.protocol + "//" + window.location.host;
-    // this.serverBasePath = "http://localhost:5000";
+    this.serverBasePath = "http://localhost:5000";
     this.configEndpoint = "/api/config";
   }
 
@@ -65,7 +65,6 @@ class Main extends Component {
     let self = this;
     config
       .then((data) => {
-        // console.log(data);
         if (data) {
           this.setState({ config: data });
         }
@@ -77,7 +76,12 @@ class Main extends Component {
   }
   render() {
     const mQueryView = (props) => {
-      return <QueryView data={this.state.config.queryview} />;
+      return (
+        <QueryView
+          data={this.state.config.queryview}
+          serverBasePath={this.serverBasePath}
+        />
+      );
     };
     return (
       <HashRouter>

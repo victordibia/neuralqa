@@ -72,9 +72,7 @@ class QueryView extends Component {
       showExplainerModal: false,
     };
 
-    this.serverBasePath =
-      window.location.protocol + "//" + window.location.host;
-    // this.serverBasePath = "http://localhost:5000";
+    this.serverBasePath = props.serverBasePath;
     this.passageEndpoint = "/api/documents";
     this.answerEndpoint = "/api/answers";
     this.explainEndpoint = "/api/explain";
@@ -366,6 +364,7 @@ class QueryView extends Component {
   }
 
   expandButtonClick(e) {
+    this.setState({ expansionterms: new Set([]) });
     this.getExpansion();
   }
 
@@ -895,7 +894,7 @@ class QueryView extends Component {
           <div id="exptermslistbox" className="mt5 transitiono3s">
             <span className="boldtext selectedtermslabel unclickable">
               {" "}
-              Selected Expansion Terms:{" "}
+              expansion terms:{" "}
             </span>
             {expansionTermsList}
           </div>
