@@ -99,6 +99,10 @@
 .boldtext {
   font-weight: bold;
 }
+
+.boldmediumtext {
+  font-weight: 600;
+}
 .whitetext {
   color: white;
 }

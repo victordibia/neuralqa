@@ -225,7 +225,7 @@ class ExpandView extends Component {
           // secondaryButtonText={"Cancel"}
         >
           <div>
-            <div className="underline pb5 mb10">
+            <div className="underline boldmediumtext pb5 mb10">
               {" "}
               What is Contextual Query Expansion?{" "}
             </div>
@@ -243,13 +243,16 @@ class ExpandView extends Component {
               {" "}
               NeuralQA paper.
             </a>{" "}
-            <div className="underline mt10 pb5 mb10">
+            <div className="underline boldmediumtext mt10 pb5 mb10">
               {" "}
-              How is this Implemented{" "}
+              How is this Implemented?{" "}
             </div>
             Part of speech detection is implemented using Spacy NLP. A BERT
             based masked language model is used for predicting expansion terms (
             can be selected under advanced options).
+            <br /> <br />
+            *Note contextual query expansion works best when the model is
+            trained on the target (open-domain) dataset.
           </div>
         </Modal>
         <div className=" mb10">
@@ -263,11 +266,11 @@ class ExpandView extends Component {
           </span>
           .
         </div>
-        <div className="expandview p10 expandview">
+        <div className=" expandview">
           {/* <span className="boldtext"> suggested terms: </span>
           <span className="mediumdesc"> {suggestedTermList} </span> */}
-          <div className="positionrelative pb5 mediumdesc">
-            <div className=" pt10 pb10 underline">
+          <div className="  positionrelative pb5 mediumdesc">
+            <div className="pt10 pb10 underline">
               Click any of the expansion candidate terms below to append it to
               your query
             </div>
@@ -284,11 +287,6 @@ class ExpandView extends Component {
             {" "}
             The visualization above indicates how the expansion terms were
             generated.<br></br>
-            *Note that contextual query expansion works best when the model is
-            trained on the target (open-domain) dataset. To minimize the
-            potential for altering the meaning of the sentence, only NOUNS,
-            ADJECTIVES, and ADVERBS are expanded. Named entities are not
-            expanded.
           </div>
         </div>
       </div>
