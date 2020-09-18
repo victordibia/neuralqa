@@ -233,7 +233,7 @@ class ExpandView extends Component {
             determine which token in the query to expand. These rules are chosen
             to improve recall (surface relevant queries) without altering the
             semantics of the original query. Example rules include only
-            expanding ADJECTIVES AND ADVERBS. Other parts of speech such as
+            expanding ADJECTIVES AND ADVERBS ; other parts of speech such as
             nouns, proper nouns or even named entities are not expanded. Once
             expansion candidates are selected, they are then iteratively masked
             and a masked language model is used to predict tokens that best
@@ -248,8 +248,8 @@ class ExpandView extends Component {
               How is this Implemented?{" "}
             </div>
             Part of speech detection is implemented using Spacy NLP. A BERT
-            based masked language model is used for predicting expansion terms (
-            can be selected under advanced options).
+            based masked language model is used for predicting expansion terms
+            (can be selected under advanced options).
             <br /> <br />
             *Note contextual query expansion works best when the model is
             trained on the target (open-domain) dataset.
