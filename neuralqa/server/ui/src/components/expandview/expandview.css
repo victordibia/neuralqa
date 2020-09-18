@@ -25,6 +25,10 @@
 }
 .expandview {
   border: 1px solid #c4c3c3;
+  /* background-color: #f0efef; */
+  padding-left: 10px;
+  /* padding-right: 10px; */
+  padding-bottom: 10px;
 }
 
 .tooltip {
@@ -33,7 +37,7 @@
   cursor: default;
 }
 
-.tooltip .tooltiptext {
+.tooltip .expandtooltiptext {
   visibility: hidden;
   padding: 5px;
   /* width: 120px; */
@@ -52,6 +56,6 @@
   /* margin-left: -60px; */
 }
 
-.tooltip:hover .tooltiptext {
+.tooltip:hover .expandtooltiptext {
   visibility: visible;
 }

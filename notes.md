@@ -95,11 +95,14 @@ Other implementation notes
 ### Release Checklist
 
 - verify latest build of ui without debug flags ... e.g. setting port to loccal port
-- verify version bump
+- rebuild ui
 - copy latest config.yaml structure to config-default.yaml
 - remove CORS testing harness for UI
+
   - remove manual UI pointers to port 5000
   - remove CORS allow rules on backend api
+
+- verify version bump
 
 ## FAQs
 

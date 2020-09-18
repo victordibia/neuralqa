@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import { Tabs, Tab } from "carbon-components-react";
+import { Modal } from "carbon-components-react";
 import "./expandview.css";
 import { LeaderLine, animOptions } from "../helperfunctions/HelperFunctions";
 
@@ -12,6 +12,7 @@ class ExpandView extends Component {
 
     this.state = {
       data: this.data,
+      showInfoModal: false,
     };
     this.blueColor = "#0062ff";
     this.greyColor = "#c4c3c3";
@@ -108,6 +109,10 @@ class ExpandView extends Component {
     this.removeAllLines();
   }
 
+  clickInfo(e) {
+    this.setState({ showInfoModal: !this.state.showInfoModal });
+  }
+
   render() {
     let suggestedTermList = [];
     const data = this.props.data;
@@ -143,7 +148,7 @@ class ExpandView extends Component {
           <div className="smalldesc lhsmall underline pb3">
             <div className="tooltip iblock mr5">
               {expansionData.pos}
-              <span className="tooltiptext">
+              <span className="expandtooltiptext">
                 <div className="underline boldtext pb3 mb5">
                   PART&nbsp;OF&nbsp;SPEECH
                 </div>
@@ -154,7 +159,7 @@ class ExpandView extends Component {
               {expansionData.named_entity !== ""
                 ? "| " + expansionData.named_entity
                 : ""}
-              <span className="tooltiptext ">
+              <span className="expandtooltiptext ">
                 <div className="underline boldtext  pb3 mb5">
                   NAMED&nbsp;ENTITY
                 </div>
@@ -208,6 +213,48 @@ class ExpandView extends Component {
 
     return (
       <div className=" ">
+        <Modal
+          open={this.state.showInfoModal}
+          modalHeading={"How does Query Expansion Work?"}
+          passiveModal={true}
+          size={"lg"}
+          aria-label={"Query expansion info modal"}
+          modalAriaLabel={"Query expansion info modal"}
+          onRequestClose={this.clickInfo.bind(this)}
+          hasScrollingContent={true}
+          // secondaryButtonText={"Cancel"}
+        >
+          <div>
+            <div className="underline boldmediumtext pb5 mb10">
+              {" "}
+              What is Contextual Query Expansion?{" "}
+            </div>
+            Query expansion works as follows. First, a set of rules are used to
+            determine which token in the query to expand. These rules are chosen
+            to improve recall (surface relevant queries) without altering the
+            semantics of the original query. Example rules include only
+            expanding ADJECTIVES AND ADVERBS ; other parts of speech such as
+            nouns, proper nouns or even named entities are not expanded. Once
+            expansion candidates are selected, they are then iteratively masked
+            and a masked language model is used to predict tokens that best
+            complete the sentence given the surrounding tokens. Additional
+            details are provided in the{" "}
+            <a target="_blank" href="https://arxiv.org/abs/2007.15211">
+              {" "}
+              NeuralQA paper.
+            </a>{" "}
+            <div className="underline boldmediumtext mt10 pb5 mb10">
+              {" "}
+              How is this Implemented?{" "}
+            </div>
+            Part of speech detection is implemented using Spacy NLP. A BERT
+            based masked language model is used for predicting expansion terms
+            (can be selected under advanced options).
+            <br /> <br />
+            *Note contextual query expansion works best when the model is
+            trained on the target (open-domain) dataset.
+          </div>
+        </Modal>
         <div className=" mb10">
           <span className="boldtext">
             {" "}
@@ -219,24 +266,27 @@ class ExpandView extends Component {
           </span>
           .
         </div>
-        <div className="expandview p10 expandview">
+        <div className=" expandview">
           {/* <span className="boldtext"> suggested terms: </span>
           <span className="mediumdesc"> {suggestedTermList} </span> */}
-          <div className="smalldesc pt5 lhsmall ">
-            {" "}
-            Click any of the expansion candidate terms below to append it to
-            your query.
+          <div className="  positionrelative pb5 mediumdesc">
+            <div className="pt10 pb10 underline">
+              Click any of the expansion candidate terms below to append it to
+              your query
+            </div>
+            <div
+              className="whatsthis clickable"
+              onClick={this.clickInfo.bind(this)}
+            >
+              <span className="infocircle"> &#63;</span> info
+            </div>
           </div>
+
           <div className="">{expansionTermsList}</div>
           <div className="smalldesc pt5 lhsmall ">
             {" "}
             The visualization above indicates how the expansion terms were
             generated.<br></br>
-            *Note that contextual query expansion works best when the model is
-            trained on the target (open-domain) dataset. To minimize the
-            potential for altering the meaning of the sentence, only NOUNS,
-            ADJECTIVES, and ADVERBS are expanded. Named entities are not
-            expanded.
           </div>
         </div>
       </div>
