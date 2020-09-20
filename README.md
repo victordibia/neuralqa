@@ -95,6 +95,6 @@ A paper introducing NeuralQA and its components can be [found here](https://arxi
     title={NeuralQA: A Usable Library for Question Answering (Contextual Query Expansion + BERT) on Large Datasets},
     author={Victor Dibia},
     year={2020},
-    journal={arXiv preprint arXiv:2007.15211}
+    journal={Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP): System Demonstrations}
 }
 ```
