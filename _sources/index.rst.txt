@@ -24,6 +24,14 @@ Launch the web interface via command line:
 
     neuralqa ui --port 5000 
 
+You can also clone this repository, make changes and launch the application directly from repository:
+
+.. code-block:: shell
+
+  python neuralqa/cli.py ui
+
+
+
 .. image:: https://raw.githubusercontent.com/victordibia/neuralqa/master/docs/images/manual.jpg
   :width: 100% 
   :alt: NeuralQA User Interface Screenshot
