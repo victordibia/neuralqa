@@ -62,15 +62,14 @@ retriever:
       value: "none"
       type: "none"
 
-
     # - name: Case Law
     #   value: cases
-    #   host: localhost
-    #   port: 9200
-    #   username: None
-    #   password: None
     #   type: elasticsearch
-    #   fields:
+    #   connection:
+    #     host: localhost
+    #     port: 9200
+    #     username: ""
+    #     password: ""
     #     body_field: "casebody.data.opinions.text"
     # - name: Medical
     #   value: medical

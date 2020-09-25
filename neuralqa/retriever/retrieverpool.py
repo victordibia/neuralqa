@@ -16,7 +16,7 @@ class RetrieverPool():
 
             if (retriever["type"] == "elasticsearch"):
                 self.retriever_pool[retriever["value"]] = ElasticSearchRetriever(
-                    host=retriever["host"], port=retriever["port"], body_field=retriever["fields"]["body_field"])
+                    **retriever["connection"])
             if (retriever["type"] == "solr"):
                 logger.info("We do not yet support Solr retrievers")
         self.selected_retriever = retrievers["selected"]

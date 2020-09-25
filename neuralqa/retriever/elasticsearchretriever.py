@@ -8,19 +8,24 @@ logger = logging.getLogger(__name__)
 
 
 class ElasticSearchRetriever(Retriever):
-    def __init__(self, index_type="elasticsearch", host="localhost", port=9200, **kwargs):
+    def __init__(self, index_type="elasticsearch", host="localhost", port=9200, username="", password="", **kwargs):
         Retriever.__init__(self, index_type)
 
-        self.username = ""
-        self.password = ""
+        self.username = username
+        self.password = password
         self.body_field = ""
         self.host = host
         self.port = port
-
         allowed_keys = list(self.__dict__.keys())
         self.__dict__.update((k, v)
                              for k, v in kwargs.items() if k in allowed_keys)
-        self.es = Elasticsearch([{'host': self.host, 'port': self.port}])
+
+        print(self.__dict__)
+        # self.es = Elasticsearch(
+        #     [{'host': self.host, 'port': self.port,
+        #       "username": self.username, "password": self.password}])
+        self.es = Elasticsearch(hosts=[{"host": self.host, "port": self.port}],
+                                http_auth=(self.username, self.password))
         self.isAvailable = self.es.ping()
 
         rejected_keys = set(kwargs.keys()) - set(allowed_keys)
