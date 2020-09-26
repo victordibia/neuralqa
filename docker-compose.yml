@@ -4,8 +4,8 @@ services:
 
   neuralqa:
     image: paper2code/neuralqa:latest
-    comtainer_name: ${NAMESPACE}-api
-    build
+    container_name: ${NAMESPACE}-api
+    build:
       context: .
       dockerfile: Dockerfile
     ports:
