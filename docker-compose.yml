@@ -1,6 +1,44 @@
-version: "3"
+---
+version: "3.8"
 services:
-  neuralqa_docker:
-    build: .
-    expose:
-      - 80
+
+  neuralqa:
+    image: paper2code/neuralqa:latest
+    container_name: ${NAMESPACE}-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    - 5080:5080
+    networks:
+    - internal
+    - web
+    command: ["neuralqa", "--host", "0.0.0.0", "--port", "5080"]
+
+  elastic:
+    image: elasticsearch:7.8.0
+    container_name: ${NAMESPACE}-elastic
+    networks:
+    - internal
+    environment:
+    - discovery.type=single-node
+    volumes:
+    - es-data:/usr/share/elasticsearch/data
+    ulimits:
+      nproc: 65535
+      nofile:
+         soft: 65535
+         hard: 65535
+      memlock:
+        soft: -1
+        hard: -1
+    restart: unless-stopped
+
+networks:
+  internal:
+    driver: bridge
+  web:
+    external: true
+
+volumes:
+  es-data:
