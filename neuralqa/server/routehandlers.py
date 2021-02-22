@@ -39,6 +39,7 @@ class Handler:
             self.reader_pool.selected_model = params.reader
             self.retriever_pool.selected_retriever = params.retriever
 
+            source = None
             # print(params.query + " ".join(params.expansionterms))
             # answer question based on provided context
             if (params.retriever == "none" or self.retriever_pool.selected_retriever == None):
@@ -69,12 +70,14 @@ class Handler:
                         for answer in answers:
                             answer["index"] = i
                             answer_holder.append(answer)
+                    source = query_results['source']
 
                 # sort answers by probability
                 answer_holder = sorted(
                     answer_holder, key=lambda k: k['probability'], reverse=True)
             elapsed_time = time.time() - start_time
             response = {"answers": answer_holder,
+                        "source": source,
                         "took": elapsed_time}
             return response
 

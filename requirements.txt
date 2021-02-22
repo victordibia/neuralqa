@@ -7,3 +7,5 @@ fastapi
 elasticsearch>=7.7.1
 pyyaml>=3.13 
 spacy
+requests-aws4auth
+boto3
