@@ -61,34 +61,15 @@ retriever:
     - name: None
       value: "none"
       type: "none"
-
-    # - name: Case Law
-    #   value: cases
-    #   type: elasticsearch
-    #   connection:
-    #     host: localhost
-    #     port: 9200
-    #     username: ""
-    #     password: ""
-    #     body_field: "casebody.data.opinions.text"
-    # - name: Medical
-    #   value: medical
-    #   host: localhost
-    #   port: 9200
-    #   username: None
-    #   password: None
-    #   type: elasticsearch
-    #   fields:
-    #     body_field: context
-    # - name: Supreme Court
-    #   value: supremecourt
-    #   host: localhost
-    #   port: 9200
-    #   username: None
-    #   password: None
-    #   type: elasticsearch
-    #   fields:
-    #     body_field: casebody
+    - name: Orpheus
+      value: orpheus
+      type: elasticsearch
+      connection:
+        host: search-orpheus-pubmed-mfcsldctpmoxvooou3g6dimjbi.us-east-2.es.amazonaws.com
+        port: 443
+        username: "orpheus"
+        password: "WandaVision2021!"
+        body_field: "text"
   readtopn: 0
 
 relsnip:

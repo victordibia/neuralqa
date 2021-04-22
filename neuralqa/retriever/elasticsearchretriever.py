@@ -25,7 +25,7 @@ class ElasticSearchRetriever(Retriever):
         #     [{'host': self.host, 'port': self.port,
         #       "username": self.username, "password": self.password}])
         self.es = Elasticsearch(hosts=[{"host": self.host, "port": self.port}],
-                                http_auth=(self.username, self.password))
+                                http_auth=(self.username, self.password), scheme='https')
         self.isAvailable = self.es.ping()
 
         rejected_keys = set(kwargs.keys()) - set(allowed_keys)
