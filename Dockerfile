@@ -29,4 +29,6 @@ RUN ls && python setup.py install
 COPY neuralqa/config_default.yaml /root/config_default.yaml
 ENV NEURALQA_CONFIG_PATH=/root/config_default.yaml
 
-CMD ["neuralqa", "ui", "--host", "0.0.0.0", "--port", "5000"]
+EXPOSE 80
+
+CMD ["neuralqa", "ui", "--host", "0.0.0.0", "--port", "80"]
