@@ -1,20 +1,32 @@
-FROM ubuntu:20.04
+FROM continuumio/miniconda3
 
-COPY . . 
+RUN conda install -c anaconda python=3.7
+RUN conda install pip
+RUN conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch &&\
+    conda install -c anaconda tensorflow==2.3.0 &&\
+    python -m pip install transformers==3.5.1 &&\
+    conda install -c conda-forge uvicorn aiofiles fastapi elasticsearch pyyaml spacy &&\
+    python -m pip install numpy==1.18.5 scipy==1.4.1 Keras-Preprocessing==1.1.1
+RUN conda install -c conda-forge boto3 pandas requests scikit-learn scipy flask &&\
+    python -m pip install gremlinpython requests_aws4auth
 
-RUN apt-get update && \
-    apt-get -y upgrade && \
-    apt-get -y install python3 && \
-    apt-get -y install python3-pip && \
-    pip3 install neuralqa && \
-    apt-get -y install wget && \
-    wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.0-amd64.deb && \
-    wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.0-amd64.deb.sha512 && \
-    shasum -a 512 -c elasticsearch-7.8.0-amd64.deb.sha512 && \
-    dpkg -i elasticsearch-7.8.0-amd64.deb && \
-    service elasticsearch start && \
-    sleep 30 && \
-     
-EXPOSE 80
+ADD Dockerfile /root/neuralqa/
+ADD LICENSE /root/neuralqa/
+ADD README.md /root/neuralqa/
+#ADD config.yaml /root/neuralqa/
+ADD docker-compose.yml /root/neuralqa/
+ADD docs/ /root/neuralqa/docs
+ADD neuralqa/ /root/neuralqa/neuralqa
+ADD notes.md /root/neuralqa/
+ADD Dockerfile /root/neuralqa/
+ADD requirements.txt /root/neuralqa/
+ADD setup.cfg /root/neuralqa/
+ADD setup.py /root/neuralqa/
+ADD tests/ /root/neuralqa/tests
+WORKDIR /root/neuralqa
+RUN ls && python setup.py install
 
-CMD ["neuralqa", "--host", "0.0.0.0", "--port", "80"]
+COPY neuralqa/config_default.yaml /root/config_default.yaml
+ENV NEURALQA_CONFIG_PATH=/root/config_default.yaml
+
+CMD ["neuralqa", "ui", "--host", "0.0.0.0", "--port", "5000"]
