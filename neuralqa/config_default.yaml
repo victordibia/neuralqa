@@ -61,6 +61,15 @@ retriever:
     - name: None
       value: "none"
       type: "none"
+    - name: Abstracts
+      value: pubmed_abstracts
+      type: elasticsearch
+      connection:
+        host: search-orpheus-pubmed-mfcsldctpmoxvooou3g6dimjbi.us-east-2.es.amazonaws.com
+        port: 443
+        username: "orpheus"
+        password: "WandaVision2021!"
+        body_field: "abstract"
     - name: Orpheus
       value: orpheus
       type: elasticsearch
@@ -87,13 +96,10 @@ server: # webserver host and port defaults
 
 reader:
   title: Reader
-  selected: twmkn9/distilbert-base-uncased-squad2
+  selected: ktrapeznikov/biobert_v1.1_pubmed_squad_v2
   options:
-    - name: DistilBERT SQUAD2
-      value: twmkn9/distilbert-base-uncased-squad2
-      type: distilbert
-    - name: BERT SQUAD2
-      value: deepset/bert-base-cased-squad2
+    - name: BioBERT Pubmed SQUAD2
+      value: ktrapeznikov/biobert_v1.1_pubmed_squad_v2
       type: bert
     # - name: Medical BERT SQUAD2
     #   value: /Users/victordibia/Downloads/meddistilbert

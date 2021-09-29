@@ -5,10 +5,13 @@ RUN conda install pip
 RUN conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch &&\
     conda install -c anaconda tensorflow==2.3.0 &&\
     python -m pip install transformers==3.5.1 &&\
-    conda install -c conda-forge uvicorn aiofiles fastapi elasticsearch pyyaml spacy &&\
+    conda install -c conda-forge uvicorn aiofiles fastapi elasticsearch==7.13.1 pyyaml spacy &&\
     python -m pip install numpy==1.18.5 scipy==1.4.1 Keras-Preprocessing==1.1.1
 RUN conda install -c conda-forge boto3 pandas requests scikit-learn scipy flask &&\
     python -m pip install gremlinpython requests_aws4auth
+
+RUN python -m pip install uvicorn[standard] websockets
+# RUN python -m pip install websockets
 
 ADD Dockerfile /root/neuralqa/
 ADD LICENSE /root/neuralqa/
