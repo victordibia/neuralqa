@@ -1,9 +1,9 @@
 FROM continuumio/miniconda3
 
-RUN conda install -c anaconda python=3.7
+RUN conda install -c anaconda python=3.6
 RUN conda install pip
 RUN conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch &&\
-    conda install -c anaconda tensorflow==2.3.0 &&\
+    conda install -c anaconda tensorflow &&\
     python -m pip install transformers==3.5.1 &&\
     conda install -c conda-forge uvicorn aiofiles fastapi elasticsearch==7.13.1 pyyaml spacy &&\
     python -m pip install numpy==1.18.5 scipy==1.4.1 Keras-Preprocessing==1.1.1
