@@ -12,6 +12,7 @@ RUN python -m pip install uvicorn[standard] websockets
 RUN python -m pip install thinc[tensorflow,torch] --pre
 RUN conda install -c conda-forge cudatoolkit
 RUN python -m pip install tensorflow==2.3.0
+RUN apt-get install -y nvidia-headless-495 nvidia-modprobe
 
 ADD Dockerfile /root/neuralqa/
 ADD LICENSE /root/neuralqa/
