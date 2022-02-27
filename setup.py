@@ -36,6 +36,7 @@ setup(
         'aiofiles',
         'uvicorn',
         'numpy',
+	'plac==0.9.6', 
         'tensorflow>=2.1.0',
         'torch',
         'torchvision',
