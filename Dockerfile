@@ -10,7 +10,8 @@ RUN conda install -c conda-forge boto3 requests pandas scikit-learn
 RUN python -m pip install gremlinpython requests_aws4auth
 RUN python -m pip install uvicorn[standard] websockets
 RUN python -m pip install thinc[tensorflow,torch] --pre
-RUN python -m pip install --upgrade tensorflow
+RUN conda install -c conda-forge cudatoolkit
+RUN python -m pip install tensorflow==2.3.0
 
 ADD Dockerfile /root/neuralqa/
 ADD LICENSE /root/neuralqa/
