@@ -30,6 +30,9 @@ RUN ls && python setup.py install
 
 COPY neuralqa/config_default.yaml /root/config_default.yaml
 ENV NEURALQA_CONFIG_PATH=/root/config_default.yaml
+ENV LD_LIBRARY_PATH /usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib:/usr/local/cuda/lib64
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 
 EXPOSE 80
 
