@@ -2,6 +2,7 @@ version: "3"
 services:
   neuralqa:
     build: .
+    command: --gpus all
     ports:
       - "80:80"
     expose:
