@@ -25,8 +25,8 @@ class AWSElasticSearchRetriever(ElasticSearchRetriever):
         self.port = port
         allowed_keys = list(self.__dict__.keys())
         self.__dict__.update((k, v) for k, v in kwargs.items() if k in allowed_keys)
-        assert self.body_field in self.return_fields
-        assert any(self.body_field in f for f in self.search_fields)
+        # assert self.body_field in self.return_fields
+        # assert any(self.body_field in f for f in self.search_fields)
 
         credentials = boto3.Session().get_credentials()
         awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service,

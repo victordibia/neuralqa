@@ -2,7 +2,7 @@
 
 from neuralqa.reader import BERTReader, ReaderPool
 from neuralqa.server.routehandlers import Handler
-from neuralqa.retriever import ElasticSearchRetriever, RetrieverPool
+from neuralqa.retriever import AWSElasticSearchRetriever, RetrieverPool
 from neuralqa.utils import ConfigParser
 from neuralqa.expander import ExpanderPool
 
