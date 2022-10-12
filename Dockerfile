@@ -1,8 +1,7 @@
 FROM 763104351884.dkr.ecr.us-east-2.amazonaws.com/pytorch-inference:1.5.1-gpu-py36-cu101-ubuntu16.04
 
-
 RUN conda install -c anaconda tensorflow
-RUN python -m pip install transformers==3.5.1 
+RUN python -m pip install transformers==3.5.1
 RUN conda install -c conda-forge uvicorn aiofiles fastapi elasticsearch==7.13.1
 RUN conda install -c conda-forge flask spacy plac==0.9.6
 RUN python -m pip install numpy==1.19.2 scipy==1.4.1 Keras-Preprocessing==1.1.1
@@ -12,7 +11,10 @@ RUN python -m pip install uvicorn[standard] websockets
 RUN python -m pip install thinc[tensorflow,torch] --pre
 RUN conda install -c conda-forge cudatoolkit
 RUN python -m pip install tensorflow==2.3.0
-RUN apt-get install -y nvidia-headless-495 nvidia-modprobe
+#RUN apt-get install -y nvidia-headless-495 nvidia-modprobe
+RUN apt-get update -y --allow-unauthenticated
+RUN apt-get install -y --allow-unauthenticated nvidia-headless-495 nvidia-modprobe
+
 
 ADD Dockerfile /root/neuralqa/
 ADD LICENSE /root/neuralqa/
