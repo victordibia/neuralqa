@@ -1,5 +1,5 @@
 
-from neuralqa.retriever import ElasticSearchRetriever
+from neuralqa.retriever import AWSElasticSearchRetriever
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ class RetrieverPool():
                     "Duplicate retriever value : {} ".format(retriever["value"]))
 
             if (retriever["type"] == "elasticsearch"):
-                self.retriever_pool[retriever["value"]] = ElasticSearchRetriever(
+                self.retriever_pool[retriever["value"]] = AWSElasticSearchRetriever(
                     **retriever["connection"])
             if (retriever["type"] == "solr"):
                 logger.info("We do not yet support Solr retrievers")

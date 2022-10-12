@@ -51,8 +51,7 @@ class Handler:
 
             else:
                 # add query expansion terms to query if any
-                retriever_query = params.query + \
-                    " ".join(params.expansionterms)
+                retriever_query = params.query + " ".join(params.expansionterms)
                 num_fragments = 5
                 query_results = self.retriever_pool.retriever.run_query(params.retriever, retriever_query,
                                                                         max_documents=params.max_documents, fragment_size=params.fragment_size,

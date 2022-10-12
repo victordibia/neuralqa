@@ -61,34 +61,20 @@ retriever:
     - name: None
       value: "none"
       type: "none"
-
-    # - name: Case Law
-    #   value: cases
-    #   type: elasticsearch
-    #   connection:
-    #     host: localhost
-    #     port: 9200
-    #     username: ""
-    #     password: ""
-    #     body_field: "casebody.data.opinions.text"
-    # - name: Medical
-    #   value: medical
-    #   host: localhost
-    #   port: 9200
-    #   username: None
-    #   password: None
-    #   type: elasticsearch
-    #   fields:
-    #     body_field: context
-    # - name: Supreme Court
-    #   value: supremecourt
-    #   host: localhost
-    #   port: 9200
-    #   username: None
-    #   password: None
-    #   type: elasticsearch
-    #   fields:
-    #     body_field: casebody
+    - name: Abstracts
+      value: pubmed_abstracts
+      type: elasticsearch
+      connection:
+        host: vpc-neptune-es-opxf6xkhk6ra7sfhybnkvxydtu.us-east-2.es.amazonaws.com
+        port: 443
+        body_field: "abstract"
+    - name: Orpheus
+      value: orpheus
+      type: elasticsearch
+      connection:
+        host: vpc-neptune-es-opxf6xkhk6ra7sfhybnkvxydtu.us-east-2.es.amazonaws.com
+        port: 443
+        body_field: "text"
   readtopn: 0
 
 relsnip:
@@ -106,13 +92,10 @@ server: # webserver host and port defaults
 
 reader:
   title: Reader
-  selected: twmkn9/distilbert-base-uncased-squad2
+  selected: ktrapeznikov/biobert_v1.1_pubmed_squad_v2
   options:
-    - name: DistilBERT SQUAD2
-      value: twmkn9/distilbert-base-uncased-squad2
-      type: distilbert
-    - name: BERT SQUAD2
-      value: deepset/bert-base-cased-squad2
+    - name: BioBERT Pubmed SQUAD2
+      value: ktrapeznikov/biobert_v1.1_pubmed_squad_v2
       type: bert
     # - name: Medical BERT SQUAD2
     #   value: /Users/victordibia/Downloads/meddistilbert
